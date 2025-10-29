@@ -1,6 +1,5 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 const staffSchema = new mongoose.Schema({
-    _id:mongoose.Schema.Types.ObjectId,
     accountId:({
         type:String,
         require:true,
@@ -13,11 +12,6 @@ const staffSchema = new mongoose.Schema({
     }),
     address:({
         type:String,
-    }),
-    phone:({
-        type:String,
-        require:true,
-        unique:true
     }),
     gender:({
         type:String,
