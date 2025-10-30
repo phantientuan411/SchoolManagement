@@ -38,5 +38,5 @@ const studentSchema = new mongoose.Schema({
         type:Number
     })
 })
-const studentModel = mongoose.models.students || mongoose.model("students",studentSchema);
-export default studentModel;
+const StudentModel = mongoose.models.students || mongoose.model("students",studentSchema);
+export default StudentModel;

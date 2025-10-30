@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const staffSchema = new mongoose.Schema({
+const teacherSchema = new mongoose.Schema({
     accountId:({
         type:String,
         require:true,
@@ -17,18 +17,21 @@ const staffSchema = new mongoose.Schema({
         type:String,
         enum:["male","female"]
     }),
-    profession:({
-        type:String,
-        enum:["chef","guar","labor"]
+    dateOfBird:({
+        type:Date,
     }),
-    year:({
-        type:Number
+    degree:({
+        type:String,
+    }),
+    major:({
+        type:String,
+    }),
+    yearExperience:({
+        type:String
     }),
     status:({
         type:Boolean
     })
-
-
 })
-const staffModel = mongoose.models.staffs || mongoose.model("staffs",staffSchema);
-export default staffModel;
+const TeacherModel = mongoose.models.teachers || mongoose.model("teachers",teacherSchema);
+export default TeacherModel;

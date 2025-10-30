@@ -48,5 +48,5 @@ const accountSchema = new mongoose.Schema({
 {
     timestamps:true
 })
-const accountModel = mongoose.models.accounts || mongoose.model('accounts', accountSchema);
-export default accountModel;
+const AccountModel = mongoose.models.accounts || mongoose.model('accounts', accountSchema);
+export default AccountModel;
