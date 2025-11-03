@@ -1,9 +1,3 @@
-process.on("uncaughtException", (err) => {
-  console.error("Uncaught Exception:", err);
-});
-process.on("unhandledRejection", (reason) => {
-  console.error("Unhandled Rejection:", reason);
-});
 import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -48,11 +42,11 @@ const port: number = parseInt(process.env.port || "3000", 10);
 const httpServer = createServer(app);
 
 connectDB()
-  .then(() => {
+.then(() => {
     httpServer.listen(port, host, () => {
       console.log(`Server running at http://${host}:${port}`);
     });
-  })
-  .catch((err) => {
-    console.error("Lỗi kết nối DB:", err);
-  });
+})
+.catch((err) => { 
+  console.error("Lỗi kết nối DB:", err);
+});

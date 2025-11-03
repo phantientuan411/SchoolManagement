@@ -21,7 +21,13 @@ const protectRouter = async (req: Request, res: Response, next: NextFunction) =>
                 }
                 
 
-                const account = await AccountModel.findOne({accountId:(decodedUser as JwtPayload).accountId}).select("-accountPassword");
+                const accountId = (decodedUser as JwtPayload).accountId as string | undefined;
+                if (!accountId) {
+                    return res.status(403).json({
+                        message: "Token không hợp lệ"
+                    })
+                }
+                const account = await (AccountModel as any).findOne({ accountId }).select("-accountPassword").lean().exec();
                 if (!account) {
                     return res.status(404).json({
                         message:"tài khoản không tồn tại"

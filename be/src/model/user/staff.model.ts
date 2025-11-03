@@ -1,34 +1,34 @@
 import mongoose from 'mongoose';
 const staffSchema = new mongoose.Schema({
-    accountId:({
+    accountId:{
         type:String,
-        require:true,
+        required:true,
         unique:true,
         ref:"accounts"
-    }),
-    name:({
+    },
+    name:{
         type:String,
-        require:true
-    }),
-    address:({
+        required:true
+    },
+    address:{
         type:String,
-    }),
-    gender:({
+    },
+    gender:{
         type:String,
         enum:["male","female"]
-    }),
-    profession:({
+    },
+    profession:{
         type:String,
         enum:["chef","guar","labor"]
-    }),
-    year:({
+    },
+    year:{
         type:Number
-    }),
-    status:({
+    },
+    status:{
         type:Boolean
-    })
+    }
 
 
 })
-const StaffModel = mongoose.models.staffs || mongoose.model("staffs",staffSchema);
+const StaffModel = mongoose.model("staffs",staffSchema);
 export default StaffModel;

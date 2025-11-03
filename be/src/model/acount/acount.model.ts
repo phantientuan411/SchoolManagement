@@ -1,52 +1,52 @@
 import mongoose from 'mongoose';
 const accountSchema = new mongoose.Schema({
-    accountId:({
+    accountId: {
         type:String,
-        require:true,
+        required:true,
         unique:true
-    }),
-    accountName:({
+    },
+    accountName: {
         type:String,
-        require:true
-    }),
-    accountEmail:({
+        required:true
+    },
+    accountEmail: {
         type:String,
-        require:true,
+        required:true,
         unique:true,
         lowercase:true,
         trim:true
-    }),
-    accountPassword:({
+    },
+    accountPassword: {
         type:String,
-        require:true
-    }),
-    phone:({
+        required:true
+    },
+    phone: {
         type:String,
         sparse:true,
-    }),
-    isActive:({
+    },
+    isActive: {
         type:Boolean,
-        require:true
-    }),
-    role:({
+        required:true
+    },
+    role: {
         type:String,
-        require:true,
+        required:true,
         enum:["student","teacher","staff"]
-    }),
-    avatarUrl:({
+    },
+    avatarUrl: {
         type:String //url anh
-    }),
-    avatarId:({
+    },
+    avatarId: {
         type:String //cloudiary
-    }),
-    bio:({
+    },
+    bio: {
        type:String,
        maxlength:200,
        trim:true 
-    })
+    }
 },
 {
     timestamps:true
 })
-const AccountModel = mongoose.models.accounts || mongoose.model('accounts', accountSchema);
+const AccountModel = mongoose.model('accounts', accountSchema);
 export default AccountModel;

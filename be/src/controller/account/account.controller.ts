@@ -35,8 +35,66 @@ const signup = async (req: Request, res: Response) => {
             isActive: true,
             role
         })
+        console.log(role);
+        
+        if (role === 'student'){
+            try {
+                await StudentModel.create({
+                accountId,
+                name: accountName,
+                address:"",
+                gender:"",
+                dateOfBird:"",
+                parentPhone:"",
+                parentName:"",
+                major:"",
+                status:true,
+                yearOfAdmission:""
+
+            })
+            } catch (error) {
+              return res.status(500).json({
+                    message: "Lỗi hệ thống"
+                }) 
+            }
+        }else if (role == 'teacher'){
+             try {
+                await TeacherModel.create({
+                accountId ,
+                name: accountName,
+                address:"",
+                gender:"",
+                dateOfBird:"",
+                degree:"",
+                major:"",
+                yearExperience:"",
+                status:true})
+             } catch (error) {
+                console.log('Lỗi khi đăng ký', error);
+                return res.status(500).json({
+                    message: "Lỗi hệ thống"
+                })
+             }
+        
+        }else if (role == 'staff'){
+            try {
+                await StaffModel.create({
+                accountId,
+                name: accountName,
+                address:"",
+                gender:"",
+                profession:"",
+                year:"",
+                status:true
+            })
+            } catch (error) {
+              return res.status(500).json({
+                    message: "Lỗi hệ thống"
+                })  
+            }
+        }
         return res.status(200).json({
-            message: "Đăng ký thành công"
+            message: `Đăng ký thành công cho ${role}`
         })
     } catch (error) {
         console.log('Lỗi khi đăng ký', error);
@@ -58,7 +116,7 @@ const login = async (req: Request, res: Response) => {
         console.log(email,password);
         
         //kiem tra mk
-        const checkAccount = await AccountModel.findOne({ accountEmail: email});
+        const checkAccount = await (AccountModel as any).findOne({ accountEmail: email});
         if (!checkAccount) {
             return res.status(400).send({
                 data: [],
