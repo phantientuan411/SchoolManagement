@@ -1,14 +1,14 @@
-import express, { Application, Request, Response } from "express";
+import express, {type Application,type Request,type Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { createServer } from "http";
-import { connectDB } from "./lib/db.js";
+import { connectDB } from "./lib/db.ts";
 //router
-import authRouter from "./router/account/account.router.js";
-import studetnRouter from "./router/user/student.router.js";
-import protectRouter from "./middlewares/authMiddleWare.js";
+import authRouter from "./router/account/account.router.ts";
+import studetnRouter from "./router/user/student.router.ts";
+import protectRouter from "./middlewares/authMiddleWare.ts";
 
 
 

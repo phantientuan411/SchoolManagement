@@ -1,7 +1,12 @@
 
+import LoginPage from "./features/login/LoginPage"
 const App = () => {
   return (
-    <div>du an moi</div>
+    <> 
+      <LoginPage/>
+l   </>
+       
+    
   )
 }
 
