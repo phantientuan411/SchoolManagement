@@ -1,0 +1,32 @@
+input{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+}
+/*login*/
+.main_login{
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.btn-login{
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: rgb(21, 226, 79)
+}
+.btn-login:hover{
+    cursor: pointer;
+    background: #07ff18;
+    color: rgb(255, 255, 255);
+}
+
+/**/
+
+/**/
+
+/**/
+
+/**/
+
+/**/
+

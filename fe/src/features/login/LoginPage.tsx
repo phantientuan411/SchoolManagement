@@ -15,15 +15,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "100px auto", textAlign: "center" }}>
-      <h2>Đăng nhập</h2>
+    <div className=" main_login w-8/10 h-5/10 flex flex-col items-center text-center">
+      <h2 className="login-title p-5 pt-20 text-3xl">Đăng nhập tài khoản</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setAccountEmail(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+          className="w-9/10 h-12 p-2.5 mb-2.5 mt-5"
           required
         />
         <input
@@ -31,15 +31,15 @@ export default function LoginPage() {
           placeholder="Mật khẩu"
           value={password}
           onChange={(e) => setAccountPassword(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+          className="w-9/10 h-12 p-2.5 mb-2.5"
           required
         />
-        <button type="submit" disabled={loading} style={{ width: "100%", padding: "10px" }}>
+        <button type="submit" disabled={loading} className="btn-login w-6/10 h-8 font-semibold pl-auto  pr-auto">
           {loading ? "Đang đăng nhập..." : "Đăng nhập"}
         </button>
       </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{'Lỗi server'}</p>}
       {user && <p style={{ color: "green" }}>Xin chào {user.account.email}!</p>}
     </div>
   );
