@@ -1,6 +1,5 @@
-import StudentModel from "../../model/user/student.model.js";
-import { Request, Response } from "express";
-const test = async (req: Request, res: Response) => {
+import * as express from "express";
+const test = async (req: express.Request, res: express.Response) => {
     res.status(200).json({
         message: "hello"
     })

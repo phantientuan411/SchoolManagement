@@ -15,14 +15,15 @@ const teacherSchema = new mongoose.Schema({
     },
     gender:{
         type:String,
-        enum:["male","female"]
+        enum:["male","female"],
+        default:"male"
     },
     dateOfBird:{
         type:Date,
     },
     degree:{
         type:String,
-    },
+    }, 
     major:{
         type:String,
     },

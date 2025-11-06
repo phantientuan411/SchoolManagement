@@ -5,12 +5,12 @@
   "main": "/src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./src/index.ts",
+    "start": "nodemon --exec ts-node ./src/index.ts",
     "build": "tsc --build",
     "dev": "nodemon index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "", 
   "license": "ISC",
   "type": "module",
   "devDependencies": {
@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.20.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   },
   "dependencies": {

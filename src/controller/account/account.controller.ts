@@ -1,14 +1,14 @@
-import { Request, Response } from "express";
+import * as express from "express";
 import * as bcrypt from "bcrypt-ts";
 import { v4 as uuidv4 } from "uuid";
-import AccountModel from "../../model/acount/acount.model.js";
-import StudentModel from "../../model/user/student.model.js";
-import TeacherModel from "../../model/user/teacher.model.js";
-import StaffModel from "../../model/user/staff.model.js";
+import AccountModel from "../../model/acount/acount.model.ts";
+import StudentModel from "../../model/user/student.model.ts";
+import TeacherModel from "../../model/user/teacher.model.ts";
+import StaffModel from "../../model/user/staff.model.ts";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import SessionModel from "../../model/session.js";
-const signup = async (req: Request, res: Response) => {
+import SessionModel from "../../model/session.ts";
+const signup = async (req: express.Request, res: express.Response) => {
     try {
         const { accountName, accountEmail, accountPassword, role } = req.body;
         if (!accountName || !accountEmail || !accountPassword || !role) {
@@ -43,7 +43,6 @@ const signup = async (req: Request, res: Response) => {
                 accountId,
                 name: accountName,
                 address:"",
-                gender:"",
                 dateOfBird:"",
                 parentPhone:"",
                 parentName:"",
@@ -63,7 +62,6 @@ const signup = async (req: Request, res: Response) => {
                 accountId ,
                 name: accountName,
                 address:"",
-                gender:"",
                 dateOfBird:"",
                 degree:"",
                 major:"",
@@ -82,7 +80,6 @@ const signup = async (req: Request, res: Response) => {
                 accountId,
                 name: accountName,
                 address:"",
-                gender:"",
                 profession:"",
                 year:"",
                 status:true
@@ -103,7 +100,7 @@ const signup = async (req: Request, res: Response) => {
         })
     }
 }
-const login = async (req: Request, res: Response) => {
+const login = async (req: express.Request, res: express.Response) => {
     const ACCESS_TOKEN_EXPIRES = '30m'
     const REFRESS_TOKEN_EXPIRES = 30 * 24 * 60 * 60 *1000
     try {
@@ -169,7 +166,7 @@ const login = async (req: Request, res: Response) => {
         })
     }
 };
-const logout = async (req: Request, res: Response) => {
+const logout = async (req: express.Request, res: express.Response) => {
     try {
         const refreshToken = req.cookies.refreshToken;
         if(refreshToken){
