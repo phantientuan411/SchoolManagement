@@ -43,7 +43,6 @@ const signup = async (req: express.Request, res: express.Response) => {
                 accountId,
                 name: accountName,
                 address:"",
-                gender:"",
                 dateOfBird:"",
                 parentPhone:"",
                 parentName:"",
@@ -63,7 +62,6 @@ const signup = async (req: express.Request, res: express.Response) => {
                 accountId ,
                 name: accountName,
                 address:"",
-                gender:"",
                 dateOfBird:"",
                 degree:"",
                 major:"",
@@ -82,7 +80,6 @@ const signup = async (req: express.Request, res: express.Response) => {
                 accountId,
                 name: accountName,
                 address:"",
-                gender:"",
                 profession:"",
                 year:"",
                 status:true

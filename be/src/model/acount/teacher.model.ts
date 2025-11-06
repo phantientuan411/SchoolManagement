@@ -37,5 +37,5 @@ const teacherSchema = new mongoose.Schema({
         type: Boolean
     })
 })
-const teacherModel = mongoose.models.teachers || mongoose.model("teachers", teacherSchema);
+const teacherModel = mongoose.model("teachers", teacherSchema);
 export default teacherModel;
