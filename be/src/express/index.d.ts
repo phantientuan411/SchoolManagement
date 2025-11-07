@@ -1,9 +1,11 @@
 import { JwtPayload } from "jsonwebtoken";
 
+
+export type TUser = any
 declare global {
   namespace Express {
     interface Request {
-      user?: string | JwtPayload; // hoặc kiểu tùy bạn
+      user?: TUser ; // hoặc kiểu tùy bạn
     }
   }
 }

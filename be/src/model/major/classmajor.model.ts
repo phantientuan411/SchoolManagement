@@ -26,5 +26,5 @@ const classmajorSchema = new mongoose.Schema({
     })
 })
 
-const classmajorModel = mongoose.models.classmajors || mongoose.model('classmajors', classmajorSchema)
+const classmajorModel = mongoose.model('classmajors', classmajorSchema)
 export default classmajorModel

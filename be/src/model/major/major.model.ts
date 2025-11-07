@@ -13,6 +13,6 @@ const majorSchema = new mongoose.Schema({
     })
 })
 
-const majorModel = mongoose.models.majors || mongoose.model('majors', majorSchema)
+const majorModel = mongoose.model('majors', majorSchema)
 
 export default majorModel

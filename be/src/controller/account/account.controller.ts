@@ -8,6 +8,10 @@ import StaffModel from "../../model/user/staff.model.ts";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import SessionModel from "../../model/session.ts";
+import classmajorModel from "../../model/major/classmajor.model.ts";
+import majorModel from "../../model/major/major.model.ts";
+import subjectModel from "../../model/major/subject.model.ts";
+import { userInfo } from "os";
 const signup = async (req: express.Request, res: express.Response) => {
     try {
         const { accountName, accountEmail, accountPassword, role } = req.body;
@@ -113,7 +117,7 @@ const login = async (req: express.Request, res: express.Response) => {
         console.log(email,password);
         
         //kiem tra mk
-        const checkAccount = await (AccountModel as any).findOne({ accountEmail: email});
+        const checkAccount = await AccountModel.findOne({ accountEmail: email});
         if (!checkAccount) {
             return res.status(400).send({
                 data: [],
@@ -126,9 +130,10 @@ const login = async (req: express.Request, res: express.Response) => {
                 message: "email hoặc mật khẩu không khớp"
             })
         }
+
         //tao access token
         const accessSecret = process.env.ACCESS_TOKEN_SECRET as string;
-        const accountId = checkAccount.accountId                                                       ;
+        const accountId = checkAccount._id.toString();
         if (!accessSecret) {
             return res.status(500).json({ message: "missing ACCESS_TOKEN_SECRET" });
         }
@@ -143,7 +148,20 @@ const login = async (req: express.Request, res: express.Response) => {
             userId: checkAccount._id,
             expiresAt: new Date(Date.now() + 15 * 60 * 1000),
         })
-
+        //lay thong tin nguoi dung
+        let userInfo;
+        if (checkAccount.role === 'student') {
+            const student = await StudentModel.findOne({ accountId }).populate('classId').populate("major");
+            userInfo = student
+        }
+        if (checkAccount.role === 'teacher') {
+            const teacher = await TeacherModel.findOne({ accountId });
+            userInfo = teacher
+        }
+        if (checkAccount.role === 'staff') {
+            const staff = await StaffModel.findOne({ accountId });
+            userInfo = staff
+        }
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: REFRESS_TOKEN_EXPIRES,
@@ -154,7 +172,8 @@ const login = async (req: express.Request, res: express.Response) => {
             message: "Đăng nhập thành công",
             data: {
                 accessToken,
-                refreshToken
+                refreshToken,
+                userInfo
             }
         });
 
