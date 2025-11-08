@@ -149,19 +149,7 @@ const login = async (req: express.Request, res: express.Response) => {
             expiresAt: new Date(Date.now() + 15 * 60 * 1000),
         })
         //lay thong tin nguoi dung
-        let userInfo;
-        if (checkAccount.role === 'student') {
-            const student = await StudentModel.findOne({ accountId }).populate('classId').populate("major");
-            userInfo = student
-        }
-        if (checkAccount.role === 'teacher') {
-            const teacher = await TeacherModel.findOne({ accountId });
-            userInfo = teacher
-        }
-        if (checkAccount.role === 'staff') {
-            const staff = await StaffModel.findOne({ accountId });
-            userInfo = staff
-        }
+        
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: REFRESS_TOKEN_EXPIRES,
@@ -170,11 +158,9 @@ const login = async (req: express.Request, res: express.Response) => {
         });
         return res.status(200).json({
             message: "Đăng nhập thành công",
-            data: {
-                accessToken,
-                refreshToken,
-                userInfo
-            }
+            accessToken,
+            refreshToken
+            
         });
 
 

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux&hook/hook.ts";
-import { Login } from "./LoginData.tsx";
+import { login } from "./LoginData.tsx";
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
-  const { loading, error, user } = useAppSelector((state) => state.login);
+  const { loading, error, user } = useAppSelector((state) => state.auth);
 
   const [email, setAccountEmail] = useState("");
   const [password, setAccountPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(Login({ email, password }));
+    dispatch(login({ email, password }));
   };
 
   return (

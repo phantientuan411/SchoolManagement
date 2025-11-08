@@ -1,5 +1,5 @@
 import {BrowserRouter as Router,  Route, Routes } from "react-router-dom";
-import LoginInterface from "../features/login/loginInterface";
+import LoginInterface from "../features/login/LoginInterface.tsx";
 
 const AppRouter = () => {
   return (

@@ -9,7 +9,7 @@ import { connectDB } from "./lib/db.ts";
 import authRouter from "./router/account/account.router.ts";
 import studetnRouter from "./router/user/student.router.ts";
 import protectRouter from "./middlewares/authMiddleWare.ts";
-
+import getRouter from "./router/account/inform.router.ts";
 
 
 dotenv.config();
@@ -33,7 +33,7 @@ app.get("/", (req: Request, res: Response) => {
 
 //router public
 app.use("/api/account", authRouter);
-
+app.use('/api', getRouter);
 //router private
 app.use(protectRouter);
 app.use("/api/student", studetnRouter);

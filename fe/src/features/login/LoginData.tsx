@@ -1,94 +1,99 @@
+// src/redux/auth/authSlice.ts
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
-import {post} from "../../axios/ultil.tsx"
+import { post, get } from "../../axios/ultil.tsx";
 
-//dinh nghia user
-interface User {
-    token: string;
-    account:{
-        email:string;
-        password:string;
-    };
-}
-//du lieu api
-interface LoginResult {
-    token:string;
-    user:User;
+// ---- Types ----
+interface LoginResponse {
+  user: any;               // thông tin user từ /me
+  accessToken: string;     // token dùng cho API khác
+  refreshToken: string;    // token để refresh
 }
 
-//dinh nghia kieu state
-interface LoginRespose{
-    user:User | null;
-    token:string | null;
-    loading:boolean ;
-    error:string | null;
-}
-//du lieu ban dau
-const initialState: LoginRespose = {
-    user:null,
-    token:null,
-    loading:false,
-    error:null,
+interface LoginPayload {
+  email: string;
+  password: string;
 }
 
-//async thunk call api
+interface AuthState {
+  user: any | null;
+  accessToken: string | null;
+  refreshToken: string | null;
+  loading: boolean;
+  error: string | null;
+}
 
-export const Login = createAsyncThunk<
-    LoginResult ,
-    {email:string;password:string},
-    {rejectValue:string}
-    >(
-    "account/loginAccount",
-    async(
-        {email,password}:{email:string;password:string},
-        {rejectWithValue}:{rejectWithValue:any}
+// ---- Initial state ----
+const initialState: AuthState = {
+  user: null,
+  accessToken: null,
+  refreshToken: null,
+  loading: false,
+  error: null,
+};
 
-    )=>{
-        try {
-            const res = await post<{token:string;user:User},{email:string;password:string}>(
-                "account/login",
-                {email,password},
-                {baseURL:"http://localhost:3000/api"}
-            );
-            if(!res.ok||!res.data){
-                return rejectWithValue(res.error||"đăng nhập thất bại")
-            }
-            return res.data
-        } catch (error: any) {
-            return rejectWithValue(error.message || "đăng nhập thất bại")
-        }
+// ---- Async thunk login ----
+export const login = createAsyncThunk<LoginResponse, LoginPayload, { rejectValue: string }>(
+  "account/login",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      // 1️⃣ Gọi API login
+      const res = await post<{ accessToken: string; refreshToken: string }>("/account/login", { email, password });
+
+      if (!res.ok || !res.data) {
+        return rejectWithValue(res.error || "Đăng nhập thất bại");
+      }
+
+      const { accessToken, refreshToken } = res.data;
+      console.log(accessToken);
+      
+      const meRes = await get("/me", undefined, { token: accessToken });
+      if (!meRes.ok || !meRes.data) {
+        return rejectWithValue(meRes.error || "Lấy thông tin user thất bại");
+      }
+
+      return { user: meRes.data, accessToken, refreshToken };
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Đăng nhập thất bại");
     }
+  }
 );
 
-//tạo slice
-
-const LoginSlice = createSlice({
-    name:"login",
-    initialState,
-    reducers:{
-        logout:(state)=>{
-            state.user = null;
-            state.token = null;
-            localStorage.removeItem("token");
-        }
+// ---- Slice ----
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    logout: (state) => {
+      state.user = null;
+      state.accessToken = null;
+      state.refreshToken = null;
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
     },
-    extraReducers:(builder)=>{
-        builder
-        .addCase(Login.pending,(state)=>{
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(Login.fulfilled,(state,action:PayloadAction<{token:string;user:User}>)=>{
-            state.loading = false;
-            state.user = action.payload.user;
-            state.token = action.payload.token;
-            state.error = null;
-        })
-        .addCase(Login.rejected,(state,action)=>{
-            state.loading = false;
-            state.error = action.payload as string;
-        })
-    }
-});
-export const {logout} = LoginSlice.actions;
-export default LoginSlice.reducer;
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(login.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+        state.error = null;
 
+        // Lưu token vào localStorage
+        localStorage.setItem("accessToken", action.payload.accessToken);
+        localStorage.setItem("refreshToken", action.payload.refreshToken);
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  },
+});
+
+export const { logout } = authSlice.actions;
+export default authSlice.reducer;

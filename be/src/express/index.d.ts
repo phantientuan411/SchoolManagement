@@ -2,6 +2,7 @@ import { JwtPayload } from "jsonwebtoken";
 
 
 export type TUser = any
+
 declare global {
   namespace Express {
     interface Request {

@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import LoginReducer from '../features/login/LoginData.tsx'
+import authReducer from '../features/login/LoginData.tsx'
 export const store = configureStore({
     reducer: {
-    login: LoginReducer,
+     auth: authReducer,
   },
 
 })
