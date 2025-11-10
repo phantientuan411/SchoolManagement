@@ -23,7 +23,7 @@ const studentSchema = new mongoose.Schema({
         enum: ["male", "female"],
         default: "male"
     },
-    dateOfBird: {
+    dateOfBirth: {
         type: Date,
     },
     parentPhone: {
