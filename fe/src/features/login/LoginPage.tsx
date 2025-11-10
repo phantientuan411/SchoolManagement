@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux&hook/hook.ts";
 import { login } from "./LoginData.tsx";
-
+import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const dispatch = useAppDispatch();
   const { loading, error, user } = useAppSelector((state) => state.auth);
@@ -9,11 +9,19 @@ export default function LoginPage() {
   const [email, setAccountEmail] = useState("");
   const [password, setAccountPassword] = useState("");
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, [user, navigate]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(login({ email, password }));
-  };
-
+  }; 
+  
   return (
     <div className=" main_login w-8/10 h-5/10 flex flex-col items-center text-center">
       <h2 className="login-title p-5 pt-20 text-3xl">Đăng nhập tài khoản</h2>
@@ -40,7 +48,6 @@ export default function LoginPage() {
       </form>
 
       {error && <p style={{ color: "red" }}>{'Lỗi server'}</p>}
-      {user && <p style={{ color: "green" }}>Xin chào {user.account.email}!</p>}
     </div>
   );
 }
