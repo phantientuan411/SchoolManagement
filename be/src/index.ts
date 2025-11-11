@@ -10,6 +10,7 @@ import authRouter from "./router/account/account.router.ts";
 import studetnRouter from "./router/user/student.router.ts";
 import protectRouter from "./middlewares/authMiddleWare.ts";
 import getRouter from "./router/account/inform.router.ts";
+import postRouter from "./router/homepage/post.router.ts";
 
 
 dotenv.config();
@@ -37,6 +38,10 @@ app.use('/api', getRouter);
 //router private
 app.use(protectRouter);
 app.use("/api/student", studetnRouter);
+app.use("/api/post", postRouter);
+
+
+
 const host = process.env.host || "localhost";
 const port: number = parseInt(process.env.port || "3000", 10);
 const httpServer = createServer(app);

@@ -40,58 +40,59 @@ const signup = async (req: express.Request, res: express.Response) => {
             role
         })
         console.log(role);
-        
-        if (role === 'student'){
+
+        if (role === 'student') {
             try {
                 await StudentModel.create({
-                accountId,
-                name: accountName,
-                address:"",
-                dateOfBird:"",
-                parentPhone:"",
-                parentName:"",
-                major:"",
-                status:true,
-                yearOfAdmission:""
+                    accountId,
+                    name: accountName,
+                    address: "",
+                    dateOfBird: "",
+                    parentPhone: "",
+                    parentName: "",
+                    major: "",
+                    status: true,
+                    yearOfAdmission: ""
 
-            })
+                })
             } catch (error) {
-              return res.status(500).json({
+                return res.status(500).json({
                     message: "Lỗi hệ thống"
-                }) 
+                })
             }
-        }else if (role == 'teacher'){
-             try {
+        } else if (role == 'teacher') {
+            try {
                 await TeacherModel.create({
-                accountId ,
-                name: accountName,
-                address:"",
-                dateOfBird:"",
-                degree:"",
-                major:"",
-                yearExperience:"",
-                status:true})
-             } catch (error) {
+                    accountId,
+                    name: accountName,
+                    address: "",
+                    dateOfBird: "",
+                    degree: "",
+                    major: "",
+                    yearExperience: "",
+                    status: true
+                })
+            } catch (error) {
                 console.log('Lỗi khi đăng ký', error);
                 return res.status(500).json({
                     message: "Lỗi hệ thống"
                 })
-             }
-        
-        }else if (role == 'staff'){
+            }
+
+        } else if (role == 'staff') {
             try {
                 await StaffModel.create({
-                accountId,
-                name: accountName,
-                address:"",
-                profession:"",
-                year:"",
-                status:true
-            })
+                    accountId,
+                    name: accountName,
+                    address: "",
+                    profession: "",
+                    year: "",
+                    status: true
+                })
             } catch (error) {
-              return res.status(500).json({
+                return res.status(500).json({
                     message: "Lỗi hệ thống"
-                })  
+                })
             }
         }
         return res.status(200).json({
@@ -106,7 +107,7 @@ const signup = async (req: express.Request, res: express.Response) => {
 }
 const login = async (req: express.Request, res: express.Response) => {
     const ACCESS_TOKEN_EXPIRES = '30m'
-    const REFRESS_TOKEN_EXPIRES = 30 * 24 * 60 * 60 *1000
+    const REFRESS_TOKEN_EXPIRES = 30 * 24 * 60 * 60 * 1000
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -114,10 +115,10 @@ const login = async (req: express.Request, res: express.Response) => {
                 message: "Vui lòng nhập đầy đủ thông tin"
             })
         }
-        console.log(email,password);
-        
+        console.log(email, password);
+
         //kiem tra mk
-        const checkAccount = await AccountModel.findOne({ accountEmail: email});
+        const checkAccount = await AccountModel.findOne({ accountEmail: email });
         if (!checkAccount) {
             return res.status(400).send({
                 data: [],
@@ -149,7 +150,7 @@ const login = async (req: express.Request, res: express.Response) => {
             expiresAt: new Date(Date.now() + 15 * 60 * 1000),
         })
         //lay thong tin nguoi dung
-        
+
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: REFRESS_TOKEN_EXPIRES,
@@ -160,7 +161,7 @@ const login = async (req: express.Request, res: express.Response) => {
             message: "Đăng nhập thành công",
             accessToken,
             refreshToken
-            
+
         });
 
 
@@ -174,10 +175,10 @@ const login = async (req: express.Request, res: express.Response) => {
 const logout = async (req: express.Request, res: express.Response) => {
     try {
         const refreshToken = req.cookies.refreshToken;
-        if(refreshToken){
-            await SessionModel.deleteOne({refreshToken});
+        if (refreshToken) {
+            await SessionModel.deleteOne({ refreshToken });
             res.clearCookie('refreshToken');
-            return res.status(200).json({message:'Đăng xuất thành công'})
+            return res.status(200).json({ message: 'Đăng xuất thành công' })
         }
     } catch (error) {
         console.error('Lỗi khi đăng xuất:', error);
