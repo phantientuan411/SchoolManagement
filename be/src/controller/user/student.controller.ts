@@ -1,5 +1,6 @@
 import * as express from "express";
 import StudentModel from "../../model/user/student.model.ts";
+import { populate } from "dotenv";
 
 
 const test = async (req: express.Request, res: express.Response) => {
@@ -62,6 +63,7 @@ const getQueryStudent = async (req: express.Request<{}, {}, {}, StudentQuery>, r
 
         // Lấy dữ liệu 
         const getStudent = await StudentModel.find(query)
+            .populate("accountId")
             .populate("classId")
             .skip(startItem)
             .limit(pageSize)
