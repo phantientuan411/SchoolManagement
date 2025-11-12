@@ -22,8 +22,19 @@ input{
     color: rgb(255, 255, 255);
 }
 
-/**/
+/*nav bar*/
+.navBar{
+    background: #4D44B5;
+}
+.btn-left-col{
+    border-radius: 5rem 0 0 5rem;
 
+}
+.btn-left-col:hover{
+    cursor: pointer;
+    background: #ffffff;
+    color: rgb(11, 14, 89);
+}
 /**/
 
 /**/

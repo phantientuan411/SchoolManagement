@@ -1,7 +1,7 @@
 // src/redux/auth/authSlice.ts
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import { post, get } from "../../axios/ultil.tsx";
-
+import { setUser } from "../../redux&hook/slice/userSlice.ts"
 // ---- Types ----
 interface LoginResponse {
   user: any;               // thông tin user từ /me
@@ -32,9 +32,10 @@ const initialState: AuthState = {
 };
 
 // ---- Async thunk login ----
-export const login = createAsyncThunk<LoginResponse, LoginPayload, { rejectValue: string }>(
+export const login = createAsyncThunk<LoginResponse, LoginPayload, { rejectValue: string; dispatch: any}>(
   "account/login",
-  async ({ email, password }, { rejectWithValue }) => {
+
+  async ({ email, password }, { rejectWithValue, dispatch }) => {
     try {
       // 1️⃣ Gọi API login
       const res = await post<{ accessToken: string; refreshToken: string }>("/account/login", { email, password });
@@ -44,13 +45,17 @@ export const login = createAsyncThunk<LoginResponse, LoginPayload, { rejectValue
       }
 
       const { accessToken, refreshToken } = res.data;
-      console.log(accessToken);
-      
+      console.log(refreshToken);
+
       const meRes = await get("/me", undefined, { token: accessToken });
       if (!meRes.ok || !meRes.data) {
         return rejectWithValue(meRes.error || "Lấy thông tin user thất bại");
       }
-
+      dispatch(setUser({
+        email: meRes.data.email,
+        role: meRes.data.role,
+        id: meRes.data.id
+      }))
       return { user: meRes.data, accessToken, refreshToken };
     } catch (error: any) {
       return rejectWithValue(error.message || "Đăng nhập thất bại");
