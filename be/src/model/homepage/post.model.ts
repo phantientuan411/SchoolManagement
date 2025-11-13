@@ -12,6 +12,10 @@ const PostSchema = new mongoose.Schema({
         ref:'accounts',
         required:true
     },
+    type:{
+        type:String,
+        required:true
+    },
     isUpdate:{
         type:Boolean,
         default:false

@@ -60,17 +60,17 @@ const getQueryPost = async (req: express.Request<{}, {}, {}, PostQuery>, res: ex
 
 const createPost = async (req: express.Request, res: express.Response) => {
   try {
-    const { title, content, author } = req.body;
-    if (!title || !content || !author) {
+    const { title, content, author,type } = req.body;
+    if (!title || !content || !author || !type) {
       return res.status(400).json({ message: "Vui lòng điền đầy đủ thông tin" });
     }
 
-    const checkAccount = await AccountModel.findById(author);
+    const checkAccount = await AccountModel.findById({ _id: author });
     if (!checkAccount) {
       return res.status(404).json({ message: "Tài khoản không tồn tại" });
     }
 
-    const newPost = await PostModel.create({ title, content, author });
+    const newPost = await PostModel.create({ title, content, author, type });
     return res.status(201).json({ message: "Tạo thành công", data: newPost });
   } catch (error) {
     return res.status(500).json({ message: error });

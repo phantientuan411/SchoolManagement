@@ -81,6 +81,7 @@ interface UpdateSortFieldPayload {
     field: keyof SortQuery;
     value: "asc" | "desc" | "";
 }
+const token = localStorage.getItem("accessToken") ?? "";
 
 export const getStudent = createAsyncThunk<
     ApiStudentRespond,
@@ -96,7 +97,7 @@ export const getStudent = createAsyncThunk<
             const res = await get(
                 "student",
                 { pageId, pageSize, searchName: searchName ?? "", sort: JSON.stringify(sort) },
-                { baseURL: "http://localhost:3000/api" })
+                { baseURL: "http://localhost:3000/api",token })
 
             if (!res.ok || !res.data) {
                 return rejectWithValue(res.error || "Lấy dữ liệu học sinh thất bại")
