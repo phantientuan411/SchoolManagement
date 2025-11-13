@@ -40,3 +40,16 @@ export interface AdminInfo {
   username: string;
   role: "admin" | "superadmin";
 }
+
+export interface Account {
+  _id: string;
+  accountName: string;
+  accountEmail: string;
+  accountPassword: string;
+  phone: string;
+  isActive: boolean;
+  role: "student" | "teacher" | "staff" | "admin";
+  avatarUrl: string;
+  avatarId: string;
+  bio: string
+}

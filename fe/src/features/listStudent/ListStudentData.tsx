@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { get } from "../../axios/ultil.tsx";
+import type { Account, ClassInfo } from "../../type/user.ts";
 
 // Định nghĩa dữ liệu Student
 interface Student {
     _id: string;
-    accountId: string;
-    classId: string;
+    accountId: Account;
+    classId: ClassInfo;
     name: string;
     address: string;
     gender: string
@@ -81,7 +82,6 @@ interface UpdateSortFieldPayload {
     field: keyof SortQuery;
     value: "asc" | "desc" | "";
 }
-const token = localStorage.getItem("accessToken") ?? "";
 
 export const getStudent = createAsyncThunk<
     ApiStudentRespond,
@@ -94,10 +94,20 @@ export const getStudent = createAsyncThunk<
         { rejectWithValue }
     ) => {
         try {
+            const accessToken = localStorage.getItem("accessToken")
+
+            if (!accessToken) {
+                console.log("Chưa đăng nhập")
+            }
+            console.log(accessToken)
+
             const res = await get(
                 "student",
                 { pageId, pageSize, searchName: searchName ?? "", sort: JSON.stringify(sort) },
-                { baseURL: "http://localhost:3000/api",token })
+                {
+                    baseURL: "http://localhost:3000/api",
+                    token: accessToken ?? undefined
+                })
 
             if (!res.ok || !res.data) {
                 return rejectWithValue(res.error || "Lấy dữ liệu học sinh thất bại")
