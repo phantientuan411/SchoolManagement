@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
 import { getStudent, setPageId, setPagination, setSearchName, setSelectedStudent, setSortField } from './ListStudentData'
 import { IoMdArrowDropleft, IoMdArrowDropright, IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { GrSearch } from "react-icons/gr";
 import { FaPlus } from "react-icons/fa6";
+import { setId } from '../userInfo/UserInfoData';
+import { useNavigate } from 'react-router-dom';
 
 const ListStudentPage = () => {
     const dispatch = useAppDispatch()
     const { student, totalPage, totalStudent, pageId, pagination, pageSize, searchName, sort, selectedStudent } = useAppSelector((state) => state.getStudent)
+    const navigate = useNavigate()
 
     // Render dữ liệu học sinh
     useEffect(() => {
@@ -53,13 +56,18 @@ const ListStudentPage = () => {
         }
     }
 
+    const selectStudent = (e: string) => {
+        dispatch(setId(e))
+        navigate("/userinfo")
+    }
+
     return (
         <div className='p-[50px] bg-[#F3F4FF]'>
             <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>STUDENT</h1>
             <div className='mb-[25px] flex justify-between'>
                 <div className='flex items-center relative' >
                     <input
-                        className='w-[350px] h-[60px] bg-white !rounded-[50px] pl-20 text-[18px]'
+                        className='w-[350px] h-[60px] bg-white rounded-[50px]! pl-20 text-[18px]'
                         type="text"
                         placeholder=" Search here..."
                         value={searchName}
@@ -113,7 +121,7 @@ const ListStudentPage = () => {
 
                 {/* List danh sách học sinh */}
                 {student.map(e =>
-                    <div onClick={() => dispatch(setSelectedStudent(e._id))} className='flex font-semibold border-b pl-5 pr-5 border-gray-300'>
+                    <div onClick={() => selectStudent(e.accountId._id)} className='flex font-semibold border-b pl-5 pr-5 border-gray-300'>
                         <div className='w-[20%] pt-5 pb-5 text-[20px] font-bold'>{e.name}</div>
                         <div className='w-[20%] pt-5 pb-5 text-[20px] font-semibold text-[#4D44B5]' >{"#" + e._id.slice(e._id.indexOf("ff"))}</div>
                         <div className='w-[15%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{new Date(e.dateOfBirth).toLocaleDateString("vi-VN")}</div>

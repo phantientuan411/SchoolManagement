@@ -1,0 +1,49 @@
+import * as express from "express";
+import classstudentModel from "../../model/major/classstudent.ts";
+import StudentModel from "../../model/user/student.model.ts";
+
+const getClassEqualStudent = async (req: express.Request<{}, {}, {}, { selected: string }>, res: express.Response) => {
+    try {
+        const { selected } = req.query
+
+        const student = await StudentModel.find({ accountId: selected })
+
+        if (student.length === 0) {
+            return res.status(404).json({
+                message: "Không tìm thấy account"
+            })
+        }
+
+        const studentId = student[0]?._id
+
+        const data = await classstudentModel.find({ studentId: studentId })
+
+        if (!data) {
+            return res.status(404).json({
+                massage: "Không tìm thấy thông tin lớp học sinh"
+            })
+        }
+
+        const total = await classstudentModel.countDocuments({ studentId: studentId, })
+        const totalPass = await classstudentModel.countDocuments({ studentId: studentId, status: "Pass" })
+        const totalFail = await classstudentModel.countDocuments({ studentId: studentId, status: "Fail" })
+        const totalStudying = await classstudentModel.countDocuments({ studentId: studentId, status: "Studying" })
+
+        res.status(200).json({
+            total: total,
+            totalFail: totalFail,
+            totalPass: totalPass,
+            totalStudying: totalStudying,
+            data: data,
+            message: "Thành công"
+        })
+
+    } catch (error) {
+        console.error("Lỗi chi tiết:", error)
+        res.status(500).json({
+            message: "Lỗi hệ thống"
+        })
+    }
+}
+
+export { getClassEqualStudent }
