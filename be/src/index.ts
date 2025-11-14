@@ -1,4 +1,4 @@
-import express, {type Application,type Request,type Response } from "express";
+import express, { type Application, type Request, type Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -11,6 +11,10 @@ import studetnRouter from "./router/user/student.router.ts";
 import protectRouter from "./middlewares/authMiddleWare.ts";
 import getRouter from "./router/account/inform.router.ts";
 import postRouter from "./router/homepage/post.router.ts";
+import teacherRouter from "./router/user/teacher.router.ts";
+import userInfoRouter from "./router/user/userInfo.router.ts";
+import classMajorRouter from "./router/major/classmajor.router.ts";
+import classstudentRouter from "./router/major/classstudent.router.ts";
 
 
 dotenv.config();
@@ -39,6 +43,10 @@ app.use('/api', getRouter);
 app.use(protectRouter);
 app.use("/api/student", studetnRouter);
 app.use("/api/post", postRouter);
+app.use("/api/teacher", teacherRouter);
+app.use("/api/userinfo", userInfoRouter);
+app.use("/api/classmajor", classMajorRouter);
+app.use("/api/classstudent", classstudentRouter)
 
 
 
@@ -47,11 +55,11 @@ const port: number = parseInt(process.env.port || "3000", 10);
 const httpServer = createServer(app);
 
 connectDB()
-.then(() => {
+  .then(() => {
     httpServer.listen(port, host, () => {
       console.log(`Server running at http://${host}:${port}`);
     });
-})
-.catch((err) => { 
-  console.error("Lỗi kết nối DB:", err);
-});
+  })
+  .catch((err) => {
+    console.error("Lỗi kết nối DB:", err);
+  });

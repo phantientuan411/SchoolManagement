@@ -53,3 +53,46 @@ export interface Account {
   avatarId: string;
   bio: string
 }
+
+export interface Student {
+  _id: string;
+  accountId: Account;
+  classId: ClassInfo;
+  name: string;
+  address: string;
+  gender: string
+  parentPhone: string;
+  parentName: string;
+  status: boolean;
+  major: string;
+  yearOfAdmission: number;
+  dateOfBirth: string;
+}
+
+export interface Teacher {
+  _id: string;
+  accountId: Account;
+  teacherCode: string;
+  name: string;
+  address: string;
+  gender: "male" | "female"
+  dateOfBirth: string;
+  degree: string;
+  major: string;
+  yearExperience: string;
+  status: boolean;
+}
+
+export interface Mark {
+  regular: number
+  final: number
+  total: number
+}
+
+export interface ClassStudent {
+  _id: string
+  studentId: string
+  classStudyId: string
+  mark: Mark
+  status: "Pass" | "Fail" | "Studying"
+}
