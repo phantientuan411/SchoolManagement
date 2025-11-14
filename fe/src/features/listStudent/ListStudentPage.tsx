@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
 import { getStudent, setPageId, setPagination, setSearchName, setSelectedStudent, setSortField } from './ListStudentData'
 import { IoMdArrowDropleft, IoMdArrowDropright, IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
@@ -53,7 +53,6 @@ const ListStudentPage = () => {
         }
     }
 
-    <IoMdArrowDropup />
     return (
         <div className='p-[50px] bg-[#F3F4FF]'>
             <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>STUDENT</h1>
@@ -64,7 +63,10 @@ const ListStudentPage = () => {
                         type="text"
                         placeholder=" Search here..."
                         value={searchName}
-                        onChange={(e) => dispatch(setSearchName(e.target.value))}
+                        onChange={(e) => {
+                            dispatch(setSearchName(e.target.value));
+                            dispatch(setPageId(1))
+                        }}
                     />
                     <GrSearch className='text-[#4D44B5] absolute left-10 font-bold text-[18px]' />
                 </div>
@@ -117,8 +119,8 @@ const ListStudentPage = () => {
                         <div className='w-[15%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{new Date(e.dateOfBirth).toLocaleDateString("vi-VN")}</div>
                         <div className='w-[15%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{e.parentName}</div>
                         <div className='w-[10%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{e.address}</div>
-                        <div className='w-[10%] pt-5 pb-5'>{e.parentPhone}</div>
-                        <div className='w-[10%] pt-5 pb-5 overflow-hidden'>{e.classId}</div>
+                        <div className='w-[10%] pt-5 pb-5 truncate'>{e.accountId.accountEmail}</div>
+                        <div className='w-[10%] pt-5 pb-5 overflow-hidden'>{e.classId.classCode}</div>
                     </div>
                 )}
 
@@ -131,7 +133,8 @@ const ListStudentPage = () => {
                     <div className='flex gap-2 justify-center items-center'>
                         <IoMdArrowDropleft className='text-[30px]' onClick={() => dispatch(setPageId(pageId === 1 ? pageId : pageId - 1))} />
                         {pagination.map(e =>
-                            <div className={`border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageId ? 'bg-[#4D44B5] text-white' : ""}`} onClick={() => dispatch(setPageId(e))}>{e}</div>
+                            <div className={`border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageId ? 'bg-[#4D44B5] text-white' : ""}`}
+                                onClick={() => e <= totalPage && dispatch(setPageId(e))}>{e}</div>
                         )}
                         <IoMdArrowDropright className='text-[30px]' onClick={() => dispatch(setPageId(pageId === totalPage ? pageId : pageId + 1))} />
 

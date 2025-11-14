@@ -13,6 +13,14 @@ const user = u ? JSON.parse(u) : null;
 console.log(user?.acountInform?._id);
 
 const PostPage = () => {
+  useEffect(() => {
+    const hasReloaded = localStorage.getItem("hasReloaded");
+
+    if (!hasReloaded) {
+      localStorage.setItem("hasReloaded", "true");
+      window.location.reload();
+    }
+  }, []);
   const dispatch = useDispatch<AppDispatch>();
   const { post, loading, error, pageId, pageSize, totalPage } = useSelector(
     (state: RootState) => state.homePage
@@ -265,8 +273,8 @@ const PostPage = () => {
                 key={page}
                 onClick={() => dispatch(setPageId(page))}
                 className={`px-4 py-2 rounded-lg font-medium transition ${pageId === page
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
                   }`}
               >
                 {page}

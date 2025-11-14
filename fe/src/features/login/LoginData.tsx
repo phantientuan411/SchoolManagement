@@ -31,7 +31,7 @@ const initialState: AuthState = {
 };
 
 // ---- Async thunk login ----
-export const login = createAsyncThunk<LoginResponse, LoginPayload, { rejectValue: string; dispatch: any}>(
+export const login = createAsyncThunk<LoginResponse, LoginPayload, { rejectValue: string; dispatch: any }>(
   "account/login",
 
   async ({ email, password }, { rejectWithValue }) => {
@@ -64,12 +64,16 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
+
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-    },
+      localStorage.removeItem("user");
+    }
+
   },
   extraReducers: (builder) => {
     builder
