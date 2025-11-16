@@ -74,21 +74,21 @@ const Navbar = () => {
     const [navbarItems, setNavbarItems] = useState<NavItem[]>([])
     const navigationItems = {
         admin: [
-            { path: '/dashboard', label: 'Dashboard' },
+            { path: '/home', label: 'Dashboard' },
             { path: '/student', label: 'Student' },
             { path: '/teacher', label: 'Teacher' },
             { path: '/food', label: 'Food' },
             { path: '/classAdmin', label: 'Class' },
         ],
         teacher: [
-            { path: '/dashboard', label: 'Dashboard' },
+            { path: '/home', label: 'Dashboard' },
             { path: '/teacherProfile', label: 'Profile' },
             { path: '/student', label: 'Student' },
             { path: '/food', label: 'Food' },
             { path: '/classTeacher', label: 'Class' },
         ],
         student: [
-            { path: '/dashboard', label: 'Dashboard' },
+            { path: '/home', label: 'Dashboard' },
             { path: '/profile', label: 'Profile' },
             { path: '/food', label: 'Food' },
             { path: '/class', label: 'Class' },

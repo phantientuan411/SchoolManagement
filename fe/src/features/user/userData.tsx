@@ -20,7 +20,7 @@ const UserData = () => {
         <div className="relative w-full">
 
             <div
-                className="flex items-center gap-4 p-3 bg-white min-w-[220px] rounded-xl shadow cursor-pointer select-none"
+                className="flex items-center gap-4 p-3 bg-white min-w-[220px] shadow cursor-pointer select-none"
                 onClick={() => setOpen(!open)}
             >
                 <img

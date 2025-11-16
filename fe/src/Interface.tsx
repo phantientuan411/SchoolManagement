@@ -14,7 +14,7 @@ const Interface: React.FC<props> = ({ children }) => {
             </div>
             <div className="flex-1 relative overflow-y-auto">
                 {children}
-                <div className="absolute top-4 right-4 z-50 w-auto">
+                <div className="absolute top-0 right-0 z-50 w-auto">
                     <UserData></UserData>
                 </div>
             </div>
