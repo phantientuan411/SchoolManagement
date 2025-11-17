@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
-import { getStudent, setPageId, setPagination, setSearchName, setSelectedStudent, setSortField } from './ListStudentData'
+import { getStudent, setPageId, setPagination, setSearchName, setSortField } from './ListStudentData'
 import { IoMdArrowDropleft, IoMdArrowDropright, IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { GrSearch } from "react-icons/gr";
 import { FaPlus } from "react-icons/fa6";
-import { setId } from '../userInfo/UserInfoData';
+import { setId, setRole } from '../userInfo/UserInfoData';
 import { useNavigate } from 'react-router-dom';
 
 const ListStudentPage = () => {
@@ -21,8 +21,6 @@ const ListStudentPage = () => {
             sort: sort
         }));
     }, [dispatch, pageId, pageSize, searchName, sort])
-
-    console.log("student", student)
 
     // Render dữ liệu số trang
     useEffect(() => {
@@ -58,6 +56,7 @@ const ListStudentPage = () => {
 
     const selectStudent = (e: string) => {
         dispatch(setId(e))
+        dispatch(setRole("student"))
         navigate("/userinfo")
     }
 
@@ -121,7 +120,7 @@ const ListStudentPage = () => {
 
                 {/* List danh sách học sinh */}
                 {student.map(e =>
-                    <div onClick={() => selectStudent(e.accountId._id)} className='flex font-semibold border-b pl-5 pr-5 border-gray-300'>
+                    <div onClick={() => selectStudent(e.accountId._id)} className='flex font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
                         <div className='w-[20%] pt-5 pb-5 text-[20px] font-bold'>{e.name}</div>
                         <div className='w-[20%] pt-5 pb-5 text-[20px] font-semibold text-[#4D44B5]' >{"#" + e._id.slice(e._id.indexOf("ff"))}</div>
                         <div className='w-[15%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{new Date(e.dateOfBirth).toLocaleDateString("vi-VN")}</div>

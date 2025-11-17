@@ -89,10 +89,40 @@ export interface Mark {
   total: number
 }
 
+export interface Subject {
+  _id: string
+  majorId: string
+  subjectCode: string
+  subjectName: string
+  numberCredits: number
+  totalFee: number
+}
+
+export interface ClassStudy {
+  _id: string
+  classCode: string
+  teacherId: Teacher
+  subjectId: Subject
+  startDate: string
+  endDate: string
+  startTime: string
+  endTime: string
+  dateOfWeek: string
+}
+
 export interface ClassStudent {
   _id: string
   studentId: string
-  classStudyId: string
+  classStudyId: ClassStudy
   mark: Mark
   status: "Pass" | "Fail" | "Studying"
+}
+
+export interface ClassMajor {
+  _id: string
+  classCode: string
+  className: string
+  teacherId: Teacher
+  majorId: MajorInfo
+  year: number
 }

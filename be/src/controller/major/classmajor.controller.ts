@@ -1,26 +1,37 @@
+
 import * as express from "express";
 import StudentModel from "../../model/user/student.model.ts";
 import classmajorModel from "../../model/major/classmajor.model.ts";
+import accountModel from '../../model/acount/acount.model.ts';
+import majorModel from "../../model/major/major.model.ts";
+import TeacherModel from "../../model/user/teacher.model.ts";
 
 const getClassMajorEqualStudent = async (req: express.Request<{}, {}, {}, { selected: string }>, res: express.Response) => {
     try {
         const { selected } = req.query
 
-        const student = await StudentModel.findById(selected)
+        const account = await accountModel.findById(selected)
 
-        if (!student) {
+        if (!account) {
             return res.status(404).json({
-                message: "Không tìm thấy học sinh"
+                message: "Không tìm thấy tài khoản"
             })
         }
 
-        const classMajor = await classmajorModel.findById(student.classId)
-
-        if (!classMajor) {
-            return res.status(404).json({
-                message: "Không tìm thấy lớp"
+        if (account.role === "student") {
+            const student = await StudentModel.find({ accountId: selected })
+            const classMajor = await classmajorModel.find({ _id: student[0]?.classId })
+                .populate("majorId")
+                .populate("teacherId")
+            return res.status(200).json({
+                data: classMajor,
+                massage: "Thành công"
             })
         }
+
+        const classMajor = await classmajorModel.find({ teacherId: selected })
+            .populate("majorId")
+            .populate("teacherId")
 
         res.status(200).json({
             data: classMajor,

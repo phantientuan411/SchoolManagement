@@ -1,6 +1,6 @@
 import * as express from "express";
 import StudentModel from "../../model/user/student.model.ts";
-import { populate } from "dotenv";
+import accountModel from "../../model/acount/acount.model.ts";
 
 
 const test = async (req: express.Request, res: express.Response) => {
@@ -20,6 +20,17 @@ interface StudentQuery {
     pageSize: string;
     searchName?: string;
     sort: SortQuery | string
+}
+
+// Định nghĩa kiểu dữ liệu update
+interface UpdateStudent {
+    name: string;
+    address: string;
+    gender: string
+    parentPhone: string;
+    parentName: string;
+    status: boolean;
+    dateOfBirth: string;
 }
 
 // Hàm parse SortQuery
@@ -84,4 +95,30 @@ const getQueryStudent = async (req: express.Request<{}, {}, {}, StudentQuery>, r
         })
     }
 }
-export { test, getQueryStudent }
+
+const updateInfoStudent = async (req: express.Request<{ id: string }, {}, UpdateStudent, {}>, res: express.Response) => {
+    try {
+        const { id } = req.params;
+        const updateStudent = req.body; // trực tiếp dữ liệu FE gửi
+
+        const student = await StudentModel.find({ accountId: id })
+        const studentID = student[0]?._id
+
+
+        const updatedStudent = await StudentModel.findByIdAndUpdate(
+            studentID,
+            updateStudent,
+            { new: true } // trả về document mới sau update
+        );
+
+        if (!updatedStudent) {
+            return res.status(404).json({ message: "Không tìm thấy học sinh" });
+        }
+
+        res.status(200).json({ data: updatedStudent, message: "Cập nhật thành công" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Lỗi hệ thống" });
+    }
+}
+export { test, getQueryStudent, updateInfoStudent }

@@ -1,6 +1,7 @@
 import * as express from "express";
 import classstudentModel from "../../model/major/classstudent.ts";
 import StudentModel from "../../model/user/student.model.ts";
+import classstudyModel from '../../model/major/classstudies.model.ts';
 
 const getClassEqualStudent = async (req: express.Request<{}, {}, {}, { selected: string }>, res: express.Response) => {
     try {
@@ -17,6 +18,18 @@ const getClassEqualStudent = async (req: express.Request<{}, {}, {}, { selected:
         const studentId = student[0]?._id
 
         const data = await classstudentModel.find({ studentId: studentId })
+            .populate({
+                path: "classStudyId",
+                populate: [
+                    {
+                        path: "teacherId"
+                    },
+                    {
+                        path: "subjectId"
+                    }
+                ]
+
+            })
 
         if (!data) {
             return res.status(404).json({

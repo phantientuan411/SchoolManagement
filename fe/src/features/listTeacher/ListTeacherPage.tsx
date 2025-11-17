@@ -4,10 +4,14 @@ import { getTeacher, setPagination, setPageId, setSearchName, setMajor } from '.
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { GrSearch } from "react-icons/gr";
 import { FaPlus } from "react-icons/fa6";
+import { setId, setRole } from '../userInfo/UserInfoData';
+import { useNavigate } from 'react-router-dom';
 
 const ListTeacherPage = () => {
     const dispatch = useAppDispatch()
     const { teacher, pageId, pageSize, searchName, major, totalPage, totalTeacher, pagination } = useAppSelector((state) => state.getTeacher)
+
+    const navigate = useNavigate()
 
     // Render dữ liệu giáo viên
     useEffect(() => {
@@ -35,6 +39,12 @@ const ListTeacherPage = () => {
         }
         listPagination(pageId, totalPage)
     }, [pageId, totalPage])
+
+    const selectTeacher = (e: string) => {
+        dispatch(setId(e))
+        dispatch(setRole("teacher"))
+        navigate("/userinfo")
+    }
 
     return (
         <div className='p-[50px] bg-[#F3F4FF]'>
@@ -64,7 +74,7 @@ const ListTeacherPage = () => {
             <div className='rounded-xl  '>
                 <div className='grid grid-cols-4 gap-4'>
                     {teacher.map((e) =>
-                        <div className='bg-white rounded-xl flex flex-col justify-center items-center p-5'>
+                        <div onClick={() => selectTeacher(e.accountId._id)} className='bg-white rounded-xl flex flex-col justify-center items-center p-5 hover:cursor-pointer hover:bg-gray-200'>
                             <img className='mb-5 w-[120px] h-[120px] rounded-full' src={e.accountId.avatarUrl} alt="" />
                             <h1 className='mb-5 text-[26px] text-[#303972] font-bold'>{e.name}</h1>
                             <h2 className='mb-5 text-[20px] text-[#A098AE] font-medium'>{e.major}</h2>

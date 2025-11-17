@@ -3,6 +3,6 @@ import { getClassMajorEqualStudent } from "../../controller/major/classmajor.con
 
 const classMajorRouter = express.Router()
 
-classMajorRouter.get("/student", getClassMajorEqualStudent)
+classMajorRouter.get("/", getClassMajorEqualStudent)
 
 export default classMajorRouter
