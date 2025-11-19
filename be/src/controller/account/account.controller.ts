@@ -147,14 +147,15 @@ const login = async (req: express.Request, res: express.Response) => {
         const refreshToken = crypto.randomBytes(64).toString('hex');
         await SessionModel.create({
             userId: checkAccount._id,
-            expiresAt: new Date(Date.now() + 15 * 60 * 1000),
+            token: refreshToken,
+            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         })
         //lay thong tin nguoi dung
 
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: REFRESS_TOKEN_EXPIRES,
-            secure: true,
+            secure: false,
             sameSite: 'none'
         });
         return res.status(200).json({

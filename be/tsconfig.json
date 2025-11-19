@@ -47,6 +47,6 @@
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly":true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/router/account/posts/post_page/post.tsx"],
    "exclude": ["node_modules", "**/*.spec.ts"]
 }
