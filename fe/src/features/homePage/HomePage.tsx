@@ -78,10 +78,10 @@ const PostPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-9xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Thông báo</h1>
 
-        {/* ✅ Chỉ Admin mới thấy nút này */}
+        {/* Chỉ Admin mới thấy nút này */}
         {user?.role === "admin" && (
           <button
             onClick={() => setShowForm(!showForm)}
@@ -91,7 +91,7 @@ const PostPage = () => {
           </button>
         )}
 
-        {/* ✅ Form thêm bài viết chỉ hiển thị khi Admin bấm nút */}
+        {/* Form thêm bài viết chỉ hiển thị khi Admin bấm nút */}
         {showForm && user?.role === "admin" && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-700">
@@ -177,9 +177,9 @@ const PostPage = () => {
         )}
 
         {/* Hai cột văn bản */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex gap-4">
           {/* Thông báo */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white w-3/10 rounded-lg shadow-md overflow-hidden">
             <div className="bg-blue-50 px-4 py-3 border-b border-blue-200 font-semibold text-blue-700">
               Thông báo
             </div>
@@ -223,7 +223,7 @@ const PostPage = () => {
           </div>
 
           {/* Văn bản */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white w-7/10 rounded-lg shadow-md overflow-hidden">
             <div className="bg-green-50 px-4 py-3 border-b border-green-200 font-semibold text-green-700">
               Văn bản
             </div>
