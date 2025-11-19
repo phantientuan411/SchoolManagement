@@ -8,6 +8,7 @@ import {
   deletePost,
   setPageId,
 } from "./HomeData.tsx";
+import Post from "./posts/Post.tsx";
 const u = localStorage.getItem("user") ?? "{}";
 const user = u ? JSON.parse(u) : null;
 console.log(user?.acountInform?._id);
@@ -74,7 +75,7 @@ const PostPage = () => {
   };
 
   const thongBaoPosts = post.filter((p) => p.type === "thông báo");
-  const vanBanPosts = post.filter((p) => p.type === "văn bản");
+//  const vanBanPosts = post.filter((p) => p.type === "văn bản");
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -228,39 +229,7 @@ const PostPage = () => {
               Văn bản
             </div>
             <div className="p-4 space-y-3">
-              {vanBanPosts.length === 0 ? (
-                <p className="text-gray-500 text-sm text-center">
-                  Chưa có văn bản nào
-                </p>
-              ) : (
-                vanBanPosts.map((p) => (
-                  <div
-                    key={p._id}
-                    className="border-b last:border-0 pb-3 mb-3 flex justify-between"
-                  >
-                    <div>
-                      <h3 className="font-semibold text-gray-800">{p.title}</h3>
-                      <p className="text-sm text-gray-600 line-clamp-2">
-                        {p.content}
-                      </p>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <button
-                        onClick={() => handleEdit(p)}
-                        className="text-blue-600 hover:underline text-sm"
-                      >
-                        Sửa
-                      </button>
-                      <button
-                        onClick={() => handleDelete(p._id)}
-                        className="text-red-600 hover:underline text-sm"
-                      >
-                        Xóa
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
+              <Post/>
             </div>
           </div>
         </div>

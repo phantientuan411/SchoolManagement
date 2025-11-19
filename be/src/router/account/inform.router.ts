@@ -63,14 +63,18 @@ interface ST {
 const refreshAccess = async (req: express.Request, res: express.Response) => {
   try {
     const refreshToken = req.cookies.refreshToken;
+    console.log(refreshToken);
+
     if (!refreshToken) {
       return res.status(401).json({ message: "Không tìm thấy refresh token" });
-    }
-
-    const sessions = await SessionModel.find({ userId: req.user._id }).sort({ expiresAt: -1 });
+    }    
+    const sessions = await SessionModel.find({ token: refreshToken}).sort({ expiresAt: -1 });
 
     if (sessions.length === 0) {
       return res.status(404).json({ message: "Không tìm thấy token" });
+    }
+    else{
+      console.log(1);
     }
 
     if (sessions.length > 6) {
@@ -85,6 +89,10 @@ const refreshAccess = async (req: express.Request, res: express.Response) => {
     if (session.token !== refreshToken) {
       return res.status(403).json({ message: "Refresh token không hợp lệ" });
     }
+    else{
+        console.log(1);
+    }
+
 
     const accessToken = jwt.sign(
       { accountId: session.userId },

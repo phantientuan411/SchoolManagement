@@ -141,7 +141,7 @@ const login = async (req: express.Request, res: express.Response) => {
         const accessToken = jwt.sign(
             { accountId },
             accessSecret,
-            { expiresIn: ACCESS_TOKEN_EXPIRES || '15m' }
+            { expiresIn: '30m' }
         );
         //tao refresh token
         const refreshToken = crypto.randomBytes(64).toString('hex');
@@ -156,13 +156,14 @@ const login = async (req: express.Request, res: express.Response) => {
             httpOnly: true,
             maxAge: REFRESS_TOKEN_EXPIRES,
             secure: false,
-            sameSite: 'none'
+            sameSite: 'lax'
         });
+        console.log(req.cookies.refreshToken);
+        
         return res.status(200).json({
             message: "Đăng nhập thành công",
             accessToken,
             refreshToken
-
         });
 
 

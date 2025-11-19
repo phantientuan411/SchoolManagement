@@ -37,7 +37,7 @@ export const login = createAsyncThunk<LoginResponse, LoginPayload, { rejectValue
   async ({ email, password }, { rejectWithValue }) => {
     try {
       // 1️⃣ Gọi API login
-      const res = await post<{ accessToken: string; refreshToken: string }>("/account/login", { email, password });
+      const res = await post<{ accessToken: string; refreshToken: string }>("/account/login", { email, password },{withCredentials:true});
 
       if (!res.ok || !res.data) {
         return rejectWithValue(res.error || "Đăng nhập thất bại");

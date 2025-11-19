@@ -4,9 +4,7 @@ import accountModel from "../../model/acount/acount.model.ts";
 
 
 const test = async (req: express.Request, res: express.Response) => {
-    res.status(200).json({
-        message: "hello"
-    })
+    console.log(req.cookies.refreshToken)
 }
 
 // Định nghĩa kiểu dữ liệu Sort

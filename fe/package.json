@@ -12,21 +12,22 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.10.0",
     "@tailwindcss/vite": "^4.1.16",
+    "@tiptap/extension-highlight": "^3.11.0",
+    "@tiptap/extension-link": "^3.11.0",
+    "@tiptap/extension-text-align": "^3.11.0",
+    "@tiptap/extension-underline": "^3.11.0",
+    "@tiptap/pm": "^3.10.8",
     "@tiptap/react": "^3.10.8",
     "@tiptap/starter-kit": "^3.10.8",
-    "@types/draftjs-to-html": "^0.8.4",
     "@types/jsonwebtoken": "^9.0.10",
     "@uploadthing/react": "^7.3.3",
-    "antd": "^5.28.0",
     "axios": "^1.13.1",
-    "draft-js": "^0.11.7",
-    "draftjs-to-html": "^0.9.1",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.554.0",
     "react": "^18.3.1",
     "react-big-calendar": "^1.19.4",
     "react-dom": "^18.3.1",
-    "react-draft-wysiwyg": "^1.15.0",
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.5",
@@ -50,6 +51,7 @@
     "vite": "npm:rolldown-vite@7.1.14"
   },
   "overrides": {
-    "vite": "npm:rolldown-vite@7.1.14"
+    "vite": "npm:rolldown-vite@7.1.14",
+    "js-yaml": "^4.1.1"
   }
 }

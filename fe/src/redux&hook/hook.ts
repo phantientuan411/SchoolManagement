@@ -25,7 +25,7 @@ export const refreshAccess = (accessToken: string) => {
   console.log("Auto refresh sau:", timeLeft, "ms");
 
   const timer = setTimeout(() => {
-    post("/refresh-token", {})
+    post("/refresh-token",{}, {withCredentials: true})
       .then((res) => {
         const newToken = res.data.accessToken ?? "";
 
