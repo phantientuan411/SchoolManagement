@@ -1,5 +1,5 @@
 //build with tip tap
-import {  useEditor,EditorContent } from "@tiptap/react"
+import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 
 import Underline from '@tiptap/extension-underline';
@@ -17,15 +17,17 @@ const Text_post = () => {
       Highlight,
       Link
     ],
-    content:"<p>Nhập nội dung văn bản</p>"
+    content: "<p>Nhập nội dung văn bản</p>"
   })
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-4">
       <div className="text-center">Text_post</div>
       <div>
-          <MenuBar/>
-          <EditorContent editor={editor} />
+        {editor && <MenuBar editor={editor} />}
+      </div>
+      <div className="border-1">
+        <EditorContent editor={editor} />
       </div>
     </div>
   )
