@@ -44,7 +44,7 @@ const NewAccountPage = () => {
     return (
         <div className=' min-h-screen bg-[#F3F4FF] flex flex-col justify-center items-center '>
             <h1 className='  text-[#303972] text-[32px] font-bold mb-[25px]'>CREATE ACCOUNT</h1>
-            <form className='w-[1000px] h-[500px] border-gray-400 border-3 rounded-xl p-5 bg-white shadow-lg' onSubmit={handleSubmitCreate} action="">
+            <form className={`w-[1000px] ${createAccount.role === "student" ? "h-[500px]" : "h-[400px]"} border-gray-400 border-3 rounded-xl p-5 bg-white shadow-lg`} onSubmit={handleSubmitCreate} action="">
                 <div className='flex gap-5 pt-5'>
                     <h1 className='text-[24px] font-bold '>Name</h1>
                     <input className='flex-1 p-2' type="text" onChange={(e) => dispatch(setAccountName(e.target.value))} value={createAccount.accountName} />
@@ -61,7 +61,7 @@ const NewAccountPage = () => {
                     <h1 className='text-[24px] font-bold '>Role</h1>
                     <input className='flex-1 p-2' type="text" readOnly value={createAccount.role} />
                 </div>
-                <div className='flex gap-5 pt-5'>
+                <div className={`flex gap-5 pt-5 ${createAccount.role === "student" ? "block" : "hidden"}`}>
                     <h1 className='text-[24px] font-bold ' >Major</h1>
                     <select className='flex-1 p-2 border border-gray-300 rounded-lg' value={createAccount.major} onChange={(e) => dispatch(setMajor(e.target.value))} name="" id="">
                         <option value="">-- Chọn major --</option>
@@ -70,7 +70,7 @@ const NewAccountPage = () => {
 
                     </select>
                 </div>
-                <div className='flex gap-5 pt-5'>
+                <div className={`flex gap-5 pt-5 ${createAccount.role === "student" ? "block" : "hidden"}`}>
                     <h1 className='text-[24px] font-bold ' >Class Major</h1>
                     <select className='flex-1 p-2 border border-gray-300 rounded-lg' value={createAccount.classMajor} onChange={(e) => dispatch(setClassMajor(e.target.value))} name="" id="">
                         <option value="">-- Chọn Lớp --</option>
