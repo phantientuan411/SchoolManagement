@@ -71,7 +71,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "../../../lib/tiptap-utils"
 
 // --- Styles ---
 import "./simple-editor.scss"
-
+import {post} from "../../../../src/axios/ultil.tsx"
 import content from "../../tiptap-templates/simple/data/content.json"
 
 const MainToolbarContent = ({
@@ -188,14 +188,14 @@ export function SimpleEditor() {
     "main"
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
-  const  [contentApi,setcontentApi]=useState()
+  /*const  [contentApi,setcontentApi]=useState()
   useEffect(() => {
     async()=>{
       const res=await get("post/getall",{token:localStorage.getItem("accessToken") ?? ""})
       setcontentApi(res.data.content)
     }
     
-  },[])
+  },[])*/
   const editor = useEditor({
     immediatelyRender: false,
     editorProps: {
