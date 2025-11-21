@@ -1,4 +1,3 @@
-
 import * as express from "express";
 import StudentModel from "../../model/user/student.model.ts";
 import classmajorModel from "../../model/major/classmajor.model.ts";
@@ -29,7 +28,8 @@ const getClassMajorEqualStudent = async (req: express.Request<{}, {}, {}, { sele
             })
         }
 
-        const classMajor = await classmajorModel.find({ teacherId: selected })
+        const teacher = await TeacherModel.find({ accountId: selected })
+        const classMajor = await classmajorModel.find({ teacherId: teacher[0]?._id })
             .populate("majorId")
             .populate("teacherId")
 
@@ -47,4 +47,21 @@ const getClassMajorEqualStudent = async (req: express.Request<{}, {}, {}, { sele
     }
 }
 
-export { getClassMajorEqualStudent }
+const getAllClassMajor = async (req: express.Request<{}, {}, {}, {}>, res: express.Response) => {
+    try {
+        const classMajor = await classmajorModel.find({})
+
+        res.status(200).json({
+            data: classMajor,
+            message: "Thành công"
+        })
+
+    } catch (error) {
+        console.error("Lỗi chi tiết:", error)
+        res.status(500).json({
+            message: "Lỗi hệ thống"
+        })
+    }
+}
+
+export { getClassMajorEqualStudent, getAllClassMajor }

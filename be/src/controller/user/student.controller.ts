@@ -97,7 +97,7 @@ const getQueryStudent = async (req: express.Request<{}, {}, {}, StudentQuery>, r
 const updateInfoStudent = async (req: express.Request<{ id: string }, {}, UpdateStudent, {}>, res: express.Response) => {
     try {
         const { id } = req.params;
-        const updateStudent = req.body; // trực tiếp dữ liệu FE gửi
+        const updateStudent = req.body;
 
         const student = await StudentModel.find({ accountId: id })
         const studentID = student[0]?._id

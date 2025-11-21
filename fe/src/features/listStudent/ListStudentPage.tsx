@@ -4,7 +4,7 @@ import { getStudent, setPageId, setPagination, setSearchName, setSortField } fro
 import { IoMdArrowDropleft, IoMdArrowDropright, IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { GrSearch } from "react-icons/gr";
 import { FaPlus } from "react-icons/fa6";
-import { setId, setRole } from '../userInfo/UserInfoData';
+import { setId } from '../userInfo/UserInfoData';
 import { useNavigate } from 'react-router-dom';
 
 const ListStudentPage = () => {
@@ -56,8 +56,14 @@ const ListStudentPage = () => {
 
     const selectStudent = (e: string) => {
         dispatch(setId(e))
-        dispatch(setRole("student"))
-        navigate("/userinfo")
+        localStorage.setItem("role", "student")
+        // dispatch(setRole("student"))
+        navigate(`/userinfo/${e}`)
+    }
+
+    const handleCreateStudent = () => {
+        localStorage.setItem("role", "student")
+        navigate("/createaccount")
     }
 
     return (
@@ -79,7 +85,7 @@ const ListStudentPage = () => {
                 </div>
 
                 <div className='flex items-center relative'>
-                    <button className='text-[20px] bg-[#4D44B5] text-white pt-5 pb-5 pl-15 pr-10 rounded-full'>New Student</button>
+                    <button onClick={handleCreateStudent} className='text-[20px] bg-[#4D44B5] text-white pt-5 pb-5 pl-15 pr-10 rounded-full'>New Student</button>
                     <FaPlus className='text-white absolute left-7 font-bold text-[18px]' />
                 </div>
 

@@ -4,7 +4,7 @@ import { getTeacher, setPagination, setPageId, setSearchName, setMajor } from '.
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { GrSearch } from "react-icons/gr";
 import { FaPlus } from "react-icons/fa6";
-import { setId, setRole } from '../userInfo/UserInfoData';
+import { setId } from '../userInfo/UserInfoData';
 import { useNavigate } from 'react-router-dom';
 
 const ListTeacherPage = () => {
@@ -42,8 +42,14 @@ const ListTeacherPage = () => {
 
     const selectTeacher = (e: string) => {
         dispatch(setId(e))
-        dispatch(setRole("teacher"))
-        navigate("/userinfo")
+        localStorage.setItem("role", "teacher")
+        // dispatch(setRole("teacher"))
+        navigate(`/userinfo/${e}`)
+    }
+
+    const handleCreateTeacher = () => {
+        localStorage.setItem("role", "teacher")
+        navigate("/createaccount")
     }
 
     return (
@@ -65,7 +71,7 @@ const ListTeacherPage = () => {
                 </div>
 
                 <div className='flex items-center relative'>
-                    <button className='text-[20px] bg-[#4D44B5] text-white pt-5 pb-5 pl-15 pr-10 rounded-full'>New Teacher</button>
+                    <button onClick={handleCreateTeacher} className='text-[20px] bg-[#4D44B5] text-white pt-5 pb-5 pl-15 pr-10 rounded-full'>New Teacher</button>
                     <FaPlus className='text-white absolute left-7 font-bold text-[18px]' />
                 </div>
 

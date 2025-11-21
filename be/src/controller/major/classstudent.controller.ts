@@ -37,6 +37,17 @@ const getClassEqualStudent = async (req: express.Request<{}, {}, {}, { selected:
             })
         }
 
+        const pass = await classstudentModel.find({ studentId: studentId, status: "Pass" })
+            .populate({
+                path: "classStudyId",
+                populate: [
+                    {
+                        path: "subjectId"
+                    }
+                ]
+
+            })
+
         const total = await classstudentModel.countDocuments({ studentId: studentId, })
         const totalPass = await classstudentModel.countDocuments({ studentId: studentId, status: "Pass" })
         const totalFail = await classstudentModel.countDocuments({ studentId: studentId, status: "Fail" })
@@ -47,6 +58,7 @@ const getClassEqualStudent = async (req: express.Request<{}, {}, {}, { selected:
             totalFail: totalFail,
             totalPass: totalPass,
             totalStudying: totalStudying,
+            pass: pass,
             data: data,
             message: "Thành công"
         })

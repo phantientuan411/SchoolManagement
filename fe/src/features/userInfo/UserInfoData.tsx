@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { Student, Teacher } from "../../type/user";
 import { get, patch } from "../../axios/ultil.tsx";
+import { setMajor } from "../listTeacher/ListTeacherData.tsx";
 
 //Định nghĩa kiểu dữ liệu gửi đi
 interface ApiUserRequest {
     id: string
-    role: "teacher" | "student" | ""
 }
 
 // Định nghĩa kiểu dữ liệu trả về
@@ -24,18 +24,35 @@ interface UpdateStudent {
     dateOfBirth: string;
 }
 
-// Định nghĩa dữ liệu update gửi đi
+// Định nghĩa kiểu dữ liệu update Teacher
+interface UpdateTeacher {
+    name: string;
+    address: string;
+    gender: string;
+    status: boolean;
+    dateOfBirth: string;
+    degree: string;
+    major: string;
+}
+
+// Định nghĩa dữ liệu update Student gửi đi
 interface ApiUpdateStudentRequest {
     id: string
     updateStudent: UpdateStudent
+}
+
+// Định nghĩa kiểu dữ liệu update Teacher gửi đi
+interface ApiUpdateTeacherRequest {
+    id: string;
+    updateTeacher: UpdateTeacher
 }
 
 // Định nghĩa kiểu state
 interface UserInfoState {
     data: Student[] | Teacher[]
     id: string
-    role: "student" | "teacher" | ""
     updateStudent: UpdateStudent
+    updateTeacher: UpdateTeacher
     loading: boolean
     error: string | null
     edit: boolean
@@ -43,7 +60,6 @@ interface UserInfoState {
 
 const initialState: UserInfoState = {
     id: "",
-    role: "",
     data: [],
     loading: false,
     error: null,
@@ -56,6 +72,15 @@ const initialState: UserInfoState = {
         status: true,
         dateOfBirth: ""
     },
+    updateTeacher: {
+        name: "",
+        address: "",
+        gender: "",
+        status: true,
+        dateOfBirth: "",
+        degree: "",
+        major: ""
+    },
     edit: false
 
 }
@@ -66,7 +91,7 @@ export const getUserInfo = createAsyncThunk<
     { rejectValue: string }
 >(
     "userInfo/getUserInfo",
-    async ({ id, role }, { rejectWithValue }
+    async ({ id }, { rejectWithValue }
 
     ) => {
         try {
@@ -78,7 +103,7 @@ export const getUserInfo = createAsyncThunk<
 
             const res = await get(
                 `userinfo/${id}`,
-                { role },
+                {},
                 {
                     baseURL: "http://localhost:3000/api",
                     token: accessToken ?? undefined
@@ -136,6 +161,45 @@ export const updateStudentApi = createAsyncThunk<
     }
 )
 
+export const updateTeacherApi = createAsyncThunk<
+    ApiUserResponse,
+    ApiUpdateTeacherRequest,
+    { rejectValue: string }
+>(
+    "userInfo/updateTeacher",
+    async (
+        { id, updateTeacher },
+        { rejectWithValue }
+    ) => {
+        try {
+            const accessToken = localStorage.getItem("accessToken")
+
+            if (!accessToken) {
+                console.log("Chưa đăng nhập")
+            }
+
+            const res = await patch(
+                `teacher/update/${id}`,
+                updateTeacher,
+                {
+                    baseURL: "http://localhost:3000/api",
+                    token: accessToken ?? undefined
+                }
+            )
+
+            if (!res.ok || !res.data) {
+                return rejectWithValue(res.error || "Lấy dữ liệu giáo viên thất bại")
+            } else {
+                window.location.reload()
+                return res.data
+            }
+
+        } catch (error: any) {
+            return rejectWithValue(error.message || "Lấy dữ liệu thất bại")
+        }
+    }
+)
+
 const getUserInfoSlice = createSlice({
     name: "getUserInfo",
     initialState,
@@ -143,9 +207,7 @@ const getUserInfoSlice = createSlice({
         setId: (state, action) => {
             state.id = action.payload
         },
-        setRole: (state, action) => {
-            state.role = action.payload
-        },
+        // Update Student
         setNameStudentUpdate: (state, action) => {
             state.updateStudent.name = action.payload
         },
@@ -162,11 +224,34 @@ const getUserInfoSlice = createSlice({
             state.updateStudent.parentPhone = action.payload
         },
         setStatusStudentUpdate: (state, action) => {
-            state.updateStudent.status = action.payload
+            state.updateStudent.status = action.payload === "true"
         },
         setDoBStudentUpdate: (state, action) => {
             state.updateStudent.dateOfBirth = action.payload
         },
+        // Update Teacher
+        setNameTeacherUpdate: (state, action) => {
+            state.updateTeacher.name = action.payload
+        },
+        setAddressTeacherUpdate: (state, action) => {
+            state.updateTeacher.address = action.payload
+        },
+        setGenderTeacherUpdate: (state, action) => {
+            state.updateTeacher.gender = action.payload
+        },
+        setDegreeTeacherUpdate: (state, action) => {
+            state.updateTeacher.degree = action.payload
+        },
+        setStatusTeacherUpdate: (state, action) => {
+            state.updateTeacher.status = action.payload === "true"
+        },
+        setDoBTeacherUpdate: (state, action) => {
+            state.updateTeacher.dateOfBirth = action.payload
+        },
+        setMajorTeacherUpdate: (state, action) => {
+            state.updateTeacher.major = action.payload
+        },
+
         setEdit: (state, action) => {
             state.edit = action.payload
         }
@@ -179,6 +264,7 @@ const getUserInfoSlice = createSlice({
             })
             .addCase(getUserInfo.fulfilled, (state, action) => {
                 state.data = action.payload.data
+                // Update Student
                 state.updateStudent.name = action.payload.data[0].name
                 state.updateStudent.address = action.payload.data[0].address
                 state.updateStudent.gender = action.payload.data[0].gender
@@ -186,6 +272,13 @@ const getUserInfoSlice = createSlice({
                 state.updateStudent.parentPhone = (action.payload.data[0] as Student).parentPhone
                 state.updateStudent.status = action.payload.data[0].status
                 state.updateStudent.dateOfBirth = action.payload.data[0].dateOfBirth
+                // Update Teacher
+                state.updateTeacher.name = action.payload.data[0].name
+                state.updateTeacher.address = action.payload.data[0].address
+                state.updateTeacher.gender = action.payload.data[0].gender
+                state.updateTeacher.degree = (action.payload.data[0] as Teacher).degree
+                state.updateTeacher.status = action.payload.data[0].status
+                state.updateTeacher.dateOfBirth = action.payload.data[0].dateOfBirth
                 state.loading = false
                 state.error = null
             })
@@ -194,9 +287,11 @@ const getUserInfoSlice = createSlice({
                 state.error = action.payload as string;
             })
     },
-
 })
 
-export const { setEdit, setId, setRole, setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate } = getUserInfoSlice.actions
+export const { setEdit, setId,
+    setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate,
+    setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, setStatusTeacherUpdate, setMajorTeacherUpdate }
+    = getUserInfoSlice.actions
 
 export default getUserInfoSlice.reducer

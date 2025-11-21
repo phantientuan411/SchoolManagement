@@ -7,6 +7,9 @@ import getTeacherReducer from "../features/listTeacher/ListTeacherData.tsx";
 import getUserInfoReducer from "../features/userInfo/UserInfoData.tsx";
 import getClassStudentReducer from "./slice/classstudent.ts";
 import getClassMajorReducer from "./slice/classmajor.ts";
+import getMajorReducer from "./slice/major.ts";
+import getClassStudyReducer from "./slice/classstudy.ts";
+import createAccountReducer from "../features/newAccount/NewAccountData.tsx";
 
 export const store = configureStore({
   reducer: {
@@ -17,7 +20,10 @@ export const store = configureStore({
     getTeacher: getTeacherReducer,
     getUserInfo: getUserInfoReducer,
     getClassStudent: getClassStudentReducer,
-    getClassMajor: getClassMajorReducer
+    getClassMajor: getClassMajorReducer,
+    getMajor: getMajorReducer,
+    getClassStudy: getClassStudyReducer,
+    createAccount: createAccountReducer,
   },
 
 })

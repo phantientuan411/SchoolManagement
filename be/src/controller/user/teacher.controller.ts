@@ -9,6 +9,17 @@ interface TeacherQuery {
     major: string
 }
 
+// Định nghĩa kiểu dữ liệu update
+interface UpdateTeacher {
+    name: string;
+    address: string;
+    gender: string;
+    status: boolean;
+    dateOfBirth: string;
+    degree: string;
+
+}
+
 const getQueryTeacher = async (req: express.Request<{}, {}, {}, TeacherQuery>, res: express.Response) => {
     try {
         const pageId = parseInt(req.query.pageId)
@@ -63,4 +74,34 @@ const getQueryTeacher = async (req: express.Request<{}, {}, {}, TeacherQuery>, r
     }
 }
 
-export { getQueryTeacher }
+const updateTeacher = async (req: express.Request<{ id: string }, {}, UpdateTeacher, {}>, res: express.Response) => {
+    try {
+        const { id } = req.params
+        const updateTeacher = req.body
+
+        const teacher = await TeacherModel.find({ accountId: id })
+        console.log(teacher)
+        const teacherId = teacher[0]?._id
+
+
+        const updatedTeacher = await TeacherModel.findByIdAndUpdate(
+            teacherId,
+            updateTeacher,
+            { new: true }
+        )
+
+        if (!updateTeacher) {
+            return res.status(404).json({ message: "Không tìm thấy giáo viên" })
+        }
+
+        res.status(200).json({
+            data: updatedTeacher,
+            message: "Cập nhật giáo viên thành công"
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Lỗi hệ thống" });
+    }
+}
+
+export { getQueryTeacher, updateTeacher }

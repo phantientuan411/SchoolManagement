@@ -1,5 +1,5 @@
 
-import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { ClassStudent } from "../../type/user"
 import { get } from "../../axios/ultil.tsx";
 
@@ -15,6 +15,7 @@ interface ApiClassStudentResponse {
     totalPass: number
     totalStudying: number
     data: ClassStudent[]
+    pass: ClassStudent[]
 }
 
 // Định nghĩa kiểu state
@@ -24,6 +25,7 @@ interface ClassStudentState {
     totalPass: number
     totalStudying: number
     classStudent: ClassStudent[]
+    pass: ClassStudent[]
     loading: boolean
     error: string | null
 }
@@ -34,6 +36,7 @@ const initialState: ClassStudentState = {
     totalPass: 0,
     totalStudying: 0,
     classStudent: [],
+    pass: [],
     loading: false,
     error: null
 
@@ -89,6 +92,7 @@ const getClassStudentSlice = createSlice({
             })
             .addCase(getClassStudent.fulfilled, (state, action) => {
                 state.classStudent = action.payload.data
+                state.pass = action.payload.pass
                 state.total = action.payload.total
                 state.totalFail = action.payload.totalFail
                 state.totalPass = action.payload.totalPass

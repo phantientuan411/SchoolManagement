@@ -14,7 +14,7 @@ import subjectModel from "../../model/major/subject.model.ts";
 import { userInfo } from "os";
 const signup = async (req: express.Request, res: express.Response) => {
     try {
-        const { accountName, accountEmail, accountPassword, role } = req.body;
+        const { accountName, accountEmail, accountPassword, role, major, classMajor } = req.body;
         if (!accountName || !accountEmail || !accountPassword || !role) {
             return res.status(400).json({
                 message: "Vui lòng nhập đầy đủ thông tin"
@@ -27,33 +27,33 @@ const signup = async (req: express.Request, res: express.Response) => {
             })
         }
         const hashPassword = await bcrypt.hash(accountPassword, 10);
-        let accountId = uuidv4();
-        while (await AccountModel.findOne({ accountId })) {
-            accountId = uuidv4();
-        }
-        await AccountModel.create({
+
+        const newAccount = await AccountModel.create({
             accountName,
             accountEmail,
             accountPassword: hashPassword,
-            accountId,
+            phone: "",
             isActive: true,
-            role
+            role,
+            avatarUrl: "https://res.cloudinary.com/du9onbxav/image/upload/v1762327654/c6e56503cfdd87da299f72dc416023d4_tkkqbq.jpg",
+            avatarId: "",
+            bio: `Tên tôi là ${accountName}`
         })
         console.log(role);
 
         if (role === 'student') {
             try {
-                await StudentModel.create({
-                    accountId,
+                const newStudent = await StudentModel.create({
+                    accountId: newAccount._id,
+                    classId: classMajor,
                     name: accountName,
                     address: "",
-                    dateOfBird: "",
                     parentPhone: "",
                     parentName: "",
-                    major: "",
+                    major,
                     status: true,
-                    yearOfAdmission: ""
-
+                    yearOfAdmission: "",
+                    dateOfBirth: ""
                 })
             } catch (error) {
                 return res.status(500).json({
@@ -62,15 +62,16 @@ const signup = async (req: express.Request, res: express.Response) => {
             }
         } else if (role == 'teacher') {
             try {
-                await TeacherModel.create({
-                    accountId,
+                const newTeacher = await TeacherModel.create({
+                    accountId: newAccount._id,
+                    teacherCode: "",
                     name: accountName,
                     address: "",
-                    dateOfBird: "",
                     degree: "",
                     major: "",
                     yearExperience: "",
-                    status: true
+                    status: true,
+                    dateOfBirth: ""
                 })
             } catch (error) {
                 console.log('Lỗi khi đăng ký', error);
@@ -81,8 +82,8 @@ const signup = async (req: express.Request, res: express.Response) => {
 
         } else if (role == 'staff') {
             try {
-                await StaffModel.create({
-                    accountId,
+                const newStaff = await StaffModel.create({
+                    accountId: newAccount._id,
                     name: accountName,
                     address: "",
                     profession: "",
@@ -159,7 +160,7 @@ const login = async (req: express.Request, res: express.Response) => {
             sameSite: 'lax'
         });
         console.log(req.cookies.refreshToken);
-        
+
         return res.status(200).json({
             message: "Đăng nhập thành công",
             accessToken,
