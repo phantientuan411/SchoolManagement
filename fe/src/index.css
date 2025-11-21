@@ -1,1 +1,45 @@
+/* stylelint-disable at-rule-no-unknown */
 @import "tailwindcss";
+/* stylelint-enable at-rule-no-unknown */
+@import '../@/styles/_variables.scss';
+@import '../@/styles/_keyframe-animations.scss';
+
+/* Ví dụ custom styles cho editor */
+.ProseMirror h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+}
+
+.ProseMirror h2 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+
+.ProseMirror h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+}
+
+.ProseMirror strong {
+  font-weight: 700;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
+.ProseMirror u {
+  text-decoration: underline;
+}
+
+.ProseMirror code {
+  background-color: #000000;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}

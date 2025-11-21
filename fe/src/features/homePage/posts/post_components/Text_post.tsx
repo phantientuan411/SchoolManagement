@@ -1,36 +1,41 @@
-//build with tip tap
-import { useEditor, EditorContent } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-
-import Underline from '@tiptap/extension-underline';
-import TextAlign from '@tiptap/extension-text-align';
-import Highlight from '@tiptap/extension-highlight';
-import Link from '@tiptap/extension-link';
-import MenuBar from "./MenuBar"
-
-const Text_post = () => {
+// src/editor/TextEditor.tsx
+import React, { useEffect } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import { editorExtensions } from "./extension.tsx";
+import MenuBar from "./MenuBar";
+import {post} from '../../../../axios/ultil.tsx'
+const TextEditor: React.FC<{ initialContent?: string, onUpdate?: (html: string) => void }> = ({ initialContent = "<p>Start writing...</p>", onUpdate }) => {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      TextAlign,
-      Highlight,
-      Link
-    ],
-    content: "<p>Nhập nội dung văn bản</p>"
-  })
+    extensions: editorExtensions,
+    content: initialContent,
+    autofocus: true,
+  });
 
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="text-center">Text_post</div>
-      <div>
-        {editor && <MenuBar editor={editor} />}
-      </div>
-      <div className="border-1">
-        <EditorContent editor={editor} />
+  useEffect(() => {
+    if (!editor) return;
+    const handler = () => {
+      onUpdate?.(editor.getHTML());
+    };
+    editor.on("update", handler);
+    return () => {
+      editor.off("update", handler);
+    };
+  }, [editor, onUpdate]);
+  const handleSave= async()=>{
+    const html = editor.getJSON()
+    await post('/post/newPost',{
+      content:html,
+      title:''
+    })
+  } 
+   return (
+    <div className="prose dark:prose-invert border rounded bg-white">
+      <MenuBar editor={editor} />
+      <div className="p-4">
+        <EditorContent editor={editor} className="min-h-[200px] outline-none" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Text_post
+export default TextEditor;
