@@ -54,7 +54,7 @@ const ListTeacherPage = () => {
 
     return (
         <div className='p-[50px] bg-[#F3F4FF]'>
-            <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>TEACHER</h1>
+            <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>TEACHERS</h1>
             <div className='mb-[25px] flex justify-between'>
                 <div className='flex items-center relative' >
                     <input
@@ -71,7 +71,7 @@ const ListTeacherPage = () => {
                 </div>
 
                 <div className='flex items-center relative'>
-                    <button onClick={handleCreateTeacher} className='text-[20px] bg-[#4D44B5] text-white pt-5 pb-5 pl-15 pr-10 rounded-full'>New Teacher</button>
+                    <button onClick={handleCreateTeacher} className='hover:cursor-pointer text-[20px] bg-[#4D44B5] text-white pt-5 pb-5 pl-15 pr-10 rounded-full'>New Teacher</button>
                     <FaPlus className='text-white absolute left-7 font-bold text-[18px]' />
                 </div>
 

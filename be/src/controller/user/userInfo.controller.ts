@@ -40,4 +40,28 @@ const getInfoDetail = async (req: express.Request<{ id: string }, {}, {}, {}>, r
     }
 }
 
-export { getInfoDetail }
+const deleteInfoDetail = async (req: express.Request<{ id: string }, {}, {}, {}>, res: express.Response) => {
+    try {
+        const { id } = req.params
+
+        const account = await accountModel.findById(id)
+
+        if (account?.role === "student") {
+            await StudentModel.findOneAndDelete({ accountId: id })
+            await accountModel.findByIdAndDelete(id)
+        } else {
+            await TeacherModel.findOneAndDelete({ accountId: id })
+            await accountModel.findByIdAndDelete(id)
+        }
+
+        res.status(200).json({ message: "Xóa thành công" })
+
+    } catch (error) {
+        console.log("Lỗi chi tiết:", error)
+        res.status(500).json({
+            message: "Lỗi hệ thống"
+        })
+    }
+}
+
+export { getInfoDetail, deleteInfoDetail }

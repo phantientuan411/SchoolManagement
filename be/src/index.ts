@@ -17,6 +17,7 @@ import classMajorRouter from "./router/major/classmajor.router.ts";
 import classstudentRouter from "./router/major/classstudent.router.ts";
 import majorRouter from "./router/major/major.router.ts";
 import classStudyRouter from "./router/major/classstudy.router.ts";
+import subjectRouter from "./router/major/subject.router.ts";
 
 
 dotenv.config();
@@ -49,8 +50,9 @@ app.use("/api/teacher", teacherRouter);
 app.use("/api/userinfo", userInfoRouter);
 app.use("/api/classmajor", classMajorRouter);
 app.use("/api/classstudent", classstudentRouter);
-app.use("/api/major", majorRouter)
-app.use("/api/classstudy", classStudyRouter)
+app.use("/api/major", majorRouter);
+app.use("/api/classstudy", classStudyRouter);
+app.use("/api/subject", subjectRouter);
 
 
 

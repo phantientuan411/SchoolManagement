@@ -68,7 +68,7 @@ const ListStudentPage = () => {
 
     return (
         <div className='p-[50px] bg-[#F3F4FF]'>
-            <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>STUDENT</h1>
+            <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>STUDENTS</h1>
             <div className='mb-[25px] flex justify-between'>
                 <div className='flex items-center relative' >
                     <input
@@ -85,7 +85,7 @@ const ListStudentPage = () => {
                 </div>
 
                 <div className='flex items-center relative'>
-                    <button onClick={handleCreateStudent} className='text-[20px] bg-[#4D44B5] text-white pt-5 pb-5 pl-15 pr-10 rounded-full'>New Student</button>
+                    <button onClick={handleCreateStudent} className='hover:cursor-pointer text-[20px] bg-[#4D44B5] text-white pt-5 pb-5 pl-15 pr-10 rounded-full'>New Student</button>
                     <FaPlus className='text-white absolute left-7 font-bold text-[18px]' />
                 </div>
 
@@ -94,7 +94,7 @@ const ListStudentPage = () => {
             <div className='rounded-xl bg-white  '>
 
                 {/* Tiêu đề bảng  */}
-                <div className='flex text-[16px] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
+                <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
                     <div onClick={() => setSort("name")} className='w-[20%] pt-5 pb-5 flex gap-5 items-center'>
                         <p>Name</p>
                         {sort.name === "asc"
@@ -126,8 +126,11 @@ const ListStudentPage = () => {
 
                 {/* List danh sách học sinh */}
                 {student.map(e =>
-                    <div onClick={() => selectStudent(e.accountId._id)} className='flex font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
-                        <div className='w-[20%] pt-5 pb-5 text-[20px] font-bold'>{e.name}</div>
+                    <div onClick={() => selectStudent(e.accountId._id)} className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
+                        <div className='flex gap-5 items-center w-[20%] pt-5 pb-5 text-[20px] font-bold'>
+                            <img className='w-10 h-10 rounded-4xl' src={e.accountId.avatarUrl} alt="" />
+                            <h1>{e.name}</h1>
+                        </div>
                         <div className='w-[20%] pt-5 pb-5 text-[20px] font-semibold text-[#4D44B5]' >{"#" + e._id.slice(e._id.indexOf("ff"))}</div>
                         <div className='w-[15%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{new Date(e.dateOfBirth).toLocaleDateString("vi-VN")}</div>
                         <div className='w-[15%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{e.parentName}</div>

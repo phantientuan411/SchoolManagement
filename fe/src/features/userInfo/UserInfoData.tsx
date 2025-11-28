@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { Student, Teacher } from "../../type/user";
-import { get, patch } from "../../axios/ultil.tsx";
+import { del, get, patch } from "../../axios/ultil.tsx";
 import { setMajor } from "../listTeacher/ListTeacherData.tsx";
 
 //Định nghĩa kiểu dữ liệu gửi đi
@@ -181,6 +181,44 @@ export const updateTeacherApi = createAsyncThunk<
             const res = await patch(
                 `teacher/update/${id}`,
                 updateTeacher,
+                {
+                    baseURL: "http://localhost:3000/api",
+                    token: accessToken ?? undefined
+                }
+            )
+
+            if (!res.ok || !res.data) {
+                return rejectWithValue(res.error || "Lấy dữ liệu giáo viên thất bại")
+            } else {
+                window.location.reload()
+                return res.data
+            }
+
+        } catch (error: any) {
+            return rejectWithValue(error.message || "Lấy dữ liệu thất bại")
+        }
+    }
+)
+
+export const deleteUserInfoApi = createAsyncThunk<
+    ApiUserResponse,
+    ApiUserRequest,
+    { rejectValue: string }
+>(
+    "userInfo/deleteUserInfo",
+    async (
+        { id },
+        { rejectWithValue }
+    ) => {
+        try {
+            const accessToken = localStorage.getItem("accessToken")
+
+            if (!accessToken) {
+                console.log("Chưa đăng nhập")
+            }
+
+            const res = await del(
+                `userinfo/${id}`,
                 {
                     baseURL: "http://localhost:3000/api",
                     token: accessToken ?? undefined

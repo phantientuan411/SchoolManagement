@@ -1,21 +1,23 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
-import { getUserInfo, setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate, updateStudentApi, setEdit, setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, setStatusTeacherUpdate, updateTeacherApi, setMajorTeacherUpdate } from './UserInfoData'
+import { getUserInfo, setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate, updateStudentApi, setEdit, setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, setStatusTeacherUpdate, updateTeacherApi, setMajorTeacherUpdate, deleteUserInfoApi } from './UserInfoData'
 import { getClassStudent } from '../../redux&hook/slice/classstudent'
 import type { ClassStudent, Student, Teacher } from '../../type/user'
 import { getClassMajor } from '../../redux&hook/slice/classmajor'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getMajor } from '../../redux&hook/slice/major'
 import { getClassStudy } from '../../redux&hook/slice/classstudy'
+import { FaTrash } from "react-icons/fa";
 
 const UserInfoPage = () => {
     const dispatch = useAppDispatch()
     const { id } = useParams()
     const { major } = useAppSelector((state) => state.getMajor)
     const { data, updateStudent, updateTeacher, edit } = useAppSelector((state) => state.getUserInfo)
-    const { total, pass, totalFail, totalPass, totalStudying, classStudent } = useAppSelector((state) => state.getClassStudent)
+    const { pass, totalFail, totalPass, totalStudying, classStudent } = useAppSelector((state) => state.getClassStudent)
     const { classMajor } = useAppSelector((state) => state.getClassMajor)
     const { totalClass, classStudy } = useAppSelector((state) => state.getClassStudy)
+    const navigate = useNavigate()
 
     useEffect(() => {
         dispatch(getUserInfo({ id: id ?? "" }))
@@ -92,10 +94,15 @@ const UserInfoPage = () => {
         dispatch(setEdit(!edit))
     }
 
-    console.log("major", classMajor)
-    console.log("study", classStudy)
+    const handleDelete = (e: any) => {
+        e.preventDefault()
+        dispatch(deleteUserInfoApi({ id: id ?? "" }))
+        navigate(`/${role}`)
+    }
+
+
     return (
-        <div className='flex gap-5 p-[50px] bg-white'>
+        <div className='min-h-screen flex gap-5 p-[50px] bg-[#F3F4FF]'>
             {/* Hiển thị thông tin cơ bản của học sinh */}
             <div className={`w-[30%] border-gray-400 border-3 rounded-xl p-5 bg-white shadow-lg ${!edit && role === "student" ? "block" : "hidden"}`}>
                 <img className='w-[150px] h-[150px] rounded-xl' src={data[0]?.accountId.avatarUrl} alt="" />
@@ -127,34 +134,44 @@ const UserInfoPage = () => {
             </div>
 
             {/* Hiển thị thông tin cơ bản của giáo viên */}
-            <div className={`w-[30%] border-gray-400 border-3 rounded-xl p-5 bg-white shadow-lg ${!edit && role === "teacher" ? "block" : "hidden"}`}>
-                <img className='w-[150px] h-[150px] rounded-xl' src={data[0]?.accountId.avatarUrl} alt="" />
-                <h1 className='text-[32px] font-bold mt-5' >{data[0]?.name}</h1>
-                <p className='text-[28px] mt-3'>{data[0]?.gender}</p>
-                <p className='text-[28px] mt-3'>{new Date(data[0]?.dateOfBirth).toLocaleDateString('vi-VN')}</p>
-                <p className='text-[28px] mt-3'>{data[0]?.major}</p>
-                <p className='text-[28px] mt-3'>{(data[0] as Teacher)?.yearExperience} year</p>
-                <div className='flex gap-3 mt-3'>
-                    <div className='border-gray-400 border-3 shadow rounded-xl w-[50%] p-5 flex flex-col justify-center items-center'>
-                        <p className='text-[20px] font-medium'>Address</p>
-                        <p className='text-[24px] font-bold'>{data[0]?.address}</p>
+            <div className={`  overflow-hidden border-gray-400 border-3 rounded-xl w-[30%] bg-white shadow-lg ${!edit && role === "teacher" ? "block" : "hidden"}`}>
+                <div className="relative  ">
+                    <div className='relative overflow-hidden bg-[#4D44B5] w-full h-[150px] '>
+                        <div className='z-0 border-[#ffd54f] absolute top-[46%] right-[5%] w-[200px] h-[200px] rounded-full  border-10'></div>
+                        <div className=' z-10 absolute top-[68%] right-[27%] w-[150px] h-[150px] rounded-full  border-10 border-[#ff8a65]'></div>
                     </div>
-
-                    <div className='border-gray-400 border-3 shadow rounded-xl w-[50%] p-5 flex flex-col justify-center items-center'>
-                        <p className='text-[20px] font-medium'>Time Zone</p>
-                        <p className='text-[26px] font-bold'>UTC +7 </p>
-                    </div>
+                    <img className='border-10 border-white absolute top-[50%] left-[8%] w-[150px] h-[150px] rounded-full' src={data[0]?.accountId.avatarUrl} alt="" />
                 </div>
 
-                <div className='mt-3'>
-                    <h1 className='mt-3 text-[26px] font-bold' >Degree</h1>
-                    <p className='mt-3 text-[20px] font-medium'>{(data[0] as Teacher)?.degree} </p>
-                </div>
+                <div className={`pb-5 pl-5 pr-5 pt-20`}>
+                    <h1 className='text-[32px] font-bold mt-5' >{data[0]?.name}</h1>
+                    <p className='text-[28px] mt-3'>{data[0]?.gender}</p>
+                    <p className='text-[28px] mt-3'>{new Date(data[0]?.dateOfBirth).toLocaleDateString('vi-VN')}</p>
+                    <p className='text-[28px] mt-3'>{data[0]?.major}</p>
+                    <p className='text-[28px] mt-3'>{(data[0] as Teacher)?.yearExperience} year</p>
+                    <div className='flex gap-3 mt-3'>
+                        <div className='border-gray-400 border-3 shadow rounded-xl w-[50%] p-5 flex flex-col justify-center items-center'>
+                            <p className='text-[20px] font-medium'>Address</p>
+                            <p className='text-[24px] font-bold'>{data[0]?.address}</p>
+                        </div>
 
-                <div className='flex justify-end'>
-                    <button className=' hover:cursor-pointer flex justify-end mt-3 text-[20px] bg-[#4D44B5] text-white pt-3 pb-3 pl-15 pr-15 rounded-full' onClick={handleEdit} > Edit</button>
+                        <div className='border-gray-400 border-3 shadow rounded-xl w-[50%] p-5 flex flex-col justify-center items-center'>
+                            <p className='text-[20px] font-medium'>Time Zone</p>
+                            <p className='text-[26px] font-bold'>UTC +7 </p>
+                        </div>
+                    </div>
+
+                    <div className='mt-3'>
+                        <h1 className='mt-3 text-[26px] font-bold' >Degree</h1>
+                        <p className='mt-3 text-[20px] font-medium'>{(data[0] as Teacher)?.degree} </p>
+                    </div>
+
+                    <div className='flex justify-end'>
+                        <button className=' hover:cursor-pointer flex justify-end mt-3 text-[20px] bg-[#4D44B5] text-white pt-3 pb-3 pl-15 pr-15 rounded-full' onClick={handleEdit} > Edit</button>
+                    </div>
                 </div>
             </div>
+
 
             {/* Chỉnh sửa thông tin cơ bản của học sinh */}
             <div className={`w-[30%] border-gray-400 border-3 rounded-xl p-5 bg-white shadow-lg ${edit && role === "student" ? "block" : "hidden"}`}>
@@ -191,7 +208,7 @@ const UserInfoPage = () => {
 
                     <div className='flex gap-5 pt-5'>
                         <h1 className='text-[24px] font-bold ' >Date of Birth</h1>
-                        <input className='flex-1 p-2' type="text" onChange={(e) => toExactISO(dispatch(setDoBStudentUpdate(e.target.value)))} value={updateStudent.dateOfBirth ? updateStudent.dateOfBirth.split("T")[0] : ""} />
+                        <input className='flex-1 p-2' type="date" onChange={(e) => toExactISO(dispatch(setDoBStudentUpdate(e.target.value)))} value={updateStudent.dateOfBirth ? updateStudent.dateOfBirth.split("T")[0] : ""} />
                     </div>
 
                     <div className='flex gap-5 pt-5'>
@@ -248,7 +265,7 @@ const UserInfoPage = () => {
 
                     <div className='flex gap-5 pt-5'>
                         <h1 className='text-[24px] font-bold ' >Date of Birth</h1>
-                        <input className='flex-1 p-2' type="text" onChange={(e) => toExactISO(dispatch(setDoBTeacherUpdate(e.target.value)))} value={updateTeacher.dateOfBirth ? updateTeacher.dateOfBirth.split("T")[0] : ""} />
+                        <input className='flex-1 p-2' type="date" onChange={(e) => toExactISO(dispatch(setDoBTeacherUpdate(e.target.value)))} value={updateTeacher.dateOfBirth ? updateTeacher.dateOfBirth.split("T")[0] : ""} />
                     </div>
 
                     <div className='flex gap-5 pt-5'>
@@ -270,44 +287,44 @@ const UserInfoPage = () => {
             <div className={`w-[70%] ${role === "student" ? "block" : "hidden"}`}>
 
                 <div className='flex gap-5'>
-                    <div className='border-gray-400 border-3 shadow rounded-xl w-[33%] p-5 flex flex-col justify-center items-center'>
+                    <div className='bg-white border-gray-400 border-3 shadow rounded-xl w-[33%] p-5 flex flex-col justify-center items-center'>
                         <h1 className='text-[32px] font-bold'>{totalPass}</h1>
                         <p className='text-[28px] font-medium'> Subjects Pass</p>
                     </div>
 
-                    <div className='border-gray-400 border-3 shadow rounded-xl w-[33%] flex flex-col justify-center items-center'>
+                    <div className='bg-white border-gray-400 border-3 shadow rounded-xl w-[33%] flex flex-col justify-center items-center'>
                         <h1 className='text-[32px] font-bold'>{totalFail}</h1>
                         <p className='text-[28px] font-medium'>Subjects Fail</p>
                     </div>
 
-                    <div className='border-gray-400 border-3 shadow rounded-xl w-[33%] flex flex-col justify-center items-center'>
+                    <div className='bg-white border-gray-400 border-3 shadow rounded-xl w-[33%] flex flex-col justify-center items-center'>
                         <h1 className='text-[32px] font-bold'>{totalStudying}</h1>
                         <p className='text-[28px] font-medium'>Subjects Studying</p>
                     </div>
                 </div>
 
-                <div className='border-gray-400 border-3 shadow rounded-xl p-5 mt-5'>
+                <div className='bg-white border-gray-400 border-3 shadow rounded-xl p-5 mt-5'>
                     <h1 className='text-[32px] font-bold'>GPA</h1>
-                    <p className='text-[28px] flex justify-center'>{calculateGPA(pass)}</p>
+                    <p className='text-[28px] flex justify-center'>{totalPass > 0 ? calculateGPA(pass) : 0}</p>
                 </div>
 
                 {/* Thông tin lớp major */}
                 <h1 className=' mt-5 text-[32px] font-bold'>Class Major</h1>
 
-                <div className='mt-5  border-gray-400 border-3 shadow rounded-xl'>
+                <div className='mt-5 bg-white border-gray-400 border-3 shadow rounded-xl'>
                     <div className='flex text-[16px] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
-                        <div className='w-[25%] pt-5 pb-5'>Class Name</div>
+                        <div className='w-[30%] pt-5 pb-5'>Class Name</div>
                         <div className='w-[10%] pt-5 pb-5'>Class Code</div>
-                        <div className='w-[25%] pt-5 pb-5'>Teacher Name</div>
+                        <div className='w-[20%] pt-5 pb-5'>Teacher Name</div>
                         <div className='w-[20%] pt-5 pb-5'>Major Name</div>
                         <div className='w-[10%] pt-5 pb-5'>Major Code</div>
                         <div className='w-[10%] pt-5 pb-5'>year</div>
                     </div>
 
                     <div className='flex text-[18px] border-b pl-5 pr-5 border-gray-300 border-dotted' >
-                        <div className='w-[25%] pt-5 pb-5'>{classMajor[0]?.className}</div>
+                        <div className='w-[30%] pt-5 pb-5'>{classMajor[0]?.className}</div>
                         <div className='w-[10%] pt-5 pb-5'>{classMajor[0]?.classCode}</div>
-                        <div className='w-[25%] pt-5 pb-5'>{classMajor[0]?.teacherId?.name}</div>
+                        <div className='w-[20%] pt-5 pb-5'>{classMajor[0]?.teacherId?.name}</div>
                         <div className='w-[20%] pt-5 pb-5'>{classMajor[0]?.majorId?.majorName}</div>
                         <div className='w-[10%] pt-5 pb-5'>{classMajor[0]?.majorId?.majorCode}</div>
                         <div className='w-[10%] pt-5 pb-5'>{classMajor[0]?.year}</div>
@@ -317,7 +334,7 @@ const UserInfoPage = () => {
                 {/* Thông tin các lớp đang học */}
                 <h1 className=' mt-5 text-[32px] font-bold'>Class Study</h1>
 
-                <div className='mt-5  border-gray-400 border-3 shadow rounded-xl'>
+                <div className='mt-5 bg-white border-gray-400 border-3 shadow rounded-xl'>
 
                     <div className='flex text-[16px] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
                         <div className='w-[10%] pt-5 pb-5'>Class Code</div>
@@ -343,6 +360,10 @@ const UserInfoPage = () => {
                         </div>
                     }
                     )}
+                </div>
+
+                <div className='mt-5 flex justify-end'>
+                    <FaTrash onClick={handleDelete} className='text-[26px] text-[#4D44B5] hover:cursor-pointer' />
                 </div>
             </div>
 
@@ -403,6 +424,10 @@ const UserInfoPage = () => {
                         </div>
                     }
                     )}
+                </div>
+
+                <div className='mt-5 flex justify-end'>
+                    <FaTrash onClick={handleDelete} className='text-[26px] text-[#4D44B5] hover:cursor-pointer' />
                 </div>
             </div>
         </div >

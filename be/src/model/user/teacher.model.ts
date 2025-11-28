@@ -7,7 +7,6 @@ const teacherSchema = new mongoose.Schema({
     }),
     teacherCode: ({
         type: String,
-        required: true,
         unique: true
     }),
     name: {
