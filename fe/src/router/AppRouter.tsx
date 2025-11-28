@@ -6,6 +6,10 @@ import ListStudentPage from "../features/listStudent/ListStudentPage";
 import ListTeacherPage from "../features/listTeacher/ListTeacherPage.tsx";
 import UserInfoPage from "../features/userInfo/UserInfoPage.tsx";
 import NewAccountPage from "../features/newAccount/NewAccountPage.tsx";
+import ListMajorPage from "../features/listMajor/ListMajorPage.tsx";
+import CreateMajor from "../features/createMajor/CreateMajor.tsx";
+import EditMajor from "../features/editMajor/EditMajor.tsx";
+
 
 const AppRouter = () => {
   return (
@@ -17,6 +21,9 @@ const AppRouter = () => {
         <Route path="/teacher" element={<Interface><ListTeacherPage></ListTeacherPage></Interface>}></Route>
         <Route path="/userinfo/:id" element={<Interface><UserInfoPage></UserInfoPage></Interface>} ></Route>
         <Route path="/createaccount" element={<Interface><NewAccountPage></NewAccountPage></Interface>}></Route>
+        <Route path="/major" element={<Interface><ListMajorPage></ListMajorPage></Interface>}></Route>
+        <Route path="/majorEdit" element={<Interface><EditMajor></EditMajor></Interface>}></Route>
+        <Route path="/majorCreate" element={<Interface><CreateMajor></CreateMajor></Interface>}></Route>
       </Routes>
 
 

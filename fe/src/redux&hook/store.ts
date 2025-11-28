@@ -10,6 +10,7 @@ import getClassMajorReducer from "./slice/classmajor.ts";
 import getMajorReducer from "./slice/major.ts";
 import getClassStudyReducer from "./slice/classstudy.ts";
 import createAccountReducer from "../features/newAccount/NewAccountData.tsx";
+import getSubjectReducer from "./slice/subject.ts";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     getMajor: getMajorReducer,
     getClassStudy: getClassStudyReducer,
     createAccount: createAccountReducer,
+    getSubject: getSubjectReducer,
   },
 
 })

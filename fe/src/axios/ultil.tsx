@@ -101,7 +101,7 @@ export async function post<T = any, B = any>(
   const url = buildUrl(base, path);
   const headers = buildHeaders(options?.token, { "Content-Type": "application/json", ...(options?.headers || {}) });
   try {
-    const res = await fetchWithTimeout(url, { method: "POST", headers, body: body ? JSON.stringify(body) : undefined, signal: options?.signal,credentials: options?.withCredentials ? "include" : "same-origin" }, options?.timeoutMs ?? defaultTimeout);
+    const res = await fetchWithTimeout(url, { method: "POST", headers, body: body ? JSON.stringify(body) : undefined, signal: options?.signal, credentials: options?.withCredentials ? "include" : "same-origin" }, options?.timeoutMs ?? defaultTimeout);
     return await handleResponse<T>(res as Response);
   } catch (err: any) {
     return { ok: false, status: 0, error: err.name === 'AbortError' ? 'Request aborted' : String(err) };

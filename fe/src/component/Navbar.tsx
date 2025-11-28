@@ -15,8 +15,8 @@ const Navbar = () => {
     const [role, setRole] = useState('')
     useEffect(() => {
 
-       const userString = localStorage.getItem("user");
-        
+        const userString = localStorage.getItem("user");
+
         if (!userString) {
             window.location.href = "/login";
             return;
@@ -26,13 +26,13 @@ const Navbar = () => {
             const user: User = JSON.parse(userString);
             if (user && user.role !== role) {
                 user.role = user.role.toLowerCase();
-                setRole(user.role); 
+                setRole(user.role);
             }
         } catch (e) {
             console.error("Error parsing user data:", e);
         }
     }, []);
-    
+
     const [isOpen, setIsOpen] = useState(false);
     const [isFlow, setIsFlow] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
@@ -79,6 +79,7 @@ const Navbar = () => {
             { path: '/teacher', label: 'Teacher' },
             { path: '/food', label: 'Food' },
             { path: '/classAdmin', label: 'Class' },
+            { path: '/major', label: 'Major' },
         ],
         teacher: [
             { path: '/home', label: 'Dashboard' },
