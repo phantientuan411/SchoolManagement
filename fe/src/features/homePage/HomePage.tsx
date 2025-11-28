@@ -12,7 +12,7 @@ import Post from "./posts/Post.tsx";
 const u = localStorage.getItem("user") ?? "{}";
 const user = u ? JSON.parse(u) : null;
 console.log(user?.acountInform?._id);
-
+import { Link } from "react-router-dom";
 const PostPage = () => {
   useEffect(() => {
     const hasReloaded = localStorage.getItem("hasReloaded");
@@ -48,6 +48,7 @@ const PostPage = () => {
       })
     );
   }, [dispatch, pageId]);
+  const [showModal, setShowModal] = useState(false); // modal cho thông báo
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,7 +76,7 @@ const PostPage = () => {
   };
 
   const thongBaoPosts = post.filter((p) => p.type === "thông báo");
-//  const vanBanPosts = post.filter((p) => p.type === "văn bản");
+  //  const vanBanPosts = post.filter((p) => p.type === "văn bản");
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -83,87 +84,85 @@ const PostPage = () => {
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Thông báo</h1>
 
         {/* Chỉ Admin mới thấy nút này */}
-        {user?.role === "admin" && (
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition font-medium mb-4"
+
+
+        {showModal && (
+          <div
+            className="fixed inset-0 flex items-center justify-center z-90"
+            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} // background đen mờ 50%
           >
-            {showForm ? "Ẩn form thêm bài viết" : "Thêm bài viết"}
-          </button>
-        )}
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+              <h2 className="text-xl font-semibold mb-4 text-gray-700">
+                {isEditing ? "Chỉnh sửa bài viết" : "Thêm Thông báo mới"}
+              </h2>
 
-        {/* Form thêm bài viết chỉ hiển thị khi Admin bấm nút */}
-        {showForm && user?.role === "admin" && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">
-              {isEditing ? "Chỉnh sửa bài viết" : "Thêm bài viết mới"}
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tiêu đề
-                </label>
-                <input
-                  type="text"
-                  placeholder="Nhập tiêu đề"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
-                  value={form.title}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  required
-                />
-              </div>
+              <form
+                onSubmit={(e) => {
+                  handleSubmit(e);
+                  setShowModal(false);
+                }}
+                className="space-y-4"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Tiêu đề
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Nhập tiêu đề"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    value={form.title}
+                    onChange={(e) => setForm({ ...form, title: e.target.value })}
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Loại bài viết
-                </label>
-                <select
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
-                  value={form.type}
-                  onChange={(e) => setForm({ ...form, type: e.target.value })}
-                >
-                  <option value="thông báo">Thông báo</option>
-                  <option value="văn bản">Văn bản</option>
-                </select>
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nội dung
+                  </label>
+                  <textarea
+                    placeholder="Nhập nội dung"
+                    rows={4}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition resize-none"
+                    value={form.content}
+                    onChange={(e) => setForm({ ...form, content: e.target.value })}
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nội dung
-                </label>
-                <textarea
-                  placeholder="Nhập nội dung"
-                  rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition resize-none"
-                  value={form.content}
-                  onChange={(e) =>
-                    setForm({ ...form, content: e.target.value })
-                  }
-                  required
-                />
-              </div>
+                <div className="flex gap-2">
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition font-medium"
+                  >
+                    {isEditing ? "Cập nhật" : "Thêm"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowModal(false);
+                      setIsEditing(false);
+                    }}
+                    className="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600 transition font-medium"
+                  >
+                    Hủy
+                  </button>
+                </div>
+              </form>
 
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition font-medium"
-                >
-                  {isEditing ? "Cập nhật" : "Thêm bài viết"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowForm(false);
-                    setIsEditing(false);
-                  }}
-                  className="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600 transition font-medium"
-                >
-                  Hủy
-                </button>
-              </div>
-            </form>
+              {/* Nút đóng góc phải */}
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-lg font-bold"
+              >
+                ✖
+              </button>
+            </div>
           </div>
         )}
+
+
 
         {/* Loading & error */}
         {loading && (
@@ -181,8 +180,15 @@ const PostPage = () => {
         <div className="flex gap-4">
           {/* Thông báo */}
           <div className="bg-white w-3/10 rounded-lg shadow-md overflow-hidden">
-            <div className="bg-blue-50 px-4 py-3 border-b border-blue-200 font-semibold text-blue-700">
-              Thông báo
+            <div className="flex bg-blue-50 px-4 py-3 border-b border-blue-200 font-semibold text-blue-700">
+              <p>Thông báo</p>
+              <div className="ml-auto">
+                {user?.role === "admin" && (
+                  <div className="btn-post">
+                    <button onClick={() => setShowModal(true)}>+</button>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="p-4 space-y-3">
               {thongBaoPosts.length === 0 ? (
@@ -225,11 +231,18 @@ const PostPage = () => {
 
           {/* Văn bản */}
           <div className="bg-white w-7/10 rounded-lg shadow-md overflow-hidden">
-            <div className="bg-green-50 px-4 py-3 border-b border-green-200 font-semibold text-green-700">
-              Văn bản
+            <div className="flex bg-green-50 px-4 py-3 border-b border-green-200 font-semibold text-green-700">
+              <p>Văn bản</p>
+              <div className="ml-auto">
+                {user?.role === "admin" && (
+                  <div className="btn-post">
+                    <Link to={"/new"}><button>+</button></Link>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="p-4 space-y-3">
-              <Post/>
+              <Post />
             </div>
           </div>
         </div>

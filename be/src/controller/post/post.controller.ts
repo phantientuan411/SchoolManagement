@@ -23,10 +23,10 @@ const parseSortQuery = (sortObj: SortQuery): Record<string, 1 | -1> => {
   return result;
 };
 
-const getQueryPost = async (req: express.Request<{}, {}, {}, PostQuery>, res: express.Response) => {
+const getQueryPost = async (req: express.Request<{},{},{},PostQuery>, res: express.Response) => {
   try {
-    const pageId = parseInt(req.query.pageId);
-    const pageSize = parseInt(req.query.pageSize);
+    const pageId = parseInt(req.query.pageId || "1");
+    const pageSize = parseInt(req.query.pageSize || "1");
     const searchName = req.query.searchName || "";
 
     if (isNaN(pageId) || isNaN(pageSize)) {
@@ -37,6 +37,17 @@ const getQueryPost = async (req: express.Request<{}, {}, {}, PostQuery>, res: ex
       ? { name: { $regex: searchName, $options: "i" } }
       : {};
 
+    // ---- SAFE SORT ----
+    let sortQuery: Record<string, 1 | -1> = { createdAt: -1 };
+    if (req.query.sort) {
+      try {
+        const parsed = JSON.parse(req.query.sort as string);
+        sortQuery = parseSortQuery(parsed);
+      } catch (err) {
+        console.log("⚠ Sort parse failed => dùng sort mặc định");
+      }
+    }
+
     const startItem = (pageId - 1) * pageSize;
     const totalPost = await PostModel.countDocuments(query);
     const totalPage = Math.ceil(totalPost / pageSize);
@@ -45,7 +56,7 @@ const getQueryPost = async (req: express.Request<{}, {}, {}, PostQuery>, res: ex
       .populate("author")
       .skip(startItem)
       .limit(pageSize)
-      .sort(parseSortQuery(JSON.parse(req.query.sort as string)));
+      .sort(sortQuery);
 
     return res.status(200).json({
       data: getPost,
@@ -53,10 +64,13 @@ const getQueryPost = async (req: express.Request<{}, {}, {}, PostQuery>, res: ex
       totalPost,
       message: "Thành công",
     });
+
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
+
 
 const createPost = async (req: express.Request, res: express.Response) => {
   try {

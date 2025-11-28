@@ -24,7 +24,7 @@ import {
 } from "../../tiptap-ui-primitive/toolbar/toolbar.tsx"
 
 // --- Tiptap Node ---
-import { ImageUploadNode} from "../../tiptap-node/image-upload-node/image-upload-node.tsx"
+import { ImageUploadNode } from "../../tiptap-node/image-upload-node/image-upload-node.tsx"
 import { HorizontalRule } from "../../tiptap-node/horizontal-rule-node/horizontal-rule-node-extension.ts"
 import "../../tiptap-node/blockquote-node/blockquote-node.scss"
 import "../../tiptap-node/code-block-node/code-block-node.scss"
@@ -71,7 +71,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "../../../lib/tiptap-utils"
 
 // --- Styles ---
 import "./simple-editor.scss"
-import {post} from "../../../../src/axios/ultil.tsx"
+import { post } from "../../../../src/axios/ultil.tsx"
 import content from "../../tiptap-templates/simple/data/content.json"
 
 const MainToolbarContent = ({
@@ -188,14 +188,6 @@ export function SimpleEditor() {
     "main"
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
-  /*const  [contentApi,setcontentApi]=useState()
-  useEffect(() => {
-    async()=>{
-      const res=await get("post/getall",{token:localStorage.getItem("accessToken") ?? ""})
-      setcontentApi(res.data.content)
-    }
-    
-  },[])*/
   const editor = useEditor({
     immediatelyRender: false,
     editorProps: {
@@ -226,69 +218,75 @@ export function SimpleEditor() {
       Subscript,
       Selection,
     ],
-    content:"",
+    content: "",
+    autofocus: true,
+
   })
 
   const rect = useCursorVisibility({
     editor,
     overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
   })
-  
+
   useEffect(() => {
     if (!isMobile && mobileView !== "main") {
       setMobileView("main")
     }
   }, [isMobile, mobileView])
   const user = localStorage.getItem("user");
-  if(!user){
-    window.location.href="/login";
+  if (!user) {
+    window.location.href = "/login";
     return;
   }
 
-  const id=JSON.parse(user).acountInform._id;
-  const handlePost = async()=>{ 
-    const html=editor?.getHTML();
-    await post("/post/newpost",{
-      title:'van ban',
-      content:html,
-      author:id,
-      type:'văn bản'
+  const id = JSON.parse(user).acountInform._id;
+  const handlePost = async () => {
+    const html = editor?.getHTML();
+    await post("/post/newpost", {
+      title: 'van ban',
+      content: html,
+      author: id,
+      type: 'văn bản'
 
-    },{token:localStorage.getItem("accessToken") ?? ""})
+    }, { token: localStorage.getItem("accessToken") ?? "" })
+    window.location.reload();
   }
   return (
-    <div className="simple-editor-wrapper w-full h-full">
-      <EditorContext.Provider value={{ editor }}>
-        <Toolbar
-          ref={toolbarRef}
-          style={{
-            ...(isMobile
-              ? {
+    <div>
+      <div className="simple-editor-wrapper w-full h-full">
+        <EditorContext.Provider value={{ editor }}>
+          <Toolbar
+            ref={toolbarRef}
+            style={{
+              ...(isMobile
+                ? {
                   bottom: `calc(100% - ${height - rect.y}px)`,
                 }
-              : {}),
-          }}
-        >
-          {mobileView === "main" ? (
-            <MainToolbarContent
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              isMobile={isMobile}
-            />
-          ) : (
-            <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
-              onBack={() => setMobileView("main")}
-            />
-          )}
-        </Toolbar>
+                : {}),
+            }}
+          >
+            {mobileView === "main" ? (
+              <MainToolbarContent
+                onHighlighterClick={() => setMobileView("highlighter")}
+                onLinkClick={() => setMobileView("link")}
+                isMobile={isMobile}
+              />
+            ) : (
+              <MobileToolbarContent
+                type={mobileView === "highlighter" ? "highlighter" : "link"}
+                onBack={() => setMobileView("main")}
+              />
+            )}
+          </Toolbar>
 
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
-      </EditorContext.Provider>
+          <EditorContent
+            editor={editor}
+            role="presentation"
+            className="simple-editor-content"
+          />
+        </EditorContext.Provider>
+
+      </div>
       <div className="bg-blue-300 w-1/10 items-center text-center ml-auto rounded hover:bg-green-300 hover:cursor-pointer">
         <button onClick={handlePost}>Đăng bài</button>
       </div>
