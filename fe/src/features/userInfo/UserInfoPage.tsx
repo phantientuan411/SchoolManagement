@@ -104,33 +104,44 @@ const UserInfoPage = () => {
     return (
         <div className='min-h-screen flex gap-5 p-[50px] bg-[#F3F4FF]'>
             {/* Hiển thị thông tin cơ bản của học sinh */}
-            <div className={`w-[30%] border-gray-400 border-3 rounded-xl p-5 bg-white shadow-lg ${!edit && role === "student" ? "block" : "hidden"}`}>
-                <img className='w-[150px] h-[150px] rounded-xl' src={data[0]?.accountId.avatarUrl} alt="" />
-                <h1 className='text-[32px] font-bold mt-5' >{data[0]?.name}</h1>
-                <p className='text-[28px] mt-3'>{data[0]?.gender}</p>
-                <p className='text-[28px] mt-3'>{new Date(data[0]?.dateOfBirth).toLocaleDateString('vi-VN')}</p>
-                <p className='text-[28px] mt-3'>{(data[0] as Student)?.yearOfAdmission}</p>
-                <div className='flex gap-3 mt-3'>
-                    <div className='border-gray-400 border-3 shadow rounded-xl w-[50%] p-5 flex flex-col justify-center items-center'>
-                        <p className='text-[20px] font-medium'>Address</p>
-                        <p className='text-[26px] font-bold'>{data[0]?.address}</p>
+            <div className={`w-[30%] border-gray-400 border-3 rounded-xl bg-white shadow-lg ${!edit && role === "student" ? "block" : "hidden"}`}>
+                <div className="relative  ">
+                    <div className='relative overflow-hidden bg-[#4D44B5] w-full h-[150px] '>
+                        <div className='z-0 border-[#ffd54f] absolute top-[46%] right-[5%] w-[200px] h-[200px] rounded-full  border-10'></div>
+                        <div className=' z-10 absolute top-[68%] right-[27%] w-[150px] h-[150px] rounded-full  border-10 border-[#ff8a65]'></div>
+                    </div>
+                    <img className='border-10 border-white absolute top-[50%] left-[8%] w-[150px] h-[150px] rounded-full' src={data[0]?.accountId.avatarUrl} alt="" />
+                </div>
+
+                <div className={`pb-5 pl-5 pr-5 pt-20`}>
+                    <h1 className='text-[32px] font-bold mt-5' >{data[0]?.name}</h1>
+                    <p className='text-[28px] mt-3'>{data[0]?.gender}</p>
+                    <p className='text-[28px] mt-3'>{new Date(data[0]?.dateOfBirth).toLocaleDateString('vi-VN')}</p>
+                    <p className='text-[28px] mt-3'>{(data[0] as Student)?.yearOfAdmission}</p>
+                    <div className='flex gap-3 mt-3'>
+                        <div className='border-gray-400 border-3 shadow rounded-xl w-[50%] p-5 flex flex-col justify-center items-center'>
+                            <p className='text-[20px] font-medium'>Address</p>
+                            <p className='text-[26px] font-bold'>{data[0]?.address}</p>
+                        </div>
+
+                        <div className='border-gray-400 border-3 shadow rounded-xl w-[50%] p-5 flex flex-col justify-center items-center'>
+                            <p className='text-[20px] font-medium'>Time Zone</p>
+                            <p className='text-[26px] font-bold'>UTC +7 </p>
+                        </div>
                     </div>
 
-                    <div className='border-gray-400 border-3 shadow rounded-xl w-[50%] p-5 flex flex-col justify-center items-center'>
-                        <p className='text-[20px] font-medium'>Time Zone</p>
-                        <p className='text-[26px] font-bold'>UTC +7 </p>
+                    <div className='mt-3'>
+                        <h1 className='mt-3 text-[26px] font-bold' >Parent</h1>
+                        <p className='mt-3 text-[20px] font-medium'>Parent Name: <span className='font-normal'>{(data[0] as Student)?.parentName}</span> </p>
+                        <p className='mt-3 text-[20px] font-medium'>Parent Phone: <span className='font-normal'>{(data[0] as Student)?.parentPhone}</span> </p>
+                    </div>
+
+                    <div className='flex justify-end'>
+                        <button className=' hover:cursor-pointer flex justify-end mt-3 text-[20px] bg-[#4D44B5] text-white pt-3 pb-3 pl-15 pr-15 rounded-full' onClick={handleEdit} > Edit</button>
                     </div>
                 </div>
 
-                <div className='mt-3'>
-                    <h1 className='mt-3 text-[26px] font-bold' >Parent</h1>
-                    <p className='mt-3 text-[20px] font-medium'>Parent Name: <span className='font-normal'>{(data[0] as Student)?.parentName}</span> </p>
-                    <p className='mt-3 text-[20px] font-medium'>Parent Phone: <span className='font-normal'>{(data[0] as Student)?.parentPhone}</span> </p>
-                </div>
 
-                <div className='flex justify-end'>
-                    <button className=' hover:cursor-pointer flex justify-end mt-3 text-[20px] bg-[#4D44B5] text-white pt-3 pb-3 pl-15 pr-15 rounded-full' onClick={handleEdit} > Edit</button>
-                </div>
             </div>
 
             {/* Hiển thị thông tin cơ bản của giáo viên */}
@@ -287,7 +298,7 @@ const UserInfoPage = () => {
             <div className={`w-[70%] ${role === "student" ? "block" : "hidden"}`}>
 
                 <div className='flex gap-5'>
-                    <div className='bg-white border-gray-400 border-3 shadow rounded-xl w-[33%] p-5 flex flex-col justify-center items-center'>
+                    <div className='bg-white border-gray-400 border-3 shadow-md rounded-xl w-[33%] p-5 flex flex-col justify-center items-center'>
                         <h1 className='text-[32px] font-bold'>{totalPass}</h1>
                         <p className='text-[28px] font-medium'> Subjects Pass</p>
                     </div>
@@ -311,7 +322,7 @@ const UserInfoPage = () => {
                 {/* Thông tin lớp major */}
                 <h1 className=' mt-5 text-[32px] font-bold'>Class Major</h1>
 
-                <div className='mt-5 bg-white border-gray-400 border-3 shadow rounded-xl'>
+                <div className='mt-5 bg-white border-gray-400 border-3 shadow-xl shadow-indigo-100 rounded-xl'>
                     <div className='flex text-[16px] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
                         <div className='w-[30%] pt-5 pb-5'>Class Name</div>
                         <div className='w-[10%] pt-5 pb-5'>Class Code</div>
@@ -340,11 +351,11 @@ const UserInfoPage = () => {
                         <div className='w-[10%] pt-5 pb-5'>Class Code</div>
                         <div className='w-[20%] pt-5 pb-5'>Subject Name</div>
                         <div className='w-[20%] pt-5 pb-5'>Teacher Name</div>
-                        <div className='w-[10%] pt-5 pb-5'>Regular</div>
-                        <div className='w-[10%] pt-5 pb-5'>Final</div>
-                        <div className='w-[10%] pt-5 pb-5'>Total</div>
-                        <div className='w-[10%] pt-5 pb-5'>GPA</div>
-                        <div className='w-[10%] pt-5 pb-5'>Status</div>
+                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>Regular</div>
+                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>Final</div>
+                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>Total</div>
+                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>GPA</div>
+                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>Status</div>
                     </div>
                     {classStudent.map((e) => {
 
@@ -352,11 +363,13 @@ const UserInfoPage = () => {
                             <div className='w-[10%] pt-5 pb-5'>{e.classStudyId.classCode}</div>
                             <div className='w-[20%] pt-5 pb-5'>{e.classStudyId.subjectId.subjectName}</div>
                             <div className='w-[20%] pt-5 pb-5'>{e.classStudyId.teacherId.name}</div>
-                            <div className='w-[10%] pt-5 pb-5'>{e.mark.regular}</div>
-                            <div className='w-[10%] pt-5 pb-5'>{e.mark.final}</div>
-                            <div className='w-[10%] pt-5 pb-5'>{e.mark.total}</div>
-                            <div className='w-[10%] pt-5 pb-5'>{convertGPA(Number(e.mark.total))}</div>
-                            <div className={`w-[10%] font-bold pt-5 pb-5 ${e.status === "Pass" ? 'text-green-600' : 'text-red-600'}`}>{e.status}</div>
+                            <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.mark.regular}</div>
+                            <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.mark.final}</div>
+                            <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.mark.total}</div>
+                            <div className='w-[10%] pt-5 pb-5 flex justify-center'>{convertGPA(Number(e.mark.total))}</div>
+                            <div className="w-[10%] text-[14px] flex items-center" >
+                                <h1 className={`flex border rounded-xl items-center justify-center w-[100%] h-[30%] font-bold pt-5 pb-5 ${e.status === "Pass" ? 'text-green-600 border-green-600 bg-green-100' : 'text-red-600 border-red-600 bg-red-100'}`}>{e.status}</h1>
+                            </div>
                         </div>
                     }
                     )}
@@ -369,7 +382,7 @@ const UserInfoPage = () => {
 
             {/* Thông tin thêm nếu là giáo viên */}
             <div className={`w-[70%] ${role === "teacher" ? "block" : "hidden"}`}>
-                <div className='border-gray-400 border-3 shadow rounded-xl p-5 mt-5'>
+                <div className='bg-white border-gray-400 border-3 shadow rounded-xl p-5 mt-5'>
                     <h1 className='text-[32px] font-bold'>Total Teaching Class</h1>
                     <p className='text-[28px] flex justify-center'>{totalClass}</p>
                 </div>
@@ -377,7 +390,7 @@ const UserInfoPage = () => {
                 {/* Thông tin lớp major */}
                 <h1 className=' mt-5 text-[32px] font-bold'>Class Major</h1>
 
-                <div className='mt-5  border-gray-400 border-3 shadow rounded-xl'>
+                <div className='mt-5 bg-white border-gray-400 border-3 shadow rounded-xl'>
                     <div className='flex text-[16px] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
                         <div className='w-[25%] pt-5 pb-5'>Class Name</div>
                         <div className='w-[10%] pt-5 pb-5'>Class Code</div>
@@ -400,7 +413,7 @@ const UserInfoPage = () => {
                 {/* Thông tin các lớp đang học */}
                 <h1 className=' mt-5 text-[32px] font-bold'>Class Teaching</h1>
 
-                <div className='mt-5  border-gray-400 border-3 shadow rounded-xl'>
+                <div className='mt-5 bg-white  border-gray-400 border-3 shadow rounded-xl'>
 
                     <div className='flex text-[16px] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
                         <div className='w-[10%] pt-5 pb-5'>Class Code</div>
