@@ -46,8 +46,8 @@ const getSubjectEqualMajor = async (req: express.Request<{}, {}, {}, { majorId: 
         })
     }
 }
-const getByMajorId = async(req:express.Request<{}, {}, {}, {majorId:string}>, res:express.Response)=>{
-    const id = req.params;
+const getByMajorId = async(req:express.Request<{majorId:string}, {}, {}, {}>, res:express.Response)=>{
+    const id = req.params.majorId;
     console.log(id);
     
     const subject = await subjectModel.find({majorId:id})

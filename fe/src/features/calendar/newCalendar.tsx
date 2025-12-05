@@ -201,7 +201,7 @@ const AddTimeTable: React.FC = () => {
     const token = localStorage.getItem("accessToken") ?? "";
     try {
       const response = await get(`/subject/majorId/${majorId}`, {}, { token });
-      setSubjects(response.data);
+      setSubjects(response.data.data);
     } catch (error) {
       console.error("Error fetching subjects:", error);
     }
@@ -361,13 +361,13 @@ const AddTimeTable: React.FC = () => {
         {/* Loading indicator */}
         {loading && (
           <div className="text-blue-600 font-semibold animate-pulse mb-4">
-            Đang lưu dữ liệu...
+Đang lưu dữ liệu...
           </div>
         )}
 
         {/* Form thông tin cơ bản - Style giống Calendar */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-4 border-2 border-gray-300">
-          <h2 className="text-xl font-bold mb-4">🔍 Thông tin thời khóa biểu</h2>
+          <h2 className="text-xl font-bold mb-4">Thông tin thời khóa biểu</h2>
           
           <div className="flex gap-3 flex-wrap items-center">
             {/* Year Dropdown */}
@@ -430,7 +430,7 @@ const AddTimeTable: React.FC = () => {
 
           {loadingDropdowns && (
             <div className="text-sm text-gray-600 mt-3">
-              Đang tải danh sách...
+Đang tải danh sách...
             </div>
           )}
 
