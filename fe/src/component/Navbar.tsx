@@ -79,7 +79,7 @@ const Navbar = () => {
             { path: '/teacher', label: 'Teacher' },
             { path: '/food', label: 'Food' },
             { path: '/classAdmin', label: 'Class' },
-            { path: '/major', label: 'Major' },
+            { path: '/manageMajor', label: 'Major' },
         ],
         teacher: [
             { path: '/home', label: 'Dashboard' },

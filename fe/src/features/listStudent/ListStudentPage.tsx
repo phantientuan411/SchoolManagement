@@ -95,28 +95,28 @@ const ListStudentPage = () => {
 
                 {/* Tiêu đề bảng  */}
                 <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
-                    <div onClick={() => setSort("name")} className='w-[20%] pt-5 pb-5 flex gap-5 items-center'>
+                    <div onClick={() => setSort("name")} className='w-[20%] pt-5 pb-5 justify-center flex gap-5 items-center'>
                         <p>Name</p>
                         {sort.name === "asc"
                             ? <IoMdArrowDropup className='text-[25px] text-red-700' />
                             : (sort.name === "desc" ? <IoMdArrowDropdown className='text-[25px] text-green-700' /> : null)}
                     </div>
-                    <div onClick={() => setSort("_id")} className='w-[20%] pt-5 pb-5 flex gap-5 items-center'>
+                    <div onClick={() => setSort("_id")} className='w-[20%] pt-5 pb-5 justify-center flex gap-5 items-center'>
                         <p>ID</p>
                         {sort._id === "asc"
                             ? <IoMdArrowDropup className='text-[25px] text-red-700' />
                             : (sort._id === "desc" ? <IoMdArrowDropdown className='text-[25px] text-green-700' /> : null)}
                     </div>
-                    <div onClick={() => setSort("dateOfBirth")} className='w-[15%] pt-5 pb-5 flex gap-5 items-center'>
+                    <div onClick={() => setSort("dateOfBirth")} className='w-[15%] pt-5 pb-5 justify-center flex gap-5 items-center'>
                         <p>Date</p>
                         {sort.dateOfBirth === "asc"
                             ? <IoMdArrowDropup className='text-[25px] text-red-700' />
                             : (sort.dateOfBirth === "desc" ? <IoMdArrowDropdown className='text-[25px] text-green-700' /> : null)}
                     </div>
-                    <div className='w-[15%] pt-5 pb-5'>Paren Name</div>
-                    <div className='w-[10%] pt-5 pb-5'>City</div>
-                    <div className='w-[10%] pt-5 pb-5'>Contact</div>
-                    <div onClick={() => setSort("classId")} className='w-[10%] pt-5 pb-5 flex gap-5 items-center'>
+                    <div className='w-[15%] pt-5 pb-5 flex justify-center'>Paren Name</div>
+                    <div className='w-[10%] pt-5 pb-5 flex justify-center'>City</div>
+                    <div className='w-[10%] pt-5 pb-5 flex justify-center'>Contact</div>
+                    <div onClick={() => setSort("classId")} className='w-[10%] pt-5 pb-5 justify-center flex gap-5 items-center'>
                         <p>Grade</p>
                         {sort.classId === "asc"
                             ? <IoMdArrowDropup className='text-[25px] text-red-700' />
@@ -127,16 +127,16 @@ const ListStudentPage = () => {
                 {/* List danh sách học sinh */}
                 {student.map(e =>
                     <div onClick={() => selectStudent(e.accountId._id)} className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
-                        <div className='flex gap-5 items-center w-[20%] pt-5 pb-5 text-[20px] font-bold'>
+                        <div className='gap-5 items-center w-[20%] pt-5 pb-5 flex justify-center text-[20px] font-bold'>
                             <img className='w-10 h-10 rounded-4xl' src={e.accountId.avatarUrl} alt="" />
                             <h1>{e.name}</h1>
                         </div>
-                        <div className='w-[20%] pt-5 pb-5 text-[20px] font-semibold text-[#4D44B5]' >{"#" + e._id.slice(e._id.indexOf("ff"))}</div>
-                        <div className='w-[15%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{new Date(e.dateOfBirth).toLocaleDateString("vi-VN")}</div>
-                        <div className='w-[15%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{e.parentName}</div>
-                        <div className='w-[10%] pt-5 pb-5 text-[16px] font-normal text-[#A098AE]'>{e.address}</div>
-                        <div className='w-[10%] pt-5 pb-5 truncate'>{e.accountId.accountEmail}</div>
-                        <div className='w-[10%] pt-5 pb-5 overflow-hidden'>{e.classId.classCode}</div>
+                        <div className='w-[20%] pt-5 pb-5 flex justify-center text-[20px] font-semibold text-[#4D44B5]' >{"#" + e._id.slice(e._id.indexOf("ff"))}</div>
+                        <div className='w-[15%] pt-5 pb-5 flex justify-center text-[16px] font-normal text-[#A098AE]'>{new Date(e.dateOfBirth).toLocaleDateString("vi-VN")}</div>
+                        <div className='w-[15%] pt-5 pb-5 flex justify-center text-[16px] font-normal text-[#A098AE]'>{e.parentName}</div>
+                        <div className='w-[10%] pt-5 pb-5 flex justify-center text-[16px] font-normal text-[#A098AE]'>{e.address}</div>
+                        <div className='w-[10%] pt-5 pb-5 flex justify-center truncate'>{e.accountId.accountEmail}</div>
+                        <div className='w-[10%] pt-5 pb-5 flex justify-center overflow-hidden'>{e.classId.classCode}</div>
                     </div>
                 )}
 

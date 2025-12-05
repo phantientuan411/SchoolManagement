@@ -1,62 +1,74 @@
 import { useEffect, useState } from 'react'
-import { useAppSelector } from '../../redux&hook/hook'
-import { IoCaretDown } from "react-icons/io5";
-import { MdOutlineModeEdit } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
-import type { ClassStudy } from '../../type/user';
+import { useAppSelector, useAppDispatch } from '../../redux&hook/hook'
+import { PiStudentFill } from "react-icons/pi";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getClassStudyDetail } from '../../redux&hook/slice/classstudy';
+
 
 const ListClassStudy = () => {
-    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
-    const [subId, setSubId] = useState("")
+    const { id } = useParams()
 
-    const { classStudyEqualSubject, subjectId } = useAppSelector((state) => state.getClassStudy)
+    const { classStudyDetail, studentDetail } = useAppSelector((state) => state.getClassStudy)
 
     useEffect(() => {
-        setSubId(subjectId)
-    }, [])
+        if (!id) return
+        dispatch(getClassStudyDetail({ id: id }))
+    })
 
-    const handleEdit = (e: ClassStudy) => {
-        localStorage.setItem("isEdit", "ClassStudy")
-        localStorage.setItem("classStudy", JSON.stringify(e))
-        navigate("/majorEdit")
-
-    }
     return (
-        <div className='flex gap-5'>
-            <IoCaretDown className='text-red-600 text-2xl' />
-            <div className='flex flex-col gap-2 flex-1'>
-                <h1 className='text-[#303972] text-[20px] font-bold'>Classes</h1>
-                <div className='flex text-[18px] text-[#303972] font-bold pl-5 pr-5 rounded-xl bg-white' >
-                    <div className='w-[5%] pt-5 pb-5 flex justify-center'>No.</div>
-                    <div className='w-[10%] pt-5 pb-5 flex justify-center'>Class Code</div>
-                    <div className='w-[15%] pt-5 pb-5 flex justify-center'>Teacher Name</div>
-                    <div className='w-[15%] pt-5 pb-5 flex justify-center'>Start Date</div>
-                    <div className='w-[15%] pt-5 pb-5 flex justify-center'>End Date</div>
-                    <div className='w-[10%] pt-5 pb-5 flex justify-center'>Start Time</div>
-                    <div className='w-[10%] pt-5 pb-5 flex justify-center'>End Time</div>
-                    <div className='w-[10%] pt-5 pb-5 flex justify-center'>Date Of Week</div>
-                    <div className='w-[10%] pt-5 pb-5 flex justify-center'>Action</div>
-                </div>
-                {classStudyEqualSubject[subId]?.map((e, index) =>
-                    <div key={e._id} className='flex text-[20px] pl-5 pr-5 rounded-xl bg-white font-semibold' >
-                        <div className='w-[5%] pt-5 pb-5 flex justify-center'>{index + 1}</div>
-                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.classCode}</div>
-                        <div className='w-[15%] pt-5 pb-5 flex justify-center'>{e.teacherId.name}</div>
-                        <div className='w-[15%] pt-5 pb-5 flex justify-center'>{new Date(e.startDate).toLocaleDateString("vi-VN")}</div>
-                        <div className='w-[15%] pt-5 pb-5 flex justify-center'>{new Date(e.endDate).toLocaleDateString("vi-VN")}</div>
-                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.startTime}</div>
-                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.endTime}</div>
-                        <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.dateOfWeek}</div>
-                        <div className='w-[10%] pt-5 pb-5 flex justify-center items-center gap-8 text-[#303972] font-extrabold'>
-                            <MdOutlineModeEdit onClick={() => handleEdit(e)} />
-                            <FaTrash />
-                        </div>
+        <div className='min-h-screen flex flex-col gap-5 pt-[50px] pl-[200px] pr-[200px] bg-[#F3F4FF]'>
+            <h1 className='text-[32px] font-bold pb-5'>Manage Major - Class Study: {classStudyDetail[0]?.classCode}</h1>
+
+            <div className='grid grid-cols-2 gap-5 pb-5'>
+                <div className='bg-white rounded-2xl shadow-lg shadow-indigo-100 p-6 flex flex-col gap-5'>
+                    <h1 className='text-[24px] text-gray-400'>Total Student</h1>
+                    <div className='flex gap-5 text-[28px] font-semibold items-center'>
+                        <PiStudentFill />
+                        <span>{studentDetail.length}</span>
                     </div>
-                )}
+                </div>
+
+                <div className='bg-white rounded-2xl shadow-lg shadow-indigo-100 p-6 flex flex-col gap-5'>
+                    <h1 className='text-[24px] text-gray-400'>Teacher</h1>
+                    <div className='flex gap-5 text-[28px] font-semibold items-center'>
+                        <FaChalkboardTeacher />
+                        <span>{classStudyDetail[0]?.teacherId.name}</span>
+                    </div>
+                </div>
+
             </div>
 
+            <div className='bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6'>
+                <div className='flex gap-7 border-b border-gray-400 font-semibold text-[22px]'>
+                    <div className={`pb-5! hover:cursor-pointer border-b text-[#4D44B5] border-[#4D44B5]`} >Student List</div>
+                </div>
+                {/* Student List */}
+                <div className={`rounded-xl bg-white`}>
+                    <div className='flex items-center text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted'>
+                        <div className='w-[10%] pt-5 pb-5 '>No.</div>
+                        <div className='w-[25%] pt-5 pb-5 '>Student Name</div>
+                        <div className='w-[20%] pt-5 pb-5'>Student Code</div>
+                        <div className='w-[15%] pt-5 pb-5 flex justify-center'>Regular</div>
+                        <div className='w-[15%] pt-5 pb-5 flex justify-center'>Final</div>
+                        <div className='w-[15%] pt-5 pb-5 flex justify-center'>Total</div>
+                    </div>
+
+                    {studentDetail?.map((e, index) =>
+                        <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
+                            <div className='w-[10%] pt-5 pb-5 '>{index + 1}</div>
+                            <div className='w-[25%] pt-5 pb-5 '>{e.studentId?.name}</div>
+                            <div className='w-[20%] pt-5 pb-5'>{e.studentId?._id}</div>
+                            <div className='w-[15%] pt-5 pb-5 flex justify-center'>{e.mark.regular}</div>
+                            <div className='w-[15%] pt-5 pb-5 flex justify-center'>{e.mark.final}</div>
+                            <div className='w-[15%] pt-5 pb-5 flex justify-center'>{e.mark.total}</div>
+                        </div>)}
+
+                </div>
+            </div>
         </div>
     )
 }

@@ -1,6 +1,8 @@
 import * as express from "express"
 import classstudyModel from "../../model/major/classstudies.model.ts"
 import TeacherModel from "../../model/user/teacher.model.ts"
+import classstudentModel from "../../model/major/classstudent.ts"
+import StudentModel from "../../model/user/student.model.ts"
 
 // Định nghĩa kiểu dữ liệu edit
 interface EditClassStudy {
@@ -83,6 +85,29 @@ const getClassStudyEqualSubject = async (req: express.Request<{}, {}, {}, { subj
     }
 }
 
+const getClassStudyDetail = async (req: express.Request<{ id: string }, {}, {}, {}>, res: express.Response) => {
+    try {
+        const { id } = req.params
+
+        const classStudy = await classstudyModel.find({ _id: id })
+            .populate("teacherId")
+
+        const student = await classstudentModel.find({ classStudyId: id })
+            .populate("studentId")
+
+        res.status(200).json({
+            data: classStudy,
+            student: student,
+            message: "Thành công"
+        })
+    } catch (error) {
+        console.error("Lỗi chi tiết:", error)
+        res.status(500).json({
+            message: "Lỗi hệ thống"
+        })
+    }
+}
+
 const deleteClassStudy = async (req: express.Request<{ id: string }, {}, {}, {}>, res: express.Response) => {
     try {
         const { id } = req.params
@@ -93,7 +118,15 @@ const deleteClassStudy = async (req: express.Request<{ id: string }, {}, {}, {}>
             return res.status(404).json({ message: "Không tìm thấy ClassStudy" })
         }
 
-        res.status(200).json({ message: "Xóa thành công" })
+        const classStudy = await classstudyModel.find({})
+
+        const total = await classstudyModel.countDocuments({})
+
+        res.status(200).json({
+            data: classStudy,
+            total: total,
+            message: "Xóa thành công"
+        })
 
     } catch (error) {
         console.error("Lỗi chi tiết:", error)
@@ -105,7 +138,7 @@ const deleteClassStudy = async (req: express.Request<{ id: string }, {}, {}, {}>
 
 const editClassStudy = async (req: express.Request<{ id: string }, {}, { editClassStudy: EditClassStudy }, {}>, res: express.Response) => {
     try {
-        const { editClassStudy } = req.body
+        const editClassStudy = req.body
         const { id } = req.params
 
         const updateClass = await classstudyModel.findByIdAndUpdate(id, editClassStudy, { new: true })
@@ -114,7 +147,15 @@ const editClassStudy = async (req: express.Request<{ id: string }, {}, { editCla
             return res.status(404).json({ message: "Không tìm thấy ClassStudy" })
         }
 
-        res.status(200).json({ message: "Update thành công" })
+        const classStudy = await classstudyModel.find({})
+
+        const total = await classstudyModel.countDocuments({})
+
+        res.status(201).json({
+            data: classStudy,
+            total: total,
+            message: "Edit thành công"
+        })
 
     } catch (error) {
         console.error("Lỗi chi tiết:", error)
@@ -124,13 +165,39 @@ const editClassStudy = async (req: express.Request<{ id: string }, {}, { editCla
     }
 }
 
-const newClassStudy = async (req: express.Request<{}, {}, { newClassStudy: NewClassStudy }, {}>, res: express.Response) => {
+const newClassStudy = async (req: express.Request, res: express.Response) => {
     try {
-        const { newClassStudy } = req.body
+        const { classCode,
+            teacherId,
+            subjectId,
+            startDate,
+            endDate,
+            startTime,
+            endTime,
+            dateOfWeek } = req.body
 
-        const createClass = await classstudyModel.create(newClassStudy)
+        console.log("BODY:", req.body)
 
-        res.status(201).json({ message: "Thêm mới thành công" })
+        const createClass = await classstudyModel.create({
+            classCode,
+            teacherId,
+            subjectId,
+            startDate,
+            endDate,
+            startTime,
+            endTime,
+            dateOfWeek
+        })
+
+        const classStudy = await classstudyModel.find({})
+
+        const total = await classstudyModel.countDocuments({})
+
+        res.status(201).json({
+            data: classStudy,
+            total: total,
+            message: "Thêm mới thành công"
+        })
 
     } catch (error) {
         console.error("Lỗi chi tiết:", error)
@@ -140,4 +207,4 @@ const newClassStudy = async (req: express.Request<{}, {}, { newClassStudy: NewCl
     }
 }
 
-export { getClassStudy, getClassStudyEqualSubject, deleteClassStudy, editClassStudy, newClassStudy }
+export { getClassStudy, getClassStudyEqualSubject, deleteClassStudy, editClassStudy, newClassStudy, getClassStudyDetail }

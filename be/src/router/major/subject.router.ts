@@ -1,5 +1,5 @@
 import express from "express"
-import { getSubjectEqualMajor,getByMajorId } from "../../controller/major/subject.controller.ts"
+import { getSubjectEqualMajor } from "../../controller/major/subject.controller.ts"
 
 const subjectRouter = express.Router()
 

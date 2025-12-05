@@ -32,7 +32,7 @@ const classstudySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dayOfWeek: {
+    dateOfWeek: {
         type: String,
         required: true,
         enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
