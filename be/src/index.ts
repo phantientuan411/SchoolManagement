@@ -19,6 +19,9 @@ import majorRouter from "./router/major/major.router.ts";
 import classStudyRouter from "./router/major/classstudy.router.ts";
 import subjectRouter from "./router/major/subject.router.ts";
 import timeTableRoute from "./router/timeTable/timeTable.router.ts";
+import investmentRouter from "./router/finance/investment.router.ts";
+import studentPaymentRouter from "./router/finance/studentPayment.router.ts";
+import teacherSalaryRouter from "./router/finance/teacherSalary.router.ts";
 
 
 dotenv.config();
@@ -55,6 +58,9 @@ app.use("/api/major", majorRouter);
 app.use("/api/classstudy", classStudyRouter);
 app.use("/api/subject", subjectRouter);
 app.use("/api/timeTable", timeTableRoute);
+app.use("/api/investment", investmentRouter);
+app.use("/api/studentPayment", studentPaymentRouter)
+app.use("/api/teacherSalary", teacherSalaryRouter)
 
 const host = process.env.host || "localhost";
 const port: number = parseInt(process.env.port || "3000", 10);

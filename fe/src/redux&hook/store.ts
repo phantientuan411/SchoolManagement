@@ -11,6 +11,9 @@ import getMajorReducer from "./slice/major.ts";
 import getClassStudyReducer from "./slice/classstudy.ts";
 import createAccountReducer from "../features/newAccount/NewAccountData.tsx";
 import getSubjectReducer from "./slice/subject.ts";
+import getInvestmentReducer from "./slice/investment.ts";
+import getStudentPaymentReducer from "./slice/studentpayment.ts";
+import getTeacherSalaryReducer from "./slice/teachersalary.ts";
 
 export const store = configureStore({
   reducer: {
@@ -26,6 +29,9 @@ export const store = configureStore({
     getClassStudy: getClassStudyReducer,
     createAccount: createAccountReducer,
     getSubject: getSubjectReducer,
+    getInvestment: getInvestmentReducer,
+    getStudentPayment: getStudentPaymentReducer,
+    getTeacherSalary: getTeacherSalaryReducer,
   },
 
 })

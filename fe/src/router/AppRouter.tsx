@@ -16,6 +16,7 @@ import MangeMajor from "../features/manageMajor/MangeMajor.tsx";
 import ListClassMajor from "../features/listClassMajor/ListClassMajor.tsx";
 import ListSubject from "../features/listSubject/ListSubject.tsx";
 import ListClassStudy from "../features/listClassStudy/ListClassStudy.tsx";
+import FinancePage from "../features/finance/financePage.tsx";
 
 
 const AppRouter = () => {
@@ -38,6 +39,8 @@ const AppRouter = () => {
         <Route path="/majorCreate" element={<Interface><CreateMajor></CreateMajor></Interface>}></Route>
         <Route path="/calendar" element={<Interface><Calendar></Calendar></Interface>}></Route>
         <Route path="/calendar/add" element={<Interface><AddTimeTable></AddTimeTable></Interface>} />
+        <Route path="/finance" element={<Interface><FinancePage></FinancePage></Interface>}></Route>
+
       </Routes>
 
 
