@@ -18,6 +18,7 @@ import classstudentRouter from "./router/major/classstudent.router.ts";
 import majorRouter from "./router/major/major.router.ts";
 import classStudyRouter from "./router/major/classstudy.router.ts";
 import subjectRouter from "./router/major/subject.router.ts";
+import timeTableRoute from "./router/timeTable/timeTable.router.ts";
 
 
 dotenv.config();
@@ -53,8 +54,7 @@ app.use("/api/classstudent", classstudentRouter);
 app.use("/api/major", majorRouter);
 app.use("/api/classstudy", classStudyRouter);
 app.use("/api/subject", subjectRouter);
-
-
+app.use("/api/timeTable", timeTableRoute);
 
 const host = process.env.host || "localhost";
 const port: number = parseInt(process.env.port || "3000", 10);

@@ -28,5 +28,18 @@ const getSubjectEqualMajor = async (req: express.Request<{}, {}, {}, { majorId: 
         })
     }
 }
+const getByMajorId = async(req:express.Request<{}, {}, {}, {majorId:string}>, res:express.Response)=>{
+    const id = req.params;
+    console.log(id);
+    
+    const subject = await subjectModel.find({majorId:id})
+    if(!subject){
+        return res.status(404).json({message:"Không tìm thấy môn học"})
+    }
+    res.status(200).json({
+        data:subject,
+        message:"Thành công"
+    })
+}
 
-export { getSubjectEqualMajor }
+export { getSubjectEqualMajor, getByMajorId}

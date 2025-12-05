@@ -47,6 +47,6 @@
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly":true
   },
-  "include": ["src/**/*.ts", "src/router/account/posts/post_page/post.tsx"],
+  "include": ["src/**/*.ts", "src/router/account/posts/post_page/post.tsx", "src/router/timeTable"],
    "exclude": ["node_modules", "**/*.spec.ts"]
 }

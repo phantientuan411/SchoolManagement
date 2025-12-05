@@ -11,7 +11,7 @@ import Calendar from "../features/calendar/calendar.tsx";
 import ListMajorPage from "../features/listMajor/ListMajorPage.tsx";
 import CreateMajor from "../features/createMajor/CreateMajor.tsx";
 import EditMajor from "../features/editMajor/EditMajor.tsx";
-
+import AddTimeTable from "../features/calendar/newCalendar.tsx";
 
 const AppRouter = () => {
   return (
@@ -27,6 +27,8 @@ const AppRouter = () => {
         <Route path="/major" element={<Interface><ListMajorPage></ListMajorPage></Interface>}></Route>
         <Route path="/majorEdit" element={<Interface><EditMajor></EditMajor></Interface>}></Route>
         <Route path="/majorCreate" element={<Interface><CreateMajor></CreateMajor></Interface>}></Route>
+        <Route path="/calendar" element={<Interface><Calendar></Calendar></Interface>}></Route>
+        <Route path="/calendar/add" element={<Interface><AddTimeTable></AddTimeTable></Interface>} />
       </Routes>
 
 

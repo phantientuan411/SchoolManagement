@@ -1,40 +1,38 @@
-import e from "express";
 import mongoose from "mongoose";
-const eventTimeTableSchema = new mongoose.Schema({
-    subjectId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "subjects"
-    },
-    day:{
-        type:Number,
-        enum:[0,1,2,3,4,5,6]
-    },            // 0 = Thứ 2 ... 6 = Chủ nhật
-    section: String,        // "SÁNG" | "CHIỀU" | "TỐI"
-    period: String,         // Tiết: "1-1", "7-8", "11-12"
-    class: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "classes"
-    },
-    teacher: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "teachers"
-    },
-    semester:{
-        type:String
-    },
-    room: String,           // Phòng
-    type: {
-        type: String,
-        enum: ["study", "exam"]
-    },
-    note: String,
-    startDate: Date,        // Dành cho lịch nhiều tuần
-    endDate: Date,
-}
-    ,
-    {
-        timestamps: true
 
-    })
-const EventModel = mongoose.model("eventTimeTables", eventTimeTableSchema)
+const LessonSchema = new mongoose.Schema({
+  name: { type: mongoose.Schema.Types.ObjectId, ref: "subjects", required: true },
+  period: { type: String, required: true },
+  room: { type: String, required: true }
+});
+
+// Một ô có thể chứa nhiều Lesson
+const CellSchema = {
+  type: [
+    {
+      type: LessonSchema,
+    }
+  ],
+  default: null
+};
+
+// Mảng 2 chiều của CellSchema
+const EventSchema = new mongoose.Schema(
+  {
+    rows: {
+      type: [[CellSchema]],
+      required: true,
+    },
+
+    major: { type: mongoose.Schema.Types.ObjectId, ref: "majors" },
+    className: { type: mongoose.Schema.Types.ObjectId, ref: "classmajors" },
+    week: { type: String },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "accounts" },
+    month: { type: String },
+    september: { type: String },
+    year: { type: String },
+  },
+  { timestamps: true }
+);
+const EventModel = mongoose.model("events", EventSchema);
 export default EventModel
