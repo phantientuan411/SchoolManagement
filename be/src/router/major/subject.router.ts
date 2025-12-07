@@ -4,7 +4,7 @@ import { getSubjectEqualMajor,getByMajorId,getSubjectDetail,newSubject,editSubje
 const subjectRouter = express.Router()
 
 subjectRouter.get("/major", getSubjectEqualMajor)
-subjectRouter.get("/majorId/:id", getByMajorId)
+subjectRouter.get("/majorId/:majorId", getByMajorId)
 subjectRouter.get("/:id", getSubjectDetail)
 
 subjectRouter.post("/", newSubject);

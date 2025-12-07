@@ -331,8 +331,9 @@ const AddTimeTable: React.FC = () => {
     console.log("Submitting payload:", JSON.stringify(payload, null, 2));
 
     try {
+      const token = localStorage.getItem("accessToken") ?? "";
       setLoading(true);
-      // const response = await post('/timetable/', payload, { token });
+      const response = await post('/timetable/', payload, { token });
       alert("Tạo thời khóa biểu thành công!");
       window.history.back();
     } catch (error) {
