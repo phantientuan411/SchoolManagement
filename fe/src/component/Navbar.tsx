@@ -80,7 +80,6 @@ const Navbar = () => {
             { path: '/classroom', label: 'Classroom' },
             { path: '/finance', label: 'Finance' },
             { path: '/calendar', label: 'Calendar' },
-            { path: '/manageClass', label: 'Class' },
         ],
         teacher: [
             { path: '/home', label: 'Dashboard' },

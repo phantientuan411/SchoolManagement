@@ -6,7 +6,7 @@ interface Investment {
     _id?: string;       // MongoDB tự tạo
     amount: number;     // Số tiền tài trợ
     donor: string;      // Tên nhà tài trợ
-    date: string;       // Ngày nhận tài trợ (ISO string)
+    date: Date;       // Ngày nhận tài trợ (ISO string)
     note?: string;      // Ghi chú (không bắt buộc)
     completed: boolean; // Trạng thái đã nhận hay chưa
     createdAt?: string; // Timestamp tạo bản ghi

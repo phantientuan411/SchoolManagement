@@ -7,7 +7,7 @@ import { getTeacherSalary, setPageIdTeacher, setPaginationTeacher } from '../../
 
 const FinancePage = () => {
     const dispatch = useAppDispatch()
-    const { pageId, pageSize, pagination, totalInvestment, totalPage, investment } = useAppSelector((state) => state.getInvestment)
+    const { pageId, pageSize, pagination, totalInvestment, totalPage, investment} = useAppSelector((state) => state.getInvestment)
     const { pageIdStudent, pageSizeStudent, paginationStudent, totalPageStudent, totalStudent, studentPayment } = useAppSelector((state) => state.getStudentPayment)
     const { pageIdTeacher, pageSizeTeacher, paginationTeacher, totalPageTeacher, totalTeacher, teacherSalary } = useAppSelector((state) => state.getTeacherSalary)
 
@@ -79,11 +79,10 @@ const FinancePage = () => {
         }
         listPagination(pageIdStudent, totalPageStudent)
     }, [pageIdStudent, totalPageStudent])
-
     return (
-        <div className='p-[50px] bg-[#F3F4FF]'>
-            <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>Finance</h1>
-            <h1 className='text-[#303972] text-[32px] font-bold mb-[22px]'> Investment</h1>
+        <div className='p-[50px] bg-[#FFFFFF]'>
+            <h1 className=' text-[32px] font-bold mb-[25px]'>Finance</h1>
+            <h1 className='text-[25px] font-bold mb-[22px]'> Investment</h1>
             <div className='rounded-xl bg-white mb-5 '>
 
                 <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
@@ -95,12 +94,12 @@ const FinancePage = () => {
                 </div>
 
                 {investment.map((e) =>
-                    <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
+                    <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200 eclis'>
                         <div className='w-[30%] pt-5 pb-5'>{e.donor}</div>
                         <div className='w-[20%] pt-5 pb-5'>{e.amount}</div>
-                        <div className='w-[20%] pt-5 pb-5'>{e.date}</div>
+                        <div className='w-[20%] pt-5 pb-5'>{new Date(e.date).toLocaleDateString("vi-VN")}</div>
                         <div className='w-[15%] pt-5 pb-5'>{e.note}</div>
-                        <div className='w-[15%] pt-5 pb-5'>{e.completed === true ? "Completed" : "Pending"}</div>
+                        <div className={`w-[15%] pt-5 pb-5 ${e.completed === true ? "text-green-500" : "text-red-500"}`}>{e.completed === true ? "Completed" : "Pending"}</div>
                     </div>
                 )}
 
@@ -125,9 +124,8 @@ const FinancePage = () => {
 
             <div className='flex gap-5'>
                 <div className='w-[50%]'>
-                    <h1 className='text-[#303972] text-[32px] font-bold mb-[22px]'> Student Payment</h1>
+                    <h1 className='text-[25px] font-bold mb-[22px]'> Student Payment</h1>
                     <div className='rounded-xl bg-white  '>
-
                         <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
                             <div className='w-[20%] pt-5 pb-5'>Student Name</div>
                             <div className='w-[30%] pt-5 pb-5'>Student Code</div>
@@ -139,10 +137,11 @@ const FinancePage = () => {
                         {studentPayment.map((e) =>
                             <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
                                 <div className='w-[20%] pt-5 pb-5'>{e.studentId.name}</div>
-                                <div className='w-[30%] pt-5 pb-5'>{e.studentId._id}</div>
+                                <div className='w-[30%] pt-5 pb-5 min-w-0 truncate'>{e.studentId._id}</div>
                                 <div className='w-[20%] pt-5 pb-5'>{e.amount}</div>
                                 <div className='w-[15%] pt-5 pb-5'>{e.type}</div>
-                                <div className='w-[15%] pt-5 pb-5'>{e.paid === true ? "Completed" : "Pending"}</div>
+                                <div className={`w-[15%] pt-5 pb-5 ${e.paid === true ? "text-green-500" : "text-red-500"}`}>
+                                    {e.paid === true ? "Completed" : "Pending"}</div>
                             </div>
                         )}
 
@@ -165,7 +164,7 @@ const FinancePage = () => {
                 </div>
 
                 <div className='w-[50%]'>
-                    <h1 className='text-[#303972] text-[32px] font-bold mb-[22px]'> Teacher Salary</h1>
+                    <h1 className='text-[25px] font-bold mb-[22px]'> Teacher Salary</h1>
                     <div className='rounded-xl bg-white  '>
 
                         <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
@@ -182,7 +181,7 @@ const FinancePage = () => {
                                 <div className='w-[20%] pt-5 pb-5'>{e.amount}</div>
                                 <div className='w-[20%] pt-5 pb-5'>{e.month}</div>
                                 <div className='w-[15%] pt-5 pb-5'>{e.year}</div>
-                                <div className='w-[15%] pt-5 pb-5'>{e.paid === true ? "Completed" : "Pending"}</div>
+                                <div className={`w-[15%] pt-5 pb-5 ${e.paid === true ? "text-green-500" : "text-red-500"}`}>{e.paid === true ? "Completed" : "Pending"}</div>
                             </div>
                         )}
 
