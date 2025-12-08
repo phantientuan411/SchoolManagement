@@ -22,7 +22,8 @@ import timeTableRoute from "./router/timeTable/timeTable.router.ts";
 import investmentRouter from "./router/finance/investment.router.ts";
 import studentPaymentRouter from "./router/finance/studentPayment.router.ts";
 import teacherSalaryRouter from "./router/finance/teacherSalary.router.ts";
-
+import classDeviceRouter from "./router/class/classDevice.router.ts";
+import classRoomRouter from "./router/class/classRoom.router.ts";
 
 dotenv.config();
 dotenv.config({ path: ".env.local" });
@@ -61,6 +62,8 @@ app.use("/api/timeTable", timeTableRoute);
 app.use("/api/investment", investmentRouter);
 app.use("/api/studentPayment", studentPaymentRouter)
 app.use("/api/teacherSalary", teacherSalaryRouter)
+app.use("/api/classDevice", classDeviceRouter)
+app.use("/api/classRoom", classRoomRouter)
 
 const host = process.env.host || "localhost";
 const port: number = parseInt(process.env.port || "3000", 10);

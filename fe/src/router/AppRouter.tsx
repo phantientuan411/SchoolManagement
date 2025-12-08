@@ -17,7 +17,7 @@ import ListClassMajor from "../features/listClassMajor/ListClassMajor.tsx";
 import ListSubject from "../features/listSubject/ListSubject.tsx";
 import ListClassStudy from "../features/listClassStudy/ListClassStudy.tsx";
 import FinancePage from "../features/finance/financePage.tsx";
-
+import ClassRoom from "../features/classRoom/ClassRoom.tsx";
 
 const AppRouter = () => {
   return (
@@ -40,7 +40,7 @@ const AppRouter = () => {
         <Route path="/calendar" element={<Interface><Calendar></Calendar></Interface>}></Route>
         <Route path="/calendar/add" element={<Interface><AddTimeTable></AddTimeTable></Interface>} />
         <Route path="/finance" element={<Interface><FinancePage></FinancePage></Interface>}></Route>
-
+        <Route path="/classRoom" element={<Interface><ClassRoom></ClassRoom></Interface>}></Route>
       </Routes>
 
 
