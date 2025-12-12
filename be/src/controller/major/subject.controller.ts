@@ -126,6 +126,43 @@ const editSubject = async (req: express.Request<{ id: string }, {}, EditSubject,
         res.status(500).json({ message: "Lỗi hệ thống" });
     }
 };
+const findSubjectBySemester = async (req: express.Request, res: express.Response) => {
+  try {
+    const { semester, major } = req.query;
+
+    if (!semester || !major) {
+      return res.status(400).json({
+        message: "Thiếu semester hoặc major"
+      });
+    }
+
+    const subjects = await subjectModel.find({
+      semester: semester,
+      majorId: major
+    });
+
+    if (!subjects || subjects.length === 0) {
+      return res.status(404).json({
+        message: "Không tìm thấy môn học cho kỳ học này",
+        data: []
+      });
+    }
+
+    return res.status(200).json({
+      message: "Thành công",
+      data: subjects
+    });
+
+  } catch (error: any) {
+    console.error("Lỗi server:", error);
+    return res.status(500).json({
+      message: "Lỗi server",
+      error: error.message
+    });
+  }
+};
+
+
 
 // Xóa subject
 const deleteSubject = async (req: express.Request<{ id: string }, {}, {}, {}>, res: express.Response) => {
@@ -142,4 +179,4 @@ const deleteSubject = async (req: express.Request<{ id: string }, {}, {}, {}>, r
         res.status(500).json({ message: "Lỗi hệ thống" });
     }
 };
-export { getSubjectEqualMajor, getSubjectDetail, newSubject, deleteSubject, editSubject ,getByMajorId}
+export { getSubjectEqualMajor, getSubjectDetail, newSubject, deleteSubject, editSubject,findSubjectBySemester ,getByMajorId}

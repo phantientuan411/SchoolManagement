@@ -318,14 +318,13 @@ const AddTimeTable: React.FC = () => {
 
     const dataUser = localStorage.getItem("user");
     const user = dataUser ? JSON.parse(dataUser) : null;
-
     const payload = {
       rows,
       major: selectedMajor,
       className: selectedClass,
       september: selectedSemester,
       year: selectedYear,
-      createdBy: user?._id || ""
+      createdBy: user?.acountInform._id || ""
     };
 
     console.log("Submitting payload:", JSON.stringify(payload, null, 2));
@@ -333,7 +332,10 @@ const AddTimeTable: React.FC = () => {
     try {
       const token = localStorage.getItem("accessToken") ?? "";
       setLoading(true);
-      const response = await post('/timetable/', payload, { token });
+      const response = await post('/timetable/new', payload, { token });
+      if(response.status !== 200) {
+        throw new Error("Failed to create timetable");
+      }
       alert("Tạo thời khóa biểu thành công!");
       window.history.back();
     } catch (error) {
