@@ -29,10 +29,20 @@ const getQueryStudentPayment = async (
             .limit(pageSizeStudent)
             .populate("studentId"); // nếu muốn lấy thông tin student
 
+        const totalAmountPayment = await StudentPaymentModel.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalAmount: { $sum: "$amount" }
+                }
+            }
+        ])
+
         res.status(200).json({
             data: payments,
             totalPageStudent: totalPageStudent,
             totalStudent: totalPayment,
+            totalAmountPayment: totalAmountPayment,
             message: "Thành công"
         });
 

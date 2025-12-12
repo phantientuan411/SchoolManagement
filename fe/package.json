@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@canvasjs/react-charts": "^1.0.2",
     "@floating-ui/react": "^0.27.16",
     "@fullcalendar/core": "^6.1.19",
     "@fullcalendar/daygrid": "^6.1.19",
@@ -46,6 +47,7 @@
     "@uploadthing/react": "^7.3.3",
     "add": "^2.0.6",
     "axios": "^1.13.1",
+    "file-saver": "^2.0.5",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "lodash.throttle": "^4.1.1",
@@ -61,11 +63,13 @@
     "redux": "^5.0.1",
     "simple-editor": "^1.0.45",
     "uploadthing": "^7.7.4",
+    "xlsx": "^0.18.5",
     "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@tiptap/cli": "^3.3.9",
+    "@types/file-saver": "^2.0.7",
     "@types/lodash.throttle": "^4.1.9",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
