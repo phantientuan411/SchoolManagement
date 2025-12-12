@@ -1,7 +1,38 @@
+
 import * as express from "express";
 import classstudentModel from "../../model/major/classstudent.ts";
 import StudentModel from "../../model/user/student.model.ts";
 import classstudyModel from '../../model/major/classstudies.model.ts';
+
+interface Student {
+    _id: string;
+    accountId: string;
+    classId: string
+    name: string;
+    address: string;
+    gender: string
+    parentPhone: string;
+    parentName: string;
+    status: boolean;
+    major: string;
+    yearOfAdmission: number;
+    dateOfBirth: string;
+}
+
+interface Mark {
+    regular: string
+    final: string
+    total: string
+}
+
+interface UpdateScore {
+    _id: string
+    mark: Mark
+    classStudyId: string
+    status: string
+    studentId: Student
+}
+
 
 const getClassEqualStudent = async (req: express.Request<{}, {}, {}, { selected: string }>, res: express.Response) => {
     try {
@@ -71,4 +102,32 @@ const getClassEqualStudent = async (req: express.Request<{}, {}, {}, { selected:
     }
 }
 
-export { getClassEqualStudent }
+
+const updateScore = async (req: express.Request<{}, {}, UpdateScore[], {}>, res: express.Response) => {
+    try {
+        const updateScore = req.body
+
+        for (const s of updateScore) {
+            await classstudentModel.findByIdAndUpdate(
+                s._id,
+                {
+                    "mark.regular": s.mark.regular,
+                    "mark.final": s.mark.final,
+                    "mark.total": s.mark.total
+                },
+                { new: true }
+            )
+        }
+
+        res.status(200).json({ message: "Cập nhật điểm thành công" })
+
+    } catch (error) {
+        console.error("Lỗi chi tiết:", error)
+        res.status(500).json({
+            message: "Lỗi hệ thống"
+        })
+    }
+}
+
+
+export { getClassEqualStudent, updateScore }

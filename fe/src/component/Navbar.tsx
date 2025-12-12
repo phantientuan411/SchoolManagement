@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 const Navbar = () => {
     interface User {
@@ -80,6 +81,7 @@ const Navbar = () => {
             { path: '/classroom', label: 'Classroom' },
             { path: '/finance', label: 'Finance' },
             { path: '/calendar', label: 'Calendar' },
+            { path: '/manageMajor', label: 'Manage Major' }
         ],
         teacher: [
             { path: '/home', label: 'Dashboard' },

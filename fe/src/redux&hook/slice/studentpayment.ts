@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { get } from "../../axios/ultil";
 
+// Định nghĩa kiểu dữ liệu total payment
+interface TotalAmountPayment {
+    _id: null
+    totalAmount: number
+}
+
 // Định nghĩa student
 export interface Student {
     _id: string;
@@ -41,6 +47,7 @@ interface ApiStudentPaymentResponse {
     data: StudentPayment[];
     totalPageStudent: number;
     totalStudent: number;
+    totalAmountPayment: TotalAmountPayment[]
 }
 
 // Kiểu state
@@ -50,7 +57,8 @@ interface StudentPaymentState {
     pageSizeStudent: number;
     loading: boolean;
     totalPageStudent: number;
-    totalStudent: number;
+    totalStudentPayment: number;
+    totalAmountPayment: TotalAmountPayment[]
     error: string | null;
     paginationStudent: number[];
 }
@@ -58,10 +66,11 @@ interface StudentPaymentState {
 const initialState: StudentPaymentState = {
     studentPayment: [],
     pageIdStudent: 1,
-    pageSizeStudent: 20,
+    pageSizeStudent: 5,
     paginationStudent: [],
     totalPageStudent: 0,
-    totalStudent: 0,
+    totalStudentPayment: 0,
+    totalAmountPayment: [],
     loading: false,
     error: null
 }
@@ -120,7 +129,8 @@ const studentPaymentSlice = createSlice({
                 state.error = null;
                 state.studentPayment = action.payload.data;
                 state.totalPageStudent = action.payload.totalPageStudent;
-                state.totalStudent = action.payload.totalStudent;
+                state.totalStudentPayment = action.payload.totalStudent;
+                state.totalAmountPayment = action.payload.totalAmountPayment
             })
             .addCase(getStudentPayment.rejected, (state, action) => {
                 state.loading = false;

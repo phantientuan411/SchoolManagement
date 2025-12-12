@@ -27,10 +27,19 @@ const getQueryInvestment = async (req: express.Request<{}, {}, {}, InvestmentQue
             .skip(startItem)
             .limit(pageSize)
 
+        const totalAmountInvestment = await InvestmentModel.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalAmount: { $sum: "$amount" }
+                }
+            }
+        ])
         res.status(200).json({
             data: getInvestment,
             totalPage: totalPage,
             totalStudent: totalInvestment,
+            totalAmountInvestment: totalAmountInvestment,
             message: "Thành công"
 
         })

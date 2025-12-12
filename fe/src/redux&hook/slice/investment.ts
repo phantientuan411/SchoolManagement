@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { get } from "../../axios/ultil";
 
+// Định nghĩa dữ liệu total amount
+interface totalAmountInvestment {
+    _id: null
+    totalAmount: number
+}
+
 // Định nghĩa dữ liệu investment
 interface Investment {
     _id?: string;       // MongoDB tự tạo
@@ -24,6 +30,7 @@ interface ApiInvestmentResponse {
     data: Investment[];
     totalPage: number;
     totalStudent: number
+    totalAmountInvestment: totalAmountInvestment[]
 }
 
 // Định nghĩa kiểu State
@@ -34,6 +41,7 @@ interface InvestmentState {
     loading: boolean;
     totalPage: number;
     totalInvestment: number;
+    totalAmountInvestment: totalAmountInvestment[]
     error: string | null;
     pagination: number[];
 
@@ -42,10 +50,11 @@ interface InvestmentState {
 const initialState: InvestmentState = {
     investment: [],
     pageId: 1,
-    pageSize: 20,
+    pageSize: 5,
     pagination: [],
     totalPage: 0,
     totalInvestment: 0,
+    totalAmountInvestment: [],
     loading: false,
     error: null
 }
@@ -111,6 +120,7 @@ const getInvestmentSlice = createSlice({
                 state.investment = action.payload.data
                 state.totalPage = action.payload.totalPage
                 state.totalInvestment = action.payload.totalStudent
+                state.totalAmountInvestment = action.payload.totalAmountInvestment
             })
             .addCase(getInvestment.rejected, (state, action) => {
                 state.loading = false;

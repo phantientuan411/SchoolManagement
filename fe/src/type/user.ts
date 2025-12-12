@@ -84,9 +84,9 @@ export interface Teacher {
 }
 
 export interface Mark {
-  regular: number
-  final: number
-  total: number
+  regular: string
+  final: string
+  total: string
 }
 
 export interface Subject {

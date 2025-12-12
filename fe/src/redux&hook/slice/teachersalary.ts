@@ -50,7 +50,7 @@ interface TeacherSalaryState {
     pageSizeTeacher: number;
     loading: boolean;
     totalPageTeacher: number;
-    totalTeacher: number;
+    totalTeacherSalary: number;
     error: string | null;
     paginationTeacher: number[];
 }
@@ -58,10 +58,10 @@ interface TeacherSalaryState {
 const initialState: TeacherSalaryState = {
     teacherSalary: [],
     pageIdTeacher: 1,
-    pageSizeTeacher: 20,
+    pageSizeTeacher: 5,
     paginationTeacher: [],
     totalPageTeacher: 0,
-    totalTeacher: 0,
+    totalTeacherSalary: 0,
     loading: false,
     error: null
 };
@@ -79,7 +79,7 @@ export const getTeacherSalary = createAsyncThunk<
 
             const res = await get(
                 "teacherSalary",
-                { pageId: pageIdTeacher, pageSize: pageSizeTeacher },
+                { pageIdTeacher: pageIdTeacher, pageSizeTeacher: pageSizeTeacher },
                 {
                     baseURL: "http://localhost:3000/api",
                     token: accessToken ?? undefined
@@ -123,7 +123,7 @@ const teacherSalarySlice = createSlice({
                 state.error = null;
                 state.teacherSalary = action.payload.data;
                 state.totalPageTeacher = action.payload.totalPageTeacher;
-                state.totalTeacher = action.payload.totalTeacher;
+                state.totalTeacherSalary = action.payload.totalTeacher;
             })
             .addCase(getTeacherSalary.rejected, (state, action) => {
                 state.loading = false;
