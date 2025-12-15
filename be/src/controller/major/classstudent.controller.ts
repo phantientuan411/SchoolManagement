@@ -113,9 +113,13 @@ const updateScore = async (req: express.Request<{}, {}, UpdateScore[], {}>, res:
                 {
                     "mark.regular": s.mark.regular,
                     "mark.final": s.mark.final,
-                    "mark.total": s.mark.total
+                    "mark.total": s.mark.total,
+                    status: s.status
                 },
-                { new: true }
+                {
+                    new: true,
+                    runValidators: true
+                }
             )
         }
 

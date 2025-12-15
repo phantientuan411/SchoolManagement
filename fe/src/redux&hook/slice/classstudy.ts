@@ -427,6 +427,9 @@ const getClassStudySlice = createSlice({
             state.editClassStudy.startTime = ""
             state.editClassStudy.endTime = ""
             state.editClassStudy.dateOfWeek = ""
+        },
+        resetClassStudyDetail: (state) => {
+            state.studentDetail = []
         }
 
     },
@@ -479,7 +482,7 @@ const getClassStudySlice = createSlice({
 
 export const { newClassCode, newTeacherId, newSubject, newStartDate, newEndDate,
     newEndTime, newStartTime, newDateOfWeek, resetNewClassStudy,
-    editClassCode, editDateOfWeek, editEndDate, editEndTime, editStartDate, editStartTime, resetEditClassStudy, setEdited
+    editClassCode, editDateOfWeek, editEndDate, editEndTime, editStartDate, editStartTime, resetEditClassStudy, setEdited, resetClassStudyDetail
 } = getClassStudySlice.actions
 
 export default getClassStudySlice.reducer

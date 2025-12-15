@@ -10,12 +10,15 @@ import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { GiTeacher } from "react-icons/gi";
 import { getTeacher } from '../listTeacher/ListTeacherData';
 import { getStudent } from '../listStudent/ListStudentData';
+import { getExpense, setPageIdExpense, setPaginationExpense } from '../../redux&hook/slice/expense';
+import ExpenseTeacherChart from '../../component/ExpenseChart';
 
 const FinancePage = () => {
     const dispatch = useAppDispatch()
     const { pageId, pageSize, pagination, totalInvestment, totalPage, investment, totalAmountInvestment } = useAppSelector((state) => state.getInvestment)
     const { pageIdStudent, pageSizeStudent, paginationStudent, totalPageStudent, totalStudentPayment, studentPayment, totalAmountPayment } = useAppSelector((state) => state.getStudentPayment)
-    const { pageIdTeacher, pageSizeTeacher, paginationTeacher, totalPageTeacher, totalTeacherSalary, teacherSalary } = useAppSelector((state) => state.getTeacherSalary)
+    const { pageIdTeacher, pageSizeTeacher, paginationTeacher, totalPageTeacher, totalTeacherSalary, teacherSalary, totalAmountTeacher } = useAppSelector((state) => state.getTeacherSalary)
+    const { pageIdExpense, pageSizeExpense, paginationExpense, totalAmountExpense, totalExpense, totalPageExpense, expense } = useAppSelector((state) => state.getExpense)
     const { totalStudent, sort } = useAppSelector((state) => state.getStudent)
     const { totalTeacher } = useAppSelector((state) => state.getTeacher)
 
@@ -57,6 +60,13 @@ const FinancePage = () => {
             pageSizeTeacher: pageSizeTeacher,
         }));
     }, [pageIdTeacher])
+
+    useEffect(() => {
+        dispatch(getExpense({
+            pageIdExpense: pageIdExpense,
+            pageSizeExpense: pageSizeExpense
+        }))
+    }, [pageIdExpense])
 
     useEffect(() => {
         const listPagination = (item: number, total: number) => {
@@ -106,8 +116,26 @@ const FinancePage = () => {
         listPagination(pageIdStudent, totalPageStudent)
     }, [pageIdStudent, totalPageStudent])
 
+    useEffect(() => {
+        const listPagination = (item: number, total: number) => {
+            let pagination: number[] = []
+            if (item === 1) {
+                pagination.push(item, item + 1, item + 2)
+
+            } else if (item === total) {
+                pagination.push(item - 2, item - 1, item)
+            } else {
+                pagination.push(item - 1, item, item + 1)
+            }
+            return dispatch(setPaginationExpense(pagination))
+        }
+        listPagination(pageIdExpense, totalPageExpense)
+    }, [pageIdExpense, totalPageExpense])
+
     const investmentTotal = totalAmountInvestment?.[0]?.totalAmount || 0;
     const paymentTotal = totalAmountPayment?.[0]?.totalAmount || 0;
+    const salaryTotal = totalAmountTeacher.reduce((sum, e) => sum + e.totalAmount, 0)
+    const expenseTotal = totalAmountExpense.reduce((sum, e) => sum + e.totalAmount, 0)
 
     return (
         <div className='pt-[50px] pb-[50px] pl-[200px] pr-[200px] bg-[#F3F4FF]'>
@@ -142,7 +170,11 @@ const FinancePage = () => {
 
                     <div>
                         <h2 className='text-gray-400 text-[20px]'>School Balance</h2>
-                        <h1 className='text-[#303972] text-[30px] font-bold'>{(investmentTotal + paymentTotal).toLocaleString('vi-VN')} VND</h1>
+                        <div className='flex gap-5'>
+                            <p className='text-green-400 font-bold'>{(investmentTotal + paymentTotal).toLocaleString('vi-VN')}</p>
+                            <p className='text-red-400 font-bold'>{(salaryTotal + expenseTotal).toLocaleString('vi-VN')}</p>
+                        </div>
+                        <h1 className='text-[#303972] text-[30px] font-bold'>{(investmentTotal + paymentTotal - salaryTotal - expenseTotal).toLocaleString('vi-VN')} VND</h1>
                     </div>
                 </div>
             </div>
@@ -161,7 +193,7 @@ const FinancePage = () => {
                     {investment.map((e) =>
                         <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200 eclis'>
                             <div className='w-[20%] pt-5 pb-5'>{e.donor}</div>
-                            <div className='w-[20%] pt-5 pb-5'>{e.amount}</div>
+                            <div className='w-[20%] pt-5 pb-5'>{(e.amount).toLocaleString("vi-VN")}</div>
                             <div className='w-[20%] pt-5 pb-5'>{new Date(e.date).toLocaleDateString("vi-VN")}</div>
                             <div className='w-[25%] pt-5 pb-5'>{e.note}</div>
                             <div className={`w-[15%] pt-5 pb-5 ${e.completed === true ? "text-green-500" : "text-red-500"}`}>{e.completed === true ? "Completed" : "Pending"}</div>
@@ -211,7 +243,7 @@ const FinancePage = () => {
                             <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
                                 <div className='w-[20%] pt-5 pb-5'>{e.studentId.name}</div>
                                 <div className='w-[30%] pt-5 pb-5 min-w-0 truncate'>{e.studentId._id}</div>
-                                <div className='w-[20%] pt-5 pb-5'>{e.amount}</div>
+                                <div className='w-[20%] pt-5 pb-5'>{(e.amount).toLocaleString("vi-VN")}</div>
                                 <div className='w-[15%] pt-5 pb-5'>{e.type}</div>
                                 <div className={`w-[15%] pt-5 pb-5 ${e.paid === true ? "text-green-500" : "text-red-500"}`}>
                                     {e.paid === true ? "Completed" : "Pending"}</div>
@@ -251,7 +283,7 @@ const FinancePage = () => {
                         {teacherSalary.map((e) =>
                             <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
                                 <div className='w-[30%] pt-5 pb-5'>{e.teacherId.name}</div>
-                                <div className='w-[20%] pt-5 pb-5'>{e.amount}</div>
+                                <div className='w-[20%] pt-5 pb-5'>{(e.amount).toLocaleString("vi-VN")}</div>
                                 <div className='w-[20%] pt-5 pb-5'>{e.month}</div>
                                 <div className='w-[15%] pt-5 pb-5'>{e.year}</div>
                                 <div className={`w-[15%] pt-5 pb-5 ${e.paid === true ? "text-green-500" : "text-red-500"}`}>{e.paid === true ? "Completed" : "Pending"}</div>
@@ -274,6 +306,52 @@ const FinancePage = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div className='flex gap-5 items-center mt-5'>
+                <div className='w-[40%]'>
+                    <h1 className='text-[25px] font-bold mb-[22px]'> Expense</h1>
+                    <div className='rounded-xl bg-white  '>
+
+                        <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
+                            <div className='w-[25%] pt-5 pb-5'>Type</div>
+                            <div className='w-[20%] pt-5 pb-5'>Amount</div>
+                            <div className='w-[20%] pt-5 pb-5'>Month</div>
+                            <div className='w-[15%] pt-5 pb-5'>Year</div>
+                            <div className='w-[20%] pt-5 pb-5'>Status</div>
+                        </div>
+
+                        {expense.map((e) =>
+                            <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
+                                <div className='w-[25%] pt-5 pb-5'>{e.type}</div>
+                                <div className='w-[20%] pt-5 pb-5'>{(e.amount).toLocaleString("vi-VN")}</div>
+                                <div className='w-[20%] pt-5 pb-5'>{e.month}</div>
+                                <div className='w-[15%] pt-5 pb-5'>{e.year}</div>
+                                <div className={`w-[20%] pt-5 pb-5 ${e.paid === true ? "text-green-500" : "text-red-500"}`}>{e.paid === true ? "Completed" : "Pending"}</div>
+                            </div>
+                        )}
+
+                        {/* Tổng số và phân trang */}
+                        <div className='flex justify-between p-5 items-center'>
+                            <div>
+                                <p>Showing <span className='font-bold'>{pageIdExpense} - {totalPageExpense}</span> from <span className='font-bold'>{totalExpense} data</span></p>
+                            </div>
+
+                            <div className='flex gap-2 justify-center items-center'>
+                                <IoMdArrowDropleft className='text-[30px]' onClick={() => dispatch(setPageIdExpense(pageIdExpense === 1 ? pageIdExpense : pageIdExpense - 1))} />
+                                {paginationExpense.map(e =>
+                                    <div className={`hover:cursor-pointer border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageIdExpense ? 'bg-[#4D44B5] text-white' : ""}`}
+                                        onClick={() => e <= totalPageExpense && dispatch(setPageIdExpense(e))}>{e}</div>
+                                )}
+                                <IoMdArrowDropright className='text-[30px]' onClick={() => dispatch(setPageIdExpense(pageIdExpense === totalPageTeacher ? pageIdExpense : pageIdExpense + 1))} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='w-[60%] p-5 rounded-xl bg-white'>
+                    <ExpenseTeacherChart totalAmountExpense={totalAmountExpense} totalAmountTeacher={totalAmountTeacher}></ExpenseTeacherChart>
                 </div>
             </div>
         </div>

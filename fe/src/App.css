@@ -4,21 +4,22 @@ input{
 
 }
 /*login*/
-.main_login{
+/* .main_login{
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .main_login{
     background: #ffffff;
-}
+} */
 .btn-login{
     border: 1px solid #ccc;
     border-radius: 10px;
-    background: rgb(21, 226, 79)
+    color: white;
+    background: #5b9cf0
 }
 .btn-login:hover{
     cursor: pointer;
-    background: #07ff18;
+    background: #4D44B5;
     color: rgb(255, 255, 255);
 }
 

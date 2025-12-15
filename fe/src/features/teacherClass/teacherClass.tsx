@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
-import { getClassStudy, getClassStudyDetail } from '../../redux&hook/slice/classstudy'
-import * as XLSX from "xlsx";
+import { getClassStudy, getClassStudyDetail, resetClassStudyDetail } from '../../redux&hook/slice/classstudy'
+import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import { patch } from '../../axios/ultil';
 
@@ -15,17 +15,22 @@ const TeacherClass = () => {
 
     const id = teacher?.acountInform.accountId
 
+
     useEffect(() => {
         dispatch(getClassStudy({ id: id }))
     }, [])
 
     const { studentDetail, classStudy } = useAppSelector((state) => state.getClassStudy)
 
-    const [updateScore, setUpdateScore] = useState(studentDetail)
+    const [updateScore, setUpdateScore] = useState<any[]>([])
 
     const [exportClass, setExportClass] = useState("")
 
     const getStudent = async (e: any) => {
+        if (!e) {
+            setUpdateScore([])
+            return
+        }
         await dispatch(getClassStudyDetail({ id: e }))
     }
 
@@ -42,10 +47,17 @@ const TeacherClass = () => {
 
             const final = field === "final" ? value : newData[index].mark.final
 
-            const total = regular !== "" && final !== "" ? (Number(regular) * 0.3 + Number(final) * 0.7).toFixed(2) : ""
+            const total = regular !== "" && final !== ""
+                ? (Number(regular) * 0.3 + Number(final) * 0.7).toFixed(2)
+                : ""
+
+            const status = regular !== "" && final !== ""
+                ? (Number(total) >= 4 ? "Pass" : "Fail")
+                : "Studying"
 
             newData[index] = {
                 ...newData[index],
+                status,
                 mark: {
                     ...newData[index].mark,
                     [field]: value,
@@ -57,78 +69,151 @@ const TeacherClass = () => {
         });
     };
 
-    const exportTemplate = (students: any, teachClass: string) => {
-        // Chuẩn bị data theo dữ liệu thực tế
-        const data = students.map((st: any) => ({
-            StudentName: st.studentId?.name,
-            StudentCode: st.studentId?._id,
-            Regular: st.mark?.regular ?? "",   // Nếu có thì lấy, không thì để trống
-            Final: st.mark?.final ?? "",
-        }));
+    const exportTemplate = async (students: any[], teachClass: string) => {
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet("Template");
 
-        // Tạo sheet
-        const worksheet = XLSX.utils.json_to_sheet(data);
-        const workbook = XLSX.utils.book_new();
+        // ===== TITLE =====
+        sheet.mergeCells("A1:D1");
+        const titleCell = sheet.getCell("A1");
+        titleCell.value = "MẪU NHẬP ĐIỂM";
+        titleCell.font = { bold: true, size: 18 };
+        titleCell.alignment = { horizontal: "center", vertical: "middle" };
 
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Template");
+        // ===== HEADER =====
+        sheet.addRow([
+            "Student Name",
+            "Student Code",
+            "Regular",
+            "Final",
+        ]);
 
-        // Xuất file
-        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-        const file = new Blob([excelBuffer], { type: "application/octet-stream" });
+        const headerRow = sheet.getRow(2);
+        headerRow.eachCell((cell) => {
+            cell.font = { bold: true, size: 14 };
+            cell.alignment = { horizontal: "center", vertical: "middle" };
+            cell.border = {
+                top: { style: "thin" },
+                left: { style: "thin" },
+                bottom: { style: "thin" },
+                right: { style: "thin" },
+            };
+        });
 
-        saveAs(file, `mau-nhap-diem-${teachClass}.xlsx`);
-    }
+        // ===== DATA =====
+        students.forEach((st) => {
+            const row = sheet.addRow([
+                st.studentId?.name ?? "",
+                st.studentId?._id ?? "",
+                st.mark?.regular ?? "",
+                st.mark?.final ?? "",
+            ]);
 
-    const handleImportExcel = (event: React.ChangeEvent<HTMLInputElement>) => {
+            row.eachCell((cell) => {
+                cell.border = {
+                    top: { style: "thin" },
+                    left: { style: "thin" },
+                    bottom: { style: "thin" },
+                    right: { style: "thin" },
+                };
+            });
+        });
+
+        // ===== COLUMN WIDTH =====
+        sheet.columns = [
+            { width: 30 },
+            { width: 20 },
+            { width: 18 },
+            { width: 18 },
+        ];
+
+        // ===== EXPORT =====
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], {
+            type:
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        saveAs(blob, `mau-nhap-diem-${teachClass}.xlsx`);
+    };
+
+    const handleImportExcel = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
-        const reader = new FileReader();
+        const workbook = new ExcelJS.Workbook();
 
-        reader.onload = (e: any) => {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: "array" });
+        // đọc file
+        const buffer = await file.arrayBuffer();
+        await workbook.xlsx.load(buffer);
 
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const rows = XLSX.utils.sheet_to_json(sheet);
+        const worksheet = workbook.worksheets[0];
+        if (!worksheet) return;
 
-            // rows = [{StudentName, StudentCode, Regular, Final}, ...]
+        /**
+         * Bỏ:
+         * - dòng 1: tiêu đề bảng
+         * - dòng 2: header
+         */
+        const rows: any[] = [];
 
-            setUpdateScore(prev => {
-                const newData = [...prev];
+        worksheet.eachRow((row, rowNumber) => {
+            if (rowNumber <= 2) return;
 
-                rows.forEach((row: any) => {
-                    const index = newData.findIndex(
-                        (s) => s.studentId?._id === row.StudentCode
-                    );
-                    if (index !== -1) {
-                        const regular = row.Regular ?? "";
-                        const final = row.Final ?? "";
-
-                        const total =
-                            regular !== "" && final !== ""
-                                ? (Number(regular) * 0.3 + Number(final) * 0.7).toFixed(2)
-                                : "";
-
-                        newData[index] = {
-                            ...newData[index],
-                            mark: {
-                                ...newData[index].mark,
-                                regular,
-                                final,
-                                total,
-                            },
-                        };
-                    }
-                });
-
-                return newData;
+            rows.push({
+                StudentName: row.getCell(1).value,
+                StudentCode: row.getCell(2).value,
+                Regular: row.getCell(3).value,
+                Final: row.getCell(4).value,
             });
-        };
+        });
 
-        reader.readAsArrayBuffer(file);
+        setUpdateScore((prev) => {
+            const newData = [...prev];
+
+            rows.forEach((row) => {
+                const index = newData.findIndex(
+                    (s) => s.studentId?._id === String(row.StudentCode)
+                );
+
+                if (index !== -1) {
+                    const regular =
+                        row.Regular !== null && row.Regular !== undefined
+                            ? Number(row.Regular)
+                            : "";
+
+                    const final =
+                        row.Final !== null && row.Final !== undefined
+                            ? Number(row.Final)
+                            : "";
+
+                    const total =
+                        regular !== "" && final !== ""
+                            ? (regular * 0.3 + final * 0.7).toFixed(2)
+                            : "";
+
+                    const status = regular !== "" && final !== ""
+                        ? (Number(total) >= 4 ? "Pass" : "Fail")
+                        : "Studying"
+
+                    newData[index] = {
+                        ...newData[index],
+                        status,
+                        mark: {
+                            ...newData[index].mark,
+                            regular: String(regular),
+                            final: String(final),
+                            total,
+                        },
+                    };
+                }
+            });
+
+            return newData;
+        });
     };
-
 
     const handleClickUpdateScore = async () => {
         try {
@@ -154,10 +239,17 @@ const TeacherClass = () => {
             }
             alert("Cập nhật điểm thành công")
 
+
         } catch (error: any) {
             alert("Cập nhật điểm thất bại")
         }
     }
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetClassStudyDetail())
+        };
+    }, []);
 
     return (
         <div className='min-h-screen flex flex-col gap-5 pt-[50px] pl-[200px] pr-[200px] bg-[#F3F4FF]'>
@@ -166,8 +258,9 @@ const TeacherClass = () => {
             <div className='flex justify-between items-center'>
                 <div className='flex gap-5'>
                     <select className='bg-white rounded-xl p-3' name="" id="" onChange={(e) => {
+                        const selectdClass = e.target.value
                         getStudent(e.target.value)
-                        setExportClass(e.target.options[e.target.selectedIndex].text)
+                        setExportClass(selectdClass ? e.target.options[e.target.selectedIndex].text : "")
                     }}>
                         <option value="">Please choose class</option>
                         {classStudy.map((e) =>

@@ -29,10 +29,37 @@ const getQueryTeacherSalary = async (
             .limit(pageSizeTeacher)
             .populate("teacherId"); // Nếu muốn hiển thị thông tin giáo viên
 
+        const totalAmountTeacher = await TeacherSalaryModel.aggregate([
+            {
+                $group: {
+                    _id: {
+                        month: "$month",
+                        year: "$year"
+                    },
+                    totalAmount: { $sum: "$amount" }
+                }
+            },
+            {
+                $sort: {
+                    "_id.year": 1,
+                    "_id.month": 1
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    month: "$_id.month",
+                    year: "$_id.year",
+                    totalAmount: 1
+                }
+            }
+        ])
+
         res.status(200).json({
             data: salaries,
             totalPageTeacher: totalPageTeacher,
             totalTeacher: totalTeacher,
+            totalAmountTeacher: totalAmountTeacher,
             message: "Thành công",
         });
     } catch (error) {
