@@ -20,34 +20,40 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(login({ email, password }));
-  }; 
-  
-  return (
-    <div className=" main_login w-8/10 h-5/10 flex flex-col items-center text-center">
-      <h2 className="login-title p-5 pt-20 text-3xl">Đăng nhập tài khoản</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setAccountEmail(e.target.value)}
-          className="w-9/10 h-12 p-2.5 mb-2.5 mt-5"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Mật khẩu"
-          value={password}
-          onChange={(e) => setAccountPassword(e.target.value)}
-          className="w-9/10 h-12 p-2.5 mb-2.5"
-          required
-        />
-        <button type="submit" disabled={loading} className="btn-login w-6/10 h-8 font-semibold pl-auto  pr-auto">
-          {loading ? "Đang đăng nhập..." : "Đăng nhập"}
-        </button>
-      </form>
+  };
 
-      {error && <p style={{ color: "red" }}>{'Lỗi server'}</p>}
+  return (
+    <div className="flex gap-5 bg-white rounded-xl items-center overflow-hidden shadow-xl w-[80vw]">
+      <img className="w-[60%]" src="https://res.cloudinary.com/du9onbxav/image/upload/v1765746831/Screenshot_2025-12-15_021337_cbbfx3.png" alt="" />
+
+      <div className=" main_login flex flex-col items-center justify-center text-center w-[40%]">
+        <h2 className="login-title p-5 pt-20 text-3xl font-bold">Login account</h2>
+        <form className="flex flex-col gap-5 justify-center items-center w-full" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setAccountEmail(e.target.value)}
+            className="w-9/10 h-12 p-2.5 mb-2.5 mt-5"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Mật khẩu"
+            value={password}
+            onChange={(e) => setAccountPassword(e.target.value)}
+            className="w-9/10 h-12 p-2.5 mb-2.5"
+            required
+          />
+          <button type="submit" disabled={loading} className="btn-login w-6/10 h-8 font-semibold p-5 flex justify-center items-center">
+            {loading ? "Logining..." : "LOGIN"}
+          </button>
+        </form>
+
+        {error && <p style={{ color: "red" }}>{'Lỗi server'}</p>}
+      </div>
+
     </div>
+
   );
 }

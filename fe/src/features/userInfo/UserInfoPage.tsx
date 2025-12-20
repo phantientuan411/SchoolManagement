@@ -52,12 +52,12 @@ const UserInfoPage = () => {
     // Tính GPA
     const calculateGPA = (e: ClassStudent[]) => {
         const total = e.reduce((sum, item) => {
-            const gpa = convertGPA(item?.mark?.total) ?? 0
-            const credit = item.classStudyId.subjectId.numberCredits
+            const gpa = convertGPA(Number(item?.mark?.total)) ?? 0
+            const credit = item.classStudyId.subjectId?.numberCredits
             return sum + gpa * credit
         }, 0)
 
-        const totalCredit = e.reduce((sum, item) => sum + item.classStudyId.subjectId.numberCredits, 0)
+        const totalCredit = e.reduce((sum, item) => sum + item.classStudyId.subjectId?.numberCredits, 0)
 
         return total / totalCredit
     }
@@ -361,8 +361,8 @@ const UserInfoPage = () => {
 
                         return <div key={e._id} className='flex text-[18px] border-b pl-5 pr-5 border-gray-300 border-dotted' >
                             <div className='w-[10%] pt-5 pb-5'>{e.classStudyId.classCode}</div>
-                            <div className='w-[20%] pt-5 pb-5'>{e.classStudyId.subjectId.subjectName}</div>
-                            <div className='w-[20%] pt-5 pb-5'>{e.classStudyId.teacherId.name}</div>
+                            <div className='w-[20%] pt-5 pb-5'>{e.classStudyId.subjectId?.subjectName}</div>
+                            <div className='w-[20%] pt-5 pb-5'>{e.classStudyId.teacherId?.name}</div>
                             <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.mark.regular}</div>
                             <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.mark.final}</div>
                             <div className='w-[10%] pt-5 pb-5 flex justify-center'>{e.mark.total}</div>

@@ -39,5 +39,6 @@ export const IncomePieChart: React.FC<IncomePieChartProps> = ({
         ],
     };
 
-    return <CanvasJSChart options={options} />;
+    return <CanvasJSChart options={options}
+        style={{ width: "500px", height: "400px" }} />;
 };

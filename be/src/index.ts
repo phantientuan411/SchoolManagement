@@ -24,6 +24,7 @@ import studentPaymentRouter from "./router/finance/studentPayment.router.ts";
 import teacherSalaryRouter from "./router/finance/teacherSalary.router.ts";
 import classDeviceRouter from "./router/class/classDevice.router.ts";
 import classRoomRouter from "./router/class/classRoom.router.ts";
+import expenseRouter from "./router/finance/expense.router.ts";
 
 dotenv.config();
 dotenv.config({ path: ".env.local" });
@@ -60,6 +61,7 @@ app.use("/api/classstudy", classStudyRouter);
 app.use("/api/subject", subjectRouter);
 app.use("/api/timeTable", timeTableRoute);
 app.use("/api/investment", investmentRouter);
+app.use("/api/expense", expenseRouter);
 app.use("/api/studentPayment", studentPaymentRouter)
 app.use("/api/teacherSalary", teacherSalaryRouter)
 app.use("/api/classDevice", classDeviceRouter)

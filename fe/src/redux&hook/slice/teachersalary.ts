@@ -30,6 +30,14 @@ export interface TeacherSalary {
     updatedAt?: string;
 }
 
+// Định nghĩa kiểu Total Teacher Amount
+interface TotalAmountTeacher {
+    month: number
+    year: number
+    totalAmount: number
+
+}
+
 // Dữ liệu gửi đi
 interface ApiTeacherSalaryRequest {
     pageIdTeacher: number;
@@ -41,6 +49,7 @@ interface ApiTeacherSalaryResponse {
     data: TeacherSalary[];
     totalPageTeacher: number;
     totalTeacher: number;
+    totalAmountTeacher: TotalAmountTeacher[]
 }
 
 // Kiểu state
@@ -51,6 +60,7 @@ interface TeacherSalaryState {
     loading: boolean;
     totalPageTeacher: number;
     totalTeacherSalary: number;
+    totalAmountTeacher: TotalAmountTeacher[]
     error: string | null;
     paginationTeacher: number[];
 }
@@ -62,6 +72,7 @@ const initialState: TeacherSalaryState = {
     paginationTeacher: [],
     totalPageTeacher: 0,
     totalTeacherSalary: 0,
+    totalAmountTeacher: [],
     loading: false,
     error: null
 };
@@ -124,6 +135,7 @@ const teacherSalarySlice = createSlice({
                 state.teacherSalary = action.payload.data;
                 state.totalPageTeacher = action.payload.totalPageTeacher;
                 state.totalTeacherSalary = action.payload.totalTeacher;
+                state.totalAmountTeacher = action.payload.totalAmountTeacher
             })
             .addCase(getTeacherSalary.rejected, (state, action) => {
                 state.loading = false;

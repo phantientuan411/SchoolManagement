@@ -67,7 +67,7 @@ const ListStudentPage = () => {
     }
 
     return (
-        <div className='p-[50px] bg-[#ffffff]'>
+        <div className='p-[50px] bg-[#F3F4FF]'>
             <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>STUDENTS</h1>
             <div className='mb-[25px] flex justify-between'>
                 <div className='flex items-center relative' >

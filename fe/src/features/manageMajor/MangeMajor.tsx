@@ -23,32 +23,32 @@ const MangeMajor = () => {
                 <div className='grid grid-cols-3 gap-5 font-semibold'>
                     <div className='rounded-xl flex flex-col gap-5 p-5 border border-amber-200 bg-amber-100 text-amber-400 text-[24px]'>
                         <span>Major</span>
-                        <span className='font-semibold'>5</span>
+                        <span className='font-semibold'>{major.length}</span>
                     </div>
 
                     <div className='rounded-xl flex flex-col gap-5 p-5 border border-green-200 bg-green-100 text-green-400 text-[24px]'>
                         <span>Class Major</span>
-                        <span className='font-semibold'>5</span>
+                        <span className='font-semibold'>{major.reduce((sum, s) => sum + s.classMajors.length, 0)}</span>
                     </div>
 
                     <div className='rounded-xl flex flex-col gap-5 p-5 border border-blue-200 bg-blue-100 text-blue-400 text-[24px]'>
                         <span>Subject</span>
-                        <span className='font-semibold'>5</span>
+                        <span className='font-semibold'>{major.reduce((sum, s) => sum + s.subjects.length, 0)}</span>
                     </div>
 
                     <div className='rounded-xl flex flex-col gap-5 p-5 border border-red-200 bg-red-100 text-red-400 text-[24px]'>
                         <span>Class Study</span>
-                        <span className='font-semibold'>5</span>
+                        <span className='font-semibold'>{major.reduce((sum, s) => sum + s.classMajors.length, 0)}</span>
                     </div>
 
                     <div className='rounded-xl flex flex-col gap-5 p-5 border border-purple-200 bg-purple-100 text-purple-400 text-[24px]'>
                         <span>Student</span>
-                        <span className='font-semibold'>5</span>
+                        <span className='font-semibold'>{major.reduce((sum, s) => sum + s.students.length, 0)}</span>
                     </div>
 
                     <div className='rounded-xl flex flex-col gap-5 p-5 border border-yellow-200 bg-yellow-100 text-yellow-400 text-[24px]'>
                         <span>Teacher</span>
-                        <span className='font-semibold'>5</span>
+                        <span className='font-semibold'>{major.reduce((sum, s) => sum + s.teachers.length, 0)}</span>
                     </div>
                 </div>
             </div>

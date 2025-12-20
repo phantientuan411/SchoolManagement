@@ -14,6 +14,7 @@ import getSubjectReducer from "./slice/subject.ts";
 import getInvestmentReducer from "./slice/investment.ts";
 import getStudentPaymentReducer from "./slice/studentpayment.ts";
 import getTeacherSalaryReducer from "./slice/teachersalary.ts";
+import getExpenseReducer from "./slice/expense.ts";
 
 export const store = configureStore({
   reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
     getInvestment: getInvestmentReducer,
     getStudentPayment: getStudentPaymentReducer,
     getTeacherSalary: getTeacherSalaryReducer,
+    getExpense: getExpenseReducer,
   },
 
 })

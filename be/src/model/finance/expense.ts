@@ -29,11 +29,6 @@ const expenseSchema = new mongoose.Schema({
         required: true
     },
 
-    dueDate: {
-        type: Date,
-        required: true
-    },
-
     paid: {
         type: Boolean,
         default: false
