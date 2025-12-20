@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
 import { getTeacher } from '../listTeacher/ListTeacherData'
 import { useNavigate } from 'react-router-dom'
@@ -22,15 +22,12 @@ const EditMajor = () => {
 
     const { teacher } = useAppSelector((state) => state.getTeacher)
 
-    const isEdit = localStorage.getItem("isEdit")
 
     const classStudy = localStorage.getItem("classStudy")
 
     const parseClassStudy = classStudy ? JSON.parse(classStudy) : null
 
-    const { subjectId, teacherId, ...newClassStudy } = parseClassStudy
 
-    const [editClassStudy, setEditClassStudy] = useState({ ...newClassStudy, teacherId: parseClassStudy.teacherId._id })
 
     const handleSubmit = () => {
         navigate("/major")
@@ -51,7 +48,7 @@ const EditMajor = () => {
                 <form className='pl-5 pr-5 pb-5' action="">
                     <div className='flex gap-5 pt-5'>
                         <h1 className='text-[22px] text-[#303972] font-bold '>Class Code</h1>
-                        <input className="flex-1 p-2" type="text" value={editClassStudy.classCode} />
+                        <input className="flex-1 p-2" type="text" value={parseClassStudy.classCode} />
                     </div>
 
                     <div className='flex gap-5 pt-5'>
@@ -74,27 +71,27 @@ const EditMajor = () => {
                 <form className='pl-5 pr-5 pb-5' action="">
                     <div className='flex gap-5 pt-5'>
                         <h1 className='text-[22px] text-[#303972] font-bold '>Start Date</h1>
-                        <input className="flex-1 p-2" type="date" value={(editClassStudy.startDate).split("T")[0]} />
+                        <input className="flex-1 p-2" type="date" value={(parseClassStudy.startDate).split("T")[0]} />
                     </div>
 
                     <div className='flex gap-5 pt-5'>
                         <h1 className='text-[22px] text-[#303972] font-bold '>End Date</h1>
-                        <input className="flex-1 p-2" type="date" value={(editClassStudy.endDate).split("T")[0]} />
+                        <input className="flex-1 p-2" type="date" value={(parseClassStudy.endDate).split("T")[0]} />
                     </div>
 
                     <div className='flex gap-5 pt-5'>
                         <h1 className='text-[22px] text-[#303972] font-bold '>Start Time</h1>
-                        <input className="flex-1 p-2" type="text" value={editClassStudy.startTime} />
+                        <input className="flex-1 p-2" type="text" value={parseClassStudy.startTime} />
                     </div>
 
                     <div className='flex gap-5 pt-5'>
                         <h1 className='text-[22px] text-[#303972] font-bold '>End Time</h1>
-                        <input className="flex-1 p-2" type="text" value={editClassStudy.endTime} />
+                        <input className="flex-1 p-2" type="text" value={parseClassStudy.endTime} />
                     </div>
 
                     <div className='flex gap-5 pt-5'>
                         <h1 className='text-[22px] text-[#303972] font-bold '>Date of Week</h1>
-                        <select className='flex-1 p-2 border border-gray-300 rounded-lg' name="" id="" value={editClassStudy.dateOfWeek}>
+                        <select className='flex-1 p-2 border border-gray-300 rounded-lg' name="" id="" value={parseClassStudy.dateOfWeek}>
                             {day.map((e) =>
                                 <option value={e}>{e}</option>)}
                         </select>

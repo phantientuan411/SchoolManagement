@@ -1,5 +1,4 @@
 
-import ListMajorPage from '../listMajor/ListMajorPage.tsx'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
 import { getMajor } from '../../redux&hook/slice/major'

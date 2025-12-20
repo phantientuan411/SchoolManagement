@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { get, post, put, del } from "../../axios/ultil.tsx"; 
+import { useState, useEffect } from 'react';
+import { get} from "../../axios/ultil.tsx"; 
 
 interface ClassRoomInterface {
     _id: string; 

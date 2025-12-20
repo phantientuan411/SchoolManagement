@@ -35,7 +35,7 @@ type ClassMajor = {
 
 const Calendar: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate] = useState(new Date());
   const [data, setData] = useState<(Lesson[] | null)[][]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
@@ -221,7 +221,7 @@ const Calendar: React.FC = () => {
 
         const lessons: Lesson[] = [];
 
-        cell.forEach((lessonData: any, lessonIndex: number) => {
+        cell.forEach((lessonData: any) => {
           if (!lessonData || typeof lessonData !== 'object') return;
 
           let nameObject: any = {

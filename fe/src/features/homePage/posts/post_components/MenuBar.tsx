@@ -5,7 +5,7 @@ import {
     Bold, Italic, Underline as UnderlineIcon, Strikethrough, Code,
     List, ListOrdered, Quote, Undo, Redo, AlignLeft, AlignCenter,
     AlignRight, AlignJustify, Highlighter, Link as LinkIcon, Image as ImageIcon,
-    Table as TableIcon, X as ClearIcon, Type as HIcon, Minus as HrIcon,
+    Table as TableIcon, X as ClearIcon, Minus as HrIcon,
     X
 } from "lucide-react";
 

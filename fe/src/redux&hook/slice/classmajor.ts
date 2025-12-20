@@ -1,7 +1,7 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { get, post, patch, del } from "../../axios/ultil.tsx";
-import type { ClassMajor, Student, Teacher } from "../../type/user.ts";
+import type { ClassMajor, Teacher } from "../../type/user.ts";
 
 interface StudentDetails {
     _id: string;

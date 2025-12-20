@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../../redux&hook/hook'
 import { PiStudentFill } from "react-icons/pi";
 import { FaChalkboardTeacher } from "react-icons/fa";
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getClassStudyDetail } from '../../redux&hook/slice/classstudy';
 

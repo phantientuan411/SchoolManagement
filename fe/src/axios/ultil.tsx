@@ -1,4 +1,4 @@
-// until.tsx
+// until.
 // Lightweight API utility for GET / POST / PUT / DELETE using fetch
 // Usage examples at the bottom.
 

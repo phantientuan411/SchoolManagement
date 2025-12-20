@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { ClassStudent, ClassStudy, Mark } from "../../type/user";
+import type {  ClassStudy, Mark } from "../../type/user";
 import { del, get, patch, post } from "../../axios/ultil";
 
 // Định nghĩa dữ liệu gửi đi

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
-import { getUserInfo, setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate, updateStudentApi, setEdit, setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, setStatusTeacherUpdate, updateTeacherApi, setMajorTeacherUpdate, deleteUserInfoApi } from './UserInfoData'
+import { getUserInfo, setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate, updateStudentApi, setEdit, setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, updateTeacherApi, setMajorTeacherUpdate, deleteUserInfoApi } from './UserInfoData'
 import { getClassStudent } from '../../redux&hook/slice/classstudent'
 import type { ClassStudent, Student, Teacher } from '../../type/user'
 import { getClassMajor } from '../../redux&hook/slice/classmajor'

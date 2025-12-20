@@ -1,6 +1,4 @@
-import React from 'react'
 import {SimpleEditor} from '../../../@/components/tiptap-templates/simple/simple-editor.tsx'
-import { FontSize } from '@tiptap/extension-text-style'
 
 const NewPost = () => {
   return (

@@ -24,7 +24,6 @@ import {
 } from "../../tiptap-ui-primitive/toolbar/toolbar.tsx"
 
 // --- Tiptap Node ---
-import { ImageUploadNode } from "../../tiptap-node/image-upload-node/image-upload-node.tsx"
 import { HorizontalRule } from "../../tiptap-node/horizontal-rule-node/horizontal-rule-node-extension.ts"
 import "../../tiptap-node/blockquote-node/blockquote-node.scss"
 import "../../tiptap-node/code-block-node/code-block-node.scss"
@@ -67,12 +66,10 @@ import { useCursorVisibility } from "../../../hooks/use-cursor-visibility"
 //import { ThemeToggle } from "../../tiptap-templates/simple/theme-toggle"
 
 // --- Lib ---
-import { handleImageUpload, MAX_FILE_SIZE } from "../../../lib/tiptap-utils"
 
 // --- Styles ---
 import "./simple-editor.scss"
 import { post } from "../../../../src/axios/ultil.tsx"
-import content from "../../tiptap-templates/simple/data/content.json"
 
 const MainToolbarContent = ({
   onHighlighterClick,

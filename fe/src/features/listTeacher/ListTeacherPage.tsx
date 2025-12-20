@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
-import { getTeacher, setPagination, setPageId, setSearchName, setMajor } from './ListTeacherData'
+import { getTeacher, setPagination, setPageId, setSearchName } from './ListTeacherData'
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { GrSearch } from "react-icons/gr";
 import { FaPlus } from "react-icons/fa6";
