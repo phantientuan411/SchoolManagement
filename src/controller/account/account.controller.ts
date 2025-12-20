@@ -14,7 +14,7 @@ import subjectModel from "../../model/major/subject.model.ts";
 import { userInfo } from "os";
 const signup = async (req: express.Request, res: express.Response) => {
     try {
-        const { accountName, accountEmail, accountPassword, role } = req.body;
+        const { accountName, accountEmail, accountPassword, role, major, classMajor } = req.body;
         if (!accountName || !accountEmail || !accountPassword || !role) {
             return res.status(400).json({
                 message: "Vui lòng nhập đầy đủ thông tin"
@@ -27,71 +27,73 @@ const signup = async (req: express.Request, res: express.Response) => {
             })
         }
         const hashPassword = await bcrypt.hash(accountPassword, 10);
-        let accountId = uuidv4();
-        while (await AccountModel.findOne({ accountId })) {
-            accountId = uuidv4();
-        }
-        await AccountModel.create({
+
+        const newAccount = await AccountModel.create({
             accountName,
             accountEmail,
             accountPassword: hashPassword,
-            accountId,
+            phone: "",
             isActive: true,
-            role
+            role,
+            avatarUrl: "https://res.cloudinary.com/du9onbxav/image/upload/v1762327654/c6e56503cfdd87da299f72dc416023d4_tkkqbq.jpg",
+            avatarId: "",
+            bio: `Tên tôi là ${accountName}`
         })
         console.log(role);
-        
-        if (role === 'student'){
-            try {
-                await StudentModel.create({
-                accountId,
-                name: accountName,
-                address:"",
-                dateOfBird:"",
-                parentPhone:"",
-                parentName:"",
-                major:"",
-                status:true,
-                yearOfAdmission:""
 
-            })
+        if (role === 'student') {
+            try {
+                const newStudent = await StudentModel.create({
+                    accountId: newAccount._id,
+                    classId: classMajor,
+                    name: accountName,
+                    address: "",
+                    parentPhone: "",
+                    parentName: "",
+                    major,
+                    status: true,
+                    yearOfAdmission: "",
+                    dateOfBirth: ""
+                })
             } catch (error) {
-              return res.status(500).json({
+                return res.status(500).json({
                     message: "Lỗi hệ thống"
-                }) 
+                })
             }
-        }else if (role == 'teacher'){
-             try {
-                await TeacherModel.create({
-                accountId ,
-                name: accountName,
-                address:"",
-                dateOfBird:"",
-                degree:"",
-                major:"",
-                yearExperience:"",
-                status:true})
-             } catch (error) {
+        } else if (role == 'teacher') {
+            try {
+                const newTeacher = await TeacherModel.create({
+                    accountId: newAccount._id,
+                    teacherCode: "",
+                    name: accountName,
+                    address: "",
+                    degree: "",
+                    major: "",
+                    yearExperience: "",
+                    status: true,
+                    dateOfBirth: ""
+                })
+            } catch (error) {
                 console.log('Lỗi khi đăng ký', error);
                 return res.status(500).json({
                     message: "Lỗi hệ thống"
                 })
-             }
-        
-        }else if (role == 'staff'){
+            }
+
+        } else if (role == 'staff') {
             try {
-                await StaffModel.create({
-                accountId,
-                name: accountName,
-                address:"",
-                profession:"",
-                year:"",
-                status:true
-            })
+                const newStaff = await StaffModel.create({
+                    accountId: newAccount._id,
+                    name: accountName,
+                    address: "",
+                    profession: "",
+                    year: "",
+                    status: true
+                })
             } catch (error) {
-              return res.status(500).json({
+                return res.status(500).json({
                     message: "Lỗi hệ thống"
-                })  
+                })
             }
         }
         return res.status(200).json({
@@ -106,7 +108,7 @@ const signup = async (req: express.Request, res: express.Response) => {
 }
 const login = async (req: express.Request, res: express.Response) => {
     const ACCESS_TOKEN_EXPIRES = '30m'
-    const REFRESS_TOKEN_EXPIRES = 30 * 24 * 60 * 60 *1000
+    const REFRESS_TOKEN_EXPIRES = 30 * 24 * 60 * 60 * 1000
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -114,10 +116,10 @@ const login = async (req: express.Request, res: express.Response) => {
                 message: "Vui lòng nhập đầy đủ thông tin"
             })
         }
-        console.log(email,password);
-        
+        console.log(email, password);
+
         //kiem tra mk
-        const checkAccount = await AccountModel.findOne({ accountEmail: email});
+        const checkAccount = await AccountModel.findOne({ accountEmail: email });
         if (!checkAccount) {
             return res.status(400).send({
                 data: [],
@@ -140,27 +142,29 @@ const login = async (req: express.Request, res: express.Response) => {
         const accessToken = jwt.sign(
             { accountId },
             accessSecret,
-            { expiresIn: ACCESS_TOKEN_EXPIRES || '15m' }
+            { expiresIn: '30m' }
         );
         //tao refresh token
         const refreshToken = crypto.randomBytes(64).toString('hex');
         await SessionModel.create({
             userId: checkAccount._id,
-            expiresAt: new Date(Date.now() + 15 * 60 * 1000),
+            token: refreshToken,
+            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         })
         //lay thong tin nguoi dung
-        
+
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: REFRESS_TOKEN_EXPIRES,
-            secure: true,
-            sameSite: 'none'
+            secure: false,
+            sameSite: 'lax'
         });
+        console.log(req.cookies.refreshToken);
+
         return res.status(200).json({
             message: "Đăng nhập thành công",
             accessToken,
             refreshToken
-            
         });
 
 
@@ -174,10 +178,10 @@ const login = async (req: express.Request, res: express.Response) => {
 const logout = async (req: express.Request, res: express.Response) => {
     try {
         const refreshToken = req.cookies.refreshToken;
-        if(refreshToken){
-            await SessionModel.deleteOne({refreshToken});
+        if (refreshToken) {
+            await SessionModel.deleteOne({ refreshToken });
             res.clearCookie('refreshToken');
-            return res.status(200).json({message:'Đăng xuất thành công'})
+            return res.status(200).json({ message: 'Đăng xuất thành công' })
         }
     } catch (error) {
         console.error('Lỗi khi đăng xuất:', error);

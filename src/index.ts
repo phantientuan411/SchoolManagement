@@ -1,4 +1,4 @@
-import express, {type Application,type Request,type Response } from "express";
+import express, { type Application, type Request, type Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -10,7 +10,21 @@ import authRouter from "./router/account/account.router.ts";
 import studetnRouter from "./router/user/student.router.ts";
 import protectRouter from "./middlewares/authMiddleWare.ts";
 import getRouter from "./router/account/inform.router.ts";
-
+import postRouter from "./router/homepage/post.router.ts";
+import teacherRouter from "./router/user/teacher.router.ts";
+import userInfoRouter from "./router/user/userInfo.router.ts";
+import classMajorRouter from "./router/major/classmajor.router.ts";
+import classstudentRouter from "./router/major/classstudent.router.ts";
+import majorRouter from "./router/major/major.router.ts";
+import classStudyRouter from "./router/major/classstudy.router.ts";
+import subjectRouter from "./router/major/subject.router.ts";
+import timeTableRoute from "./router/timeTable/timeTable.router.ts";
+import investmentRouter from "./router/finance/investment.router.ts";
+import studentPaymentRouter from "./router/finance/studentPayment.router.ts";
+import teacherSalaryRouter from "./router/finance/teacherSalary.router.ts";
+import classDeviceRouter from "./router/class/classDevice.router.ts";
+import classRoomRouter from "./router/class/classRoom.router.ts";
+import expenseRouter from "./router/finance/expense.router.ts";
 
 dotenv.config();
 dotenv.config({ path: ".env.local" });
@@ -22,7 +36,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
 );
@@ -37,16 +51,32 @@ app.use('/api', getRouter);
 //router private
 app.use(protectRouter);
 app.use("/api/student", studetnRouter);
+app.use("/api/post", postRouter);
+app.use("/api/teacher", teacherRouter);
+app.use("/api/userinfo", userInfoRouter);
+app.use("/api/classmajor", classMajorRouter);
+app.use("/api/classstudent", classstudentRouter);
+app.use("/api/major", majorRouter);
+app.use("/api/classstudy", classStudyRouter);
+app.use("/api/subject", subjectRouter);
+app.use("/api/timeTable", timeTableRoute);
+app.use("/api/investment", investmentRouter);
+app.use("/api/expense", expenseRouter);
+app.use("/api/studentPayment", studentPaymentRouter)
+app.use("/api/teacherSalary", teacherSalaryRouter)
+app.use("/api/classDevice", classDeviceRouter)
+app.use("/api/classRoom", classRoomRouter)
+
 const host = process.env.host || "localhost";
 const port: number = parseInt(process.env.port || "3000", 10);
 const httpServer = createServer(app);
 
 connectDB()
-.then(() => {
+  .then(() => {
     httpServer.listen(port, host, () => {
       console.log(`Server running at http://${host}:${port}`);
     });
-})
-.catch((err) => { 
-  console.error("Lỗi kết nối DB:", err);
-});
+  })
+  .catch((err) => {
+    console.error("Lỗi kết nối DB:", err);
+  });

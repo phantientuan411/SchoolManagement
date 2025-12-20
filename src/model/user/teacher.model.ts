@@ -7,7 +7,6 @@ const teacherSchema = new mongoose.Schema({
     }),
     teacherCode: ({
         type: String,
-        required: true,
         unique: true
     }),
     name: {
@@ -22,7 +21,7 @@ const teacherSchema = new mongoose.Schema({
         enum: ["male", "female"],
         default: "male"
     },
-    dateOfBird: {
+    dateOfBirth: {
         type: Date,
     },
     degree: {

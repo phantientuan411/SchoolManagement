@@ -10,7 +10,7 @@
     "dev": "nodemon index.ts"
   },
   "keywords": [],
-  "author": "", 
+  "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {

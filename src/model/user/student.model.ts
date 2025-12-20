@@ -16,14 +16,13 @@ const studentSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: true
     },
     gender: {
         type: String,
         enum: ["male", "female"],
         default: "male"
     },
-    dateOfBird: {
+    dateOfBirth: {
         type: Date,
     },
     parentPhone: {
