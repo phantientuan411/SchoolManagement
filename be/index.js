@@ -1,35 +1,35 @@
-import express, { type Application, type Request, type Response } from "express";
+import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { createServer } from "http";
-import { connectDB } from "./lib/db.ts";
+import { connectDB } from "./src/lib/db.ts";
 //router
-import authRouter from "./router/account/account.router.ts";
-import studetnRouter from "./router/user/student.router.ts";
-import protectRouter from "./middlewares/authMiddleWare.ts";
-import getRouter from "./router/account/inform.router.ts";
-import postRouter from "./router/homepage/post.router.ts";
-import teacherRouter from "./router/user/teacher.router.ts";
-import userInfoRouter from "./router/user/userInfo.router.ts";
-import classMajorRouter from "./router/major/classmajor.router.ts";
-import classstudentRouter from "./router/major/classstudent.router.ts";
-import majorRouter from "./router/major/major.router.ts";
-import classStudyRouter from "./router/major/classstudy.router.ts";
-import subjectRouter from "./router/major/subject.router.ts";
-import timeTableRoute from "./router/timeTable/timeTable.router.ts";
-import investmentRouter from "./router/finance/investment.router.ts";
-import studentPaymentRouter from "./router/finance/studentPayment.router.ts";
-import teacherSalaryRouter from "./router/finance/teacherSalary.router.ts";
-import classDeviceRouter from "./router/class/classDevice.router.ts";
-import classRoomRouter from "./router/class/classRoom.router.ts";
-import expenseRouter from "./router/finance/expense.router.ts";
+import authRouter from "./src/router/account/account.router.ts";
+import studetnRouter from "./src/router/user/student.router.ts";
+import protectRouter from "./src/middlewares/authMiddleWare.ts";
+import getRouter from "./src/router/account/inform.router.ts";
+import postRouter from "./src/router/homepage/post.router.ts";
+import teacherRouter from "./src/router/user/teacher.router.ts";
+import userInfoRouter from "./src/router/user/userInfo.router.ts";
+import classMajorRouter from "./src/router/major/classmajor.router.ts";
+import classstudentRouter from "./src/router/major/classstudent.router.ts";
+import majorRouter from "./src/router/major/major.router.ts";
+import classStudyRouter from "./src/router/major/classstudy.router.ts";
+import subjectRouter from "./src/router/major/subject.router.ts";
+import timeTableRoute from "./src/router/timeTable/timeTable.router.ts";
+import investmentRouter from "./src/router/finance/investment.router.ts";
+import studentPaymentRouter from "./src/router/finance/studentPayment.router.ts";
+import teacherSalaryRouter from "./src/router/finance/teacherSalary.router.ts";
+import classDeviceRouter from "./src/router/class/classDevice.router.ts";
+import classRoomRouter from "./src/router/class/classRoom.router.ts";
+import expenseRouter from "./src/router/finance/expense.router.ts";
 
 dotenv.config();
 dotenv.config({ path: ".env.local" });
 
-const app: Application = express();
+const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -41,7 +41,7 @@ app.use(
   })
 );
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
   res.send("hello");
 });
 
@@ -68,7 +68,7 @@ app.use("/api/classDevice", classDeviceRouter)
 app.use("/api/classRoom", classRoomRouter)
 
 const host = process.env.host || "localhost";
-const port: number = parseInt(process.env.port || "3000", 10);
+const port = parseInt(process.env.port || "3000", 10);
 const httpServer = createServer(app);
 
 connectDB()

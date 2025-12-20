@@ -9,7 +9,7 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "commonjs",
+    "module": "es6",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "target": "esnext",
@@ -47,6 +47,6 @@
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly":true
   },
-  "include": ["src/**/*.ts", "src/router/account/posts/post_page/post.tsx", "src/router/timeTable"],
+  "include": ["src/**/*.ts"],
    "exclude": ["node_modules", "**/*.spec.ts"]
 }
