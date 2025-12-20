@@ -4,7 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { createServer } from "http";
-import { connectDB } from "./src/lib/db.ts";
+import { connectDB } from "./src/lib/db.js";
 //router
 import authRouter from "./src/router/account/account.router.ts";
 import studetnRouter from "./src/router/user/student.router.ts";
@@ -67,14 +67,14 @@ app.use("/api/teacherSalary", teacherSalaryRouter)
 app.use("/api/classDevice", classDeviceRouter)
 app.use("/api/classRoom", classRoomRouter)
 
-const host = process.env.host;
-const port = parseInt(process.env.port);
+const HOST = process.env.HOST;
+const PORT = parseInt(process.env.PORT);
 const httpServer = createServer(app);
 
 connectDB()
   .then(() => {
-    httpServer.listen(port, host, () => {
-      console.log(`Server running at http://${host}:${port}`);
+    httpServer.listen(PORT, HOST, () => {
+      console.log(`Server running at http://${HOST}:${PORT}`);
     });
   })
   .catch((err) => {
