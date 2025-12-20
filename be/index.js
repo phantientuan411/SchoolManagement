@@ -67,8 +67,8 @@ app.use("/api/teacherSalary", teacherSalaryRouter)
 app.use("/api/classDevice", classDeviceRouter)
 app.use("/api/classRoom", classRoomRouter)
 
-const host = process.env.host || "localhost";
-const port = parseInt(process.env.port || "3000", 10);
+const host = process.env.host;
+const port = parseInt(process.env.port);
 const httpServer = createServer(app);
 
 connectDB()

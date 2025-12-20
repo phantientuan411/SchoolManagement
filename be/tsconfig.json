@@ -47,6 +47,6 @@
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly":true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/lib/db.js"],
    "exclude": ["node_modules", "**/*.spec.ts"]
 }
