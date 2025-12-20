@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Application, type Request, type Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -29,7 +29,7 @@ import expenseRouter from "./router/finance/expense.router.ts";
 dotenv.config();
 dotenv.config({ path: ".env.local" });
 
-const app = express();
+const app: Application = express();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -41,7 +41,7 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("hello");
 });
 
@@ -68,7 +68,7 @@ app.use("/api/classDevice", classDeviceRouter)
 app.use("/api/classRoom", classRoomRouter)
 
 const host = process.env.host || "localhost";
-const port = parseInt(process.env.port || "3000", 10);
+const port: number = parseInt(process.env.port || "3000", 10);
 const httpServer = createServer(app);
 
 connectDB()

@@ -71,7 +71,7 @@ interface ScheduleItem {
 
 const resgisterEvent = async (req: express.Request, res: express.Response) => {
   try {
-    const { major, subjectCode, september, className } = req.body;
+    const { major, subjectCode, september, className } = req.query;
 
     if (!major || !subjectCode || !september || !className) {
       return res.status(400).json({ message: "Thiếu tham số major hoặc subjectCode" });
