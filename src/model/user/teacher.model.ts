@@ -1,38 +1,42 @@
 import mongoose from 'mongoose';
 const teacherSchema = new mongoose.Schema({
-    accountId:{
-        type:String,
-        required:true,
-        unique:true,
-        ref:"accounts"
+    accountId: ({
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "accounts",
+        required: true
+    }),
+    teacherCode: ({
+        type: String,
+        required: true,
+        unique: true
+    }),
+    name: {
+        type: String,
+        required: true
     },
-    name:{
-        type:String,
-        required:true
+    address: {
+        type: String,
     },
-    address:{
-        type:String,
+    gender: {
+        type: String,
+        enum: ["male", "female"],
+        default: "male"
     },
-    gender:{
-        type:String,
-        enum:["male","female"],
-        default:"male"
+    dateOfBird: {
+        type: Date,
     },
-    dateOfBird:{
-        type:Date,
+    degree: {
+        type: String,
     },
-    degree:{
-        type:String,
-    }, 
-    major:{
-        type:String,
+    major: {
+        type: String,
     },
-    yearExperience:{
-        type:String
+    yearExperience: {
+        type: String
     },
-    status:{
-        type:Boolean
+    status: {
+        type: Boolean
     }
 })
-const TeacherModel = mongoose.model("teachers",teacherSchema);
+const TeacherModel = mongoose.model("teachers", teacherSchema);
 export default TeacherModel;
