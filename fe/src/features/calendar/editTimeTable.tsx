@@ -39,13 +39,13 @@ type PeriodOption = {
   label: string;
 };
 
-const AddTimeTable: React.FC = () => {
+const EditTimeTable: React.FC = () => {
   // Form states
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedMajor, setSelectedMajor] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedSemester, setSelectedSemester] = useState("");
-
+  const [id, setId] = useState("");
   // Dropdown data
   const [majors, setMajors] = useState<Major[]>([]);
   const [classes, setClasses] = useState<ClassMajor[]>([]);
@@ -61,7 +61,7 @@ const AddTimeTable: React.FC = () => {
 
   // Modal state
   const [showModal, setShowModal] = useState(false);
-  const [currentCell, setCurrentCell] = useState<{row: number; col: number} | null>(null);
+  const [currentCell, setCurrentCell] = useState<{ row: number; col: number } | null>(null);
   const [modalSubject, setModalSubject] = useState("");
   const [modalPeriod, setModalPeriod] = useState("");
   const [modalRoom, setModalRoom] = useState("");
@@ -164,7 +164,7 @@ const AddTimeTable: React.FC = () => {
   const getAvailablePeriodOptions = (row: number, col: number): PeriodOption[] => {
     const allOptions = getPeriodOptions(timeSlots[row]);
     const cell = timetable[row][col];
-    
+
     if (!cell || cell.length === 0) return allOptions;
 
     return allOptions.filter(option => {
@@ -210,6 +210,41 @@ const AddTimeTable: React.FC = () => {
     setLoadingDropdowns(false);
   }, []);
 
+  // Load timetable từ localStorage lần đầu
+  useEffect(() => {
+    const raw = localStorage.getItem("lastEventSelected");
+    if (!raw) return;
+
+    try {
+      const data = JSON.parse(raw);
+      setSelectedYear(String(data.year ?? ""));
+      setSelectedSemester(String(data.september ?? data.semester ?? ""));
+      setSelectedMajor(data.major?._id ?? "");
+      setSelectedClass(data.className?._id ?? "");
+      setId(data._id??"");
+      // Load timetable data ngay
+      if (Array.isArray(data.rows)) {
+        const mapped: (Lesson[] | null)[][] = data.rows.map(
+          (row: any[]) =>
+            row.map((cell: any) => {
+              if (!cell) return null;
+
+              return cell.map((lesson: any) => ({
+                subjectId: lesson.name?._id || lesson.name || lesson.subjectId || "",
+                subjectName: lesson.name?.subjectName || lesson.subjectName || "",
+                period: lesson.period,
+                room: lesson.room
+              }));
+            })
+        );
+
+        setTimetable(mapped);
+      }
+    } catch (err) {
+      console.error("Load timetable from localStorage failed", err);
+    }
+  }, []);
+
   useEffect(() => {
     if (selectedMajor) {
       fetchSubjects(selectedMajor);
@@ -217,6 +252,40 @@ const AddTimeTable: React.FC = () => {
       setSubjects([]);
     }
   }, [selectedMajor]);
+
+  // Update timetable với subject names sau khi fetch subjects
+  useEffect(() => {
+    const raw = localStorage.getItem("lastEventSelected");
+    if (!raw || !selectedMajor || subjects.length === 0) return;
+
+    try {
+      const data = JSON.parse(raw);
+      if (!Array.isArray(data.rows)) return;
+
+      const mapped: (Lesson[] | null)[][] = data.rows.map(
+        (row: any[]) =>
+          row.map((cell: any) => {
+            if (!cell) return null;
+
+            return cell.map((lesson: any) => {
+              const subjectId = lesson.name?._id || lesson.name || lesson.subjectId || "";
+              const foundSubject = subjects.find(s => s._id === subjectId);
+
+              return {
+                subjectId: subjectId,
+                subjectName: foundSubject?.subjectName || lesson.name?.subjectName || lesson.subjectName || "",
+                period: lesson.period,
+                room: lesson.room
+              };
+            });
+          })
+      );
+
+      setTimetable(mapped);
+    } catch (err) {
+      console.error("Update timetable with subject names failed", err);
+    }
+  }, [selectedMajor, subjects]);
 
   useEffect(() => {
     let filtered = [...classes];
@@ -265,13 +334,13 @@ const AddTimeTable: React.FC = () => {
     setTimetable(prev => {
       const newTimetable = prev.map(row => [...row]);
       const cell = newTimetable[currentCell.row][currentCell.col];
-      
+
       if (cell === null) {
         newTimetable[currentCell.row][currentCell.col] = [newLesson];
       } else {
         newTimetable[currentCell.row][currentCell.col] = [...cell, newLesson];
       }
-      
+
       return newTimetable;
     });
 
@@ -280,17 +349,17 @@ const AddTimeTable: React.FC = () => {
     setModalPeriod("");
     setModalRoom("");
   };
-
+  
   const removeLesson = (row: number, col: number, lessonIndex: number) => {
     setTimetable(prev => {
       const newTimetable = prev.map(row => [...row]);
       const cell = newTimetable[row][col];
-      
+
       if (cell && Array.isArray(cell)) {
         const updatedCell = cell.filter((_, idx) => idx !== lessonIndex);
         newTimetable[row][col] = updatedCell.length > 0 ? updatedCell : null;
       }
-      
+
       return newTimetable;
     });
   };
@@ -301,7 +370,7 @@ const AddTimeTable: React.FC = () => {
       return;
     }
 
-    const rows = timetable.map(row => 
+    const rows = timetable.map(row =>
       row.map(cell => {
         if (!cell) return null;
         return cell.map(lesson => ({
@@ -314,13 +383,20 @@ const AddTimeTable: React.FC = () => {
 
     const dataUser = localStorage.getItem("user");
     const user = dataUser ? JSON.parse(dataUser) : null;
+    
+    // Get timetable ID from localStorage for update
+    const rawData = localStorage.getItem("lastEventSelected");
+    const editData = rawData ? JSON.parse(rawData) : {};
+    const timetableId = editData._id || editData.id;
+
     const payload = {
       rows,
       major: selectedMajor,
       className: selectedClass,
-      september:Number(selectedSemester),
+      september: Number(selectedSemester),
       year: Number(selectedYear),
-      createdBy: user?.acountInform._id || ""
+      createdBy: user?.acountInform._id || "",
+      _id:id
     };
 
     console.log("Submitting payload:", JSON.stringify(payload, null, 2));
@@ -328,15 +404,20 @@ const AddTimeTable: React.FC = () => {
     try {
       const token = localStorage.getItem("accessToken") ?? "";
       setLoading(true);
-      const response = await post('/timetable/new', payload, { token });
-      if(response.status !== 200) {
-        throw new Error("Failed to create timetable");
+      
+      // Use update endpoint if timetableId exists, otherwise create new
+      const endpoint = `/timetable/update`;
+      const response = await post(endpoint, payload, { token });
+      
+      if (response.status !== 200) {
+        throw new Error("Failed to save timetable");
       }
-      alert("Tạo thời khóa biểu thành công!");
+      alert(timetableId ? "Cập nhật thời khóa biểu thành công!" : "Tạo thời khóa biểu thành công!");
+      localStorage.removeItem("lastEventSelected");
       window.history.back();
     } catch (error) {
-      console.error("Error creating timetable:", error);
-      alert("Lỗi khi tạo thời khóa biểu");
+      console.error("Error saving timetable:", error);
+      alert("Lỗi khi lưu thời khóa biểu");
     } finally {
       setLoading(false);
     }
@@ -354,20 +435,22 @@ const AddTimeTable: React.FC = () => {
             <ArrowLeft size={20} />
             <span>Quay lại</span>
           </button>
-          <h1 className="text-3xl font-bold">Tạo Thời Khóa Biểu Mới</h1>
+          <h1 className="text-3xl font-bold">
+            {localStorage.getItem("lastEventSelected") ? "Chỉnh sửa Thời Khóa Biểu" : "Tạo Thời Khóa Biểu Mới"}
+          </h1>
         </div>
 
         {/* Loading indicator */}
         {loading && (
           <div className="text-blue-600 font-semibold animate-pulse mb-4">
-Đang lưu dữ liệu...
+            Đang lưu dữ liệu...
           </div>
         )}
 
         {/* Form thông tin cơ bản - Style giống Calendar */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-4 border-2 border-gray-300">
           <h2 className="text-xl font-bold mb-4">Thông tin thời khóa biểu</h2>
-          
+
           <div className="flex gap-3 flex-wrap items-center">
             {/* Year Dropdown */}
             <select
@@ -429,13 +512,13 @@ const AddTimeTable: React.FC = () => {
 
           {loadingDropdowns && (
             <div className="text-sm text-gray-600 mt-3">
-Đang tải danh sách...
+              Đang tải danh sách...
             </div>
           )}
 
           {!selectedMajor && (
             <div className="mt-4 text-center text-orange-600 bg-orange-50 p-3 rounded border border-orange-200">
-            Vui lòng chọn Chuyên ngành để bắt đầu thêm môn học
+              Vui lòng chọn Chuyên ngành để bắt đầu thêm môn học
             </div>
           )}
         </div>
@@ -443,7 +526,7 @@ const AddTimeTable: React.FC = () => {
         {/* Timetable Grid - Style giống Calendar */}
         <div className="bg-white rounded-lg shadow-xl p-6 border-2 border-gray-300">
           <h2 className="text-xl font-bold mb-4">\ Lịch học trong tuần</h2>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
@@ -484,7 +567,7 @@ const AddTimeTable: React.FC = () => {
                                 <div className="text-xs text-gray-700">Phòng: {lesson.room}</div>
                               </div>
                             ))}
-                            
+
                             {/* Add button */}
                             {canAdd && (
                               <button
@@ -528,7 +611,7 @@ const AddTimeTable: React.FC = () => {
             className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center gap-2 font-semibold"
           >
             <Save size={18} />
-            {loading ? "Đang lưu..." : "Lưu thời khóa biểu"}
+            {loading ? "Đang lưu..." : (localStorage.getItem("lastEventSelected") ? "Cập nhật thời khóa biểu" : "Lưu thời khóa biểu")}
           </button>
         </div>
       </div>
@@ -618,4 +701,4 @@ const AddTimeTable: React.FC = () => {
   );
 };
 
-export default AddTimeTable;
+export default EditTimeTable;

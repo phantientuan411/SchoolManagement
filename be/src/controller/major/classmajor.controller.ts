@@ -64,7 +64,26 @@ const getAllClassMajor = async (req: express.Request<{}, {}, {}, {}>, res: expre
         })
     }
 }
+const getClassMajorByMajor = async (req: express.Request<{}, {}, {}, { majorId: string }>, res: express.Response) => {
+    try {
+        const { majorId } = req.query
 
+        const classMajor = await classmajorModel.find({ majorId: majorId })
+        if (classMajor.length === 0) {
+            return res.status(404).json({
+                message: "Không tìm thấy lớp cho chuyên ngành này"
+            })
+        }
+        res.status(200).json({
+            data: classMajor,
+            message: "Thành công"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Lỗi hệ thống"
+        })
+    }
+}
 const getClassMajorDetail = async (req: express.Request<{ id: string }, {}, {}, {}>, res: express.Response) => {
     try {
         const { id } = req.params
@@ -147,4 +166,4 @@ const deleteClassMajor = async (req: express.Request<{ id: string }>, res: expre
     }
 }
 
-export { getClassMajorEqualStudent, getAllClassMajor, getClassMajorDetail, newClassMajor, editClassMajor, deleteClassMajor }
+export { getClassMajorByMajor,getClassMajorEqualStudent, getAllClassMajor, getClassMajorDetail, newClassMajor, editClassMajor, deleteClassMajor }

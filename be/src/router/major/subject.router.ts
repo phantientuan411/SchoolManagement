@@ -8,7 +8,7 @@ subjectRouter.get("/majorId/:majorId", getByMajorId)
 subjectRouter.get("/:id", getSubjectDetail)
 
 subjectRouter.post("/", newSubject);
-subjectRouter.get("/semester",findSubjectBySemester);
+subjectRouter.post("/semester",findSubjectBySemester);
 subjectRouter.patch("/:id", editSubject);
 
 subjectRouter.delete("/:id", deleteSubject);

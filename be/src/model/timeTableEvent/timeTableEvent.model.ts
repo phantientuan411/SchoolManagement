@@ -23,12 +23,10 @@ const EventSchema = new mongoose.Schema(
       type: [[CellSchema]],
       required: true,
     },
-
+    isActive: { type: Boolean, default: false },
     major: { type: mongoose.Schema.Types.ObjectId, ref: "majors" },
     className: { type: mongoose.Schema.Types.ObjectId, ref: "classmajors" },
-    week: { type: String },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "accounts" },
-    month: { type: String },
     september: { type: String },
     year: { type: String },
   },

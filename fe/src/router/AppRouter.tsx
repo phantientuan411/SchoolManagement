@@ -18,9 +18,9 @@ import ListSubject from "../features/listSubject/ListSubject.tsx";
 import ListClassStudy from "../features/listClassStudy/ListClassStudy.tsx";
 import FinancePage from "../features/finance/financePage.tsx";
 import ClassRoom from "../features/classRoom/ClassRoom.tsx";
-import ResgisterSubject from "../features/registerSubject/interface.tsx";
+import SubjectManagement from "../features/registerSubject/interface.tsx";
 import TeacherClass from "../features/teacherClass/teacherClass.tsx";
-
+import EditTimeTable from "../features/calendar/editTimeTable.tsx";
 const AppRouter = () => {
   return (
     <Router>
@@ -43,9 +43,9 @@ const AppRouter = () => {
         <Route path="/calendar/add" element={<Interface><AddTimeTable></AddTimeTable></Interface>} />
         <Route path="/finance" element={<Interface><FinancePage></FinancePage></Interface>}></Route>
         <Route path="/classRoom" element={<Interface><ClassRoom></ClassRoom></Interface>}></Route>
-        <Route path="/registerSubject" element={<Interface><ResgisterSubject></ResgisterSubject></Interface>}></Route>
+        <Route path="/registerSubject" element={<Interface><SubjectManagement></SubjectManagement></Interface>}></Route>
         <Route path="/classTeacher" element={<Interface><TeacherClass></TeacherClass></Interface>}></Route>
-
+        <Route path="/edit" element={<Interface><EditTimeTable/></Interface>} />
       </Routes>
 
 

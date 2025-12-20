@@ -71,9 +71,9 @@ interface ScheduleItem {
 
 const resgisterEvent = async (req: express.Request, res: express.Response) => {
   try {
-    const { major, subjectCode, september } = req.body;
+    const { major, subjectCode, september, className } = req.query;
 
-    if (!major || !subjectCode || !september) {
+    if (!major || !subjectCode || !september || !className) {
       return res.status(400).json({ message: "Thiếu tham số major hoặc subjectCode" });
     }
 
@@ -133,15 +133,16 @@ const resgisterEvent = async (req: express.Request, res: express.Response) => {
 
 const searchEvents = async (req: express.Request, res: express.Response) => {
   try {
-    const { year, major, month, className, week } = req.query;
-
+    const { year, major, className, september } = req.query;
+    if (!className && !september) {
+      return res.status(400).json({ message: "Vui lòng cung cấp ít nhất lớp và học kì để tìm kiếm" });
+    }
     const query: Record<string, any> = {};
 
     if (year) query.year = year;
     if (major) query.major = major;
-    if (month) query.month = month;
+    if (september) query.september = september;
     if (className) query.className = className;
-    if (week) query.week = week;
 
     const result = await EventModel.find(query)
       .populate("major")
@@ -203,7 +204,7 @@ const newEvent = async (req: express.Request, res: express.Response) => {
         }
       }
     }
-    const newEvent = EventModel.create(req.body);
+    const newEvent = await EventModel.create(req.body);
     return res.status(200).json({
       message: "tạo thành công",
       data: newEvent
@@ -212,4 +213,36 @@ const newEvent = async (req: express.Request, res: express.Response) => {
     return res.status(500).json({ message: "lỗi server" });
   }
 }
-export { resgisterEvent,getAllEvents, getEventsByPage, searchEvents, newEvent, getEventForStudent }
+const ativeEvent = async (req: express.Request, res: express.Response) => {
+  try {
+    const {year,major,active} = req.body;
+    const checkEvent = await EventModel.find({year,major});
+    if (checkEvent.length===0){
+      return res.status(404).json({
+        message:"không tìm thấy lịch học"
+      })
+    }
+    await EventModel.updateMany({year,major},{isActive:active});
+  } catch (error) {
+    return res.status(500).json({ message: "lỗi server" });
+  }
+}
+const updateEvent = async (req: express.Request, res: express.Response) => {
+  try {
+    const {year,major,className, september,_id} = req.body;
+    const checkEvent = await EventModel.find({_id});
+    if (checkEvent.length===0) {
+      return res.status(404).json({
+        message: "Không tìm thấy lịch học"
+      });
+    }
+    const updatedEvent = await EventModel.findOneAndUpdate({_id}, req.body, { new: true });
+    return res.status(200).json({
+      message: "Cập nhật thành công",
+      data: updatedEvent
+    });
+  } catch (error) {
+    
+  }
+}
+export { resgisterEvent,getAllEvents, getEventsByPage, searchEvents, newEvent, getEventForStudent,ativeEvent,updateEvent };

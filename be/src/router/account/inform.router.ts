@@ -26,6 +26,7 @@ const getInform = async (req: express.Request, res: express.Response) => {
         }
         else if (user.role === 'student') {
             const acountInform = await StudentModel.findOne({ accountId: _id })
+            .populate('major')
             if (!acountInform) {
                 return res.status(404).json({ message: "Không tìm thấy tài khoản" });
             }

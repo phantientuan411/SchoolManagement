@@ -128,7 +128,7 @@ const editSubject = async (req: express.Request<{ id: string }, {}, EditSubject,
 };
 const findSubjectBySemester = async (req: express.Request, res: express.Response) => {
   try {
-    const { semester, major } = req.query;
+    const { semester, major } = req.body;
 
     if (!semester || !major) {
       return res.status(400).json({
@@ -138,9 +138,10 @@ const findSubjectBySemester = async (req: express.Request, res: express.Response
 
     const subjects = await subjectModel.find({
       semester: semester,
-      majorId: major
+      majorId: new mongoose.Types.ObjectId(major as string)
     });
-
+    console.log(subjects);
+    
     if (!subjects || subjects.length === 0) {
       return res.status(404).json({
         message: "Không tìm thấy môn học cho kỳ học này",

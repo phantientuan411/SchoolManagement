@@ -22,6 +22,8 @@ const SubjectManagement: React.FC = () => {
   const [filteredSubjects, setFilteredSubjects] = useState<Subject[]>([]);
   const [loading, setLoading] = useState(false);
   const [majorFromLocal, setMajorFromLocal] = useState<string>("");
+  const [userRole, setUserRole] = useState<string>("");
+  const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
 
   const {
     register,
@@ -35,6 +37,7 @@ const SubjectManagement: React.FC = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     setMajorFromLocal(user.majorId);
+    setUserRole(user.role || ""); // Lưu role của user
     setValue("major", user.majorId);
   }, [setValue]);
 
@@ -198,32 +201,33 @@ const SubjectManagement: React.FC = () => {
                         Không tìm thấy môn học nào
                       </div>
                     ) : (
-                      <div className="space-y-2 p-2">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-3">
                         {filteredSubjects.map((subject) => (
-                          <label
+                          <button
                             key={subject._id}
-                            className="flex items-center p-4 border rounded-lg hover:bg-purple-50 cursor-pointer"
+                            type="button"
+                            onClick={() => {
+                              setSelectedSubject(subject);
+                              setValue("subjectCode", subject._id);
+                            }}
+                            className={`p-4 border-2 rounded-lg text-left transition-all ${
+                              selectedSubject?._id === subject._id
+                                ? "border-purple-600 bg-purple-50 shadow-md"
+                                : "border-gray-200 hover:border-purple-400 hover:bg-purple-25"
+                            }`}
                           >
-                            <input
-                              type="radio"
-                              value={subject._id}
-                              {...register("subjectCode", {
-                                required: "Vui lòng chọn môn",
-                              })}
-                              className="w-4 h-4"
-                            />
-
-                            <div className="ml-3 flex-1">
-                              <div className="font-semibold">{subject.name}</div>
-                              <div className="text-sm text-gray-500">
-                                Mã: {subject.code}
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <div className="font-semibold text-gray-800">{subject.name}</div>
+                                <div className="text-sm text-gray-500 mt-1">
+                                  Mã: {subject.code}
+                                </div>
                               </div>
+                              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs whitespace-nowrap ml-2">
+                                HK{subject.semester}
+                              </span>
                             </div>
-
-                            <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">
-                              HK{subject.semester}
-                            </span>
-                          </label>
+                          </button>
                         ))}
                       </div>
                     )}
@@ -239,11 +243,47 @@ const SubjectManagement: React.FC = () => {
             {/* Submit */}
             <button
               type="submit"
+              onClick={() => handleSubmit(onSubmit)}
               disabled={loading}
               className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-4 rounded-lg text-lg font-semibold"
             >
               {loading ? "Đang xử lý..." : "Gửi dữ liệu"}
             </button>
+
+            {/* Hiển thị thông tin môn học được chọn */}
+            {selectedSubject && (
+              <div className="mt-8 pt-8 border-t-2 border-purple-200">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Thông tin môn học</h2>
+                <div className="bg-purple-50 p-6 rounded-lg space-y-3">
+                  <div>
+                    <p className="text-sm text-gray-600">Tên môn học:</p>
+                    <p className="text-lg font-semibold text-gray-800">{selectedSubject.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Mã môn học:</p>
+                    <p className="text-lg font-semibold text-gray-800">{selectedSubject.code}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Học kỳ:</p>
+                    <p className="text-lg font-semibold text-gray-800">Học kỳ {selectedSubject.semester}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Nút gửi dữ liệu - chỉ hiển thị cho admin */}
+            {userRole === "admin" && (
+              <div className="mt-8">
+                <button
+                  type="submit"
+                  onClick={() => handleSubmit(onSubmit)}
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 rounded-lg text-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition"
+                >
+                  {loading ? "Đang xử lý..." : "Gửi dữ liệu"}
+                </button>
+              </div>
+            )}
 
           </form>
 

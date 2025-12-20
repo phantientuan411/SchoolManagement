@@ -38,13 +38,12 @@ const Calendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [data, setData] = useState<(Lesson[] | null)[][]>([]);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   // Filter states
   const [inputYear, setInputYear] = useState("");
   const [inputMajor, setInputMajor] = useState("");
   const [inputSe, setInputSe] = useState("");
-  const [inputMonth, setInputMonth] = useState("");
-  const [inputWeek, setInputWeek] = useState("");
   const [inputClass, setInputClass] = useState("");
 
   // Dropdown data
@@ -61,13 +60,8 @@ const Calendar: React.FC = () => {
   const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
 
   //september
-  const septembers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const septembers = [1, 2, 3, 4, 5];
 
-  // Months 1-12
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
-
-  // Weeks 1-5
-  const weeks = [1, 2, 3, 4, 5];
 
 
   useEffect(() => {
@@ -85,7 +79,6 @@ const Calendar: React.FC = () => {
 
       // Fetch majors
       const majorsResponse = await get('/major/', {}, { token });
-      console.log("📚 Majors response:", majorsResponse);
 
       if (majorsResponse?.data) {
         setMajors(Array.isArray(majorsResponse.data.data) ? majorsResponse.data.data : []);
@@ -93,7 +86,6 @@ const Calendar: React.FC = () => {
 
       // Fetch classes
       const classesResponse = await get('/classmajor/all', {}, { token });
-      console.log("🎓 Classes response:", classesResponse);
 
       if (classesResponse?.data) {
         const classesData = Array.isArray(classesResponse.data.data) ? classesResponse.data.data : [];
@@ -126,36 +118,35 @@ const Calendar: React.FC = () => {
       setInputClass("");
     }
   }, [inputMajor, inputYear, classes]);
-
-  const fetchCurrentWeekData = async () => {
-    const token = localStorage.getItem("accessToken") ?? "";
-    try {
-      setLoading(true);
-      const response = await get('/timetable/', {}, { token });
-
-      console.log("📥 Raw response:", response);
-
-      if (response?.data.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
-        const eventData = response.data.data[0];
-        const transformedData = transformBackendData(eventData);
-        setData(transformedData);
-      } else {
-        console.log("⚠️ No data from server, using empty grid");
+  
+    const fetchCurrentWeekData = async () => {
+      const token = localStorage.getItem("accessToken") ?? "";
+      try {
+        setLoading(true);
+        const response = await get('/timetable/', {}, { token });
+  
+  
+        if (response?.data.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
+          const eventData = response.data.data[0];
+          const transformedData = transformBackendData(eventData);
+          setData(transformedData);
+          setHasSearched(true);
+        } else {
+          setData(getEmptyGrid());
+        }
+      } catch (error) {
+        console.error("❌ Error fetching timetable:", error);
         setData(getEmptyGrid());
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("❌ Error fetching timetable:", error);
-      setData(getEmptyGrid());
-    } finally {
-      setLoading(false);
-    }
-  };
-
+    };
+  
   const handleSearch = async () => {
     const token = localStorage.getItem("accessToken") ?? "";
 
-    if (!inputYear && !inputMajor && !inputMonth && !inputWeek && !inputClass) {
-      alert("Vui lòng chọn ít nhất một tiêu chí tìm kiếm");
+    if (!inputSe || !inputClass) {
+      alert("Vui lòng chọn ít nhất học kỳ và lớp học để tìm kiếm.");
       return;
     }
 
@@ -165,31 +156,31 @@ const Calendar: React.FC = () => {
       if (inputYear) params.append('year', inputYear);
       if (inputMajor) params.append('major', inputMajor);
       if (inputSe) params.append('september', inputSe);
-      if (inputMonth) params.append('month', inputMonth);
-      if (inputWeek) params.append('week', inputWeek);
       if (inputClass) params.append('className', inputClass);
 
-      console.log("Search params:", params.toString());
 
       const response = await get(`/timetable/search?${params.toString()}`, {}, { token });
 
-      console.log("📥 Search response:", response);
 
       const resultData = Array.isArray(response) ? response : response?.data;
-
+      console.log(resultData);
+      
       if (resultData && resultData.length > 0) {
         const eventData = resultData[0];
         const transformedData = transformBackendData(eventData);
         setData(transformedData);
-        console.log("✅ Found and loaded timetable");
+        setHasSearched(true);
+        localStorage.setItem("lastEventSelected", JSON.stringify(resultData[0]));
       } else {
-        alert("Không tìm thấy thời khóa biểu");
+        alert(response.error || "Không có dữ liệu");
         setData(getEmptyGrid());
+        setHasSearched(false);
       }
     } catch (error) {
       console.error("❌ Error searching timetable:", error);
       alert("Lỗi khi tìm kiếm");
       setData(getEmptyGrid());
+      setHasSearched(false);
     } finally {
       setLoading(false);
     }
@@ -198,9 +189,10 @@ const Calendar: React.FC = () => {
   const handleReset = () => {
     setInputYear("");
     setInputMajor("");
-    setInputMonth("");
-    setInputWeek("");
     setInputClass("");
+    setInputSe("");
+    setData(getEmptyGrid());
+    setHasSearched(false);
     fetchCurrentWeekData();
   };
 
@@ -212,11 +204,9 @@ const Calendar: React.FC = () => {
     const emptyGrid: (Lesson[] | null)[][] = getEmptyGrid();
 
     if (!eventData || !eventData.rows || !Array.isArray(eventData.rows)) {
-      console.log("⚠️ Invalid eventData, returning empty grid");
       return emptyGrid;
     }
 
-    console.log("Processing rows:", eventData.rows.length);
 
     eventData.rows.forEach((row: any[], rowIndex: number) => {
       if (rowIndex >= 3) return;
@@ -409,7 +399,7 @@ const Calendar: React.FC = () => {
       )}
 
       <div className="w-full mx-auto flex justify-between items-start mb-4 gap-4 flex-wrap">
-        
+
 
         {user?.role === "admin" && (
           <div className="flex-1">
@@ -491,6 +481,14 @@ const Calendar: React.FC = () => {
                   New TimeTable
                 </button>
               </Link>
+              {hasSearched && (
+                <Link to={"/edit"}>
+                  <button className="bg-yellow-600 text-white px-6 py-2 rounded hover:bg-yellow-700 transition-colors">
+                    Edit TimeTable
+                  </button>
+                </Link>
+              )}
+
 
             </div>
 
