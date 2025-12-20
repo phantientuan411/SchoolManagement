@@ -6,13 +6,14 @@
     // File Layout
     // "rootDir": "./src",
     // "outDir": "./dist",
-
+    "target": "ES2020",
+    "module": "CommonJS",
+    "outDir": "dist",
+    "rootDir": "src",
+    "esModuleInterop": true,
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "commonjs",
     "moduleResolution": "node",
-    "esModuleInterop": true,
-    "target": "esnext",
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],
@@ -47,6 +48,6 @@
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly":true
   },
-  "include": ["src/**/*.ts", "src/router/account/posts/post_page/post.tsx", "src/router/timeTable"],
+  "include": ["src/**/*.ts", "src/router/account/posts/post_page/post.tsx", "src/router/timeTable", "src/index.js"],
    "exclude": ["node_modules", "**/*.spec.ts"]
 }
