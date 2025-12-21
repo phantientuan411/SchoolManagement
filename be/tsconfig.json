@@ -1,12 +1,9 @@
-
-
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
     // "rootDir": "./src",
     // "outDir": "./dist",
-
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "es6",
@@ -18,16 +15,13 @@
     // "lib": ["esnext"],
     // "types": ["node"],
     // and npm install -D @types/node
-
     // Other Outputs
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
     // Style Options
     // "noImplicitReturns": true,
     // "noImplicitOverride": true,
@@ -35,7 +29,6 @@
     // "noUnusedParameters": true,
     // "noFallthroughCasesInSwitch": true,
     // "noPropertyAccessFromIndexSignature": true,
-
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
@@ -45,8 +38,15 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
-    "emitDeclarationOnly":true
+    "emitDeclarationOnly": true,
+    
   },
-  "include": ["src/**/*.ts", "src/lib/db.js"],
-   "exclude": ["node_modules", "**/*.spec.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/lib/db.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }

@@ -18,7 +18,7 @@ export type RequestOptions = {
   withCredentials?: boolean; // optional with credentials
 };
 
-const defaultBaseURL = 'http://localhost:3000/api';
+const defaultBaseURL = 'https://be-ck-ua3w.onrender.com/api';
 const defaultTimeout = 30_000; // 30s
 
 function buildUrl(base: string, path: string, params?: Record<string, string | number | boolean>) {
