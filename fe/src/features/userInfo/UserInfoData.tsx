@@ -104,7 +104,7 @@ export const getUserInfo = createAsyncThunk<
                 `userinfo/${id}`,
                 {},
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -141,7 +141,7 @@ export const updateStudentApi = createAsyncThunk<
                 `student/update/${id}`,
                 updateStudent,
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -181,7 +181,7 @@ export const updateTeacherApi = createAsyncThunk<
                 `teacher/update/${id}`,
                 updateTeacher,
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -219,7 +219,7 @@ export const deleteUserInfoApi = createAsyncThunk<
             const res = await del(
                 `userinfo/${id}`,
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )

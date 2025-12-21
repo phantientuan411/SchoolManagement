@@ -105,7 +105,7 @@ export const getStudent = createAsyncThunk<
                 "student",
                 { pageId, pageSize, searchName: searchName ?? "", sort: JSON.stringify(sort) },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 })
 

@@ -81,7 +81,7 @@ export const getInvestment = createAsyncThunk<
                 "investment",
                 { pageId, pageSize },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 })
 

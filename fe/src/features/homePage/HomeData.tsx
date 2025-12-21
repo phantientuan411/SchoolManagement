@@ -81,7 +81,7 @@ export const getPost = createAsyncThunk<
         { rejectWithValue }
     ) => {
         try {
-            const res = await get('post', { pageId, pageSize, searchName: searchName ?? "", sort: JSON.stringify(sort) }, { baseURL: "http://localhost:3000/api" ,token})
+            const res = await get('post', { pageId, pageSize, searchName: searchName ?? "", sort: JSON.stringify(sort) }, {token})
             if (!res.ok || !res.data) {
                 return rejectWithValue(res.error || "Lấy dữ liệu thất bại")
             }
@@ -101,7 +101,7 @@ export const createPost = createAsyncThunk<
     "post/newPost",
     async (newPost, { rejectWithValue }) => {
         try {
-            const res = await post("post/newpost", newPost, { baseURL: "http://localhost:3000/api", token });
+            const res = await post("post/newpost", newPost, {  token });
             if (res.status !== 201 || !res.data) {
                 return rejectWithValue("Thêm bài viết thất bại");
             }
@@ -130,7 +130,7 @@ export const updatePost = createAsyncThunk<
             const res = await put(
                 `post/${updatedPost._id}?_method=PUT`,
                 updatedPost,
-                { baseURL: "http://localhost:3000/api",token }
+                { token }
             );
             if (res.status !== 200 || !res.data) {
                 return rejectWithValue("Cập nhật bài viết thất bại");
@@ -158,7 +158,7 @@ export const deletePost = createAsyncThunk<
             const res = await del(
                 `post/delete/${id}?_method=DELETE`,
                 
-                { baseURL: "http://localhost:3000/api",token }
+                { token }
             );
             if (res.status !== 200) {
                 return rejectWithValue("Xóa bài viết thất bại");

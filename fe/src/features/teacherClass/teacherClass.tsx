@@ -229,7 +229,7 @@ const TeacherClass = () => {
                 "classstudent/updatemany",
                 updateScore,
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )

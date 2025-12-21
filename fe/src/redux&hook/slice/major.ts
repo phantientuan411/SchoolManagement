@@ -107,7 +107,7 @@ export const getMajor = createAsyncThunk<
                 "major",
                 {},
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -141,7 +141,7 @@ export const getMajorDetails = createAsyncThunk<
                 `major/${id}`,
                 {},
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )

@@ -62,7 +62,7 @@ export const createAccountApi = createAsyncThunk<
                 "account/signUp",
                 createAccount,
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 })
 

@@ -68,7 +68,7 @@ export const getTeacher = createAsyncThunk<
                 "teacher",
                 { pageId, pageSize, searchName, major },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )

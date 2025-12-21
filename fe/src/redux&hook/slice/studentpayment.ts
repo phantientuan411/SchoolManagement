@@ -90,7 +90,7 @@ export const getStudentPayment = createAsyncThunk<
                 "studentPayment",
                 { pageIdStudent, pageSizeStudent },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             );

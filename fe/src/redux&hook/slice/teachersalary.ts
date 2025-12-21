@@ -92,7 +92,7 @@ export const getTeacherSalary = createAsyncThunk<
                 "teacherSalary",
                 { pageIdTeacher: pageIdTeacher, pageSizeTeacher: pageSizeTeacher },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             );

@@ -122,7 +122,7 @@ export const getClassMajor = createAsyncThunk<
                 "classmajor",
                 { selected },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -159,7 +159,7 @@ export const getAllClassMajor = createAsyncThunk<
                 "classmajor/all",
                 {},
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -196,7 +196,7 @@ export const getClassMajorDetail = createAsyncThunk<
                 `classmajor/${id}`,
                 {},
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -216,7 +216,7 @@ export const postClassMajor = createAsyncThunk<void, { newClassMajor: NewClassMa
     async ({ newClassMajor }, { rejectWithValue }) => {
         try {
             const accessToken = localStorage.getItem("accessToken");
-            const res = await post("classmajor", newClassMajor, { baseURL: "http://localhost:3000/api", token: accessToken ?? undefined });
+            const res = await post("classmajor", newClassMajor, {  token: accessToken ?? undefined });
             if (!res.ok) return rejectWithValue(res.error || "Thêm mới thất bại");
         } catch (error: any) {
             return rejectWithValue(error.message || "Thêm mới thất bại");
@@ -229,7 +229,7 @@ export const patchClassMajor = createAsyncThunk<void, { id: string; editClassMaj
     async ({ id, editClassMajor }, { rejectWithValue }) => {
         try {
             const accessToken = localStorage.getItem("accessToken");
-            const res = await patch(`classmajor/${id}`, editClassMajor, { baseURL: "http://localhost:3000/api", token: accessToken ?? undefined });
+            const res = await patch(`classmajor/${id}`, editClassMajor, {  token: accessToken ?? undefined });
             if (!res.ok) return rejectWithValue(res.error || "Sửa thất bại");
         } catch (error: any) {
             return rejectWithValue(error.message || "Sửa thất bại");
@@ -242,7 +242,7 @@ export const delClassMajor = createAsyncThunk<void, { id: string }, { rejectValu
     async ({ id }, { rejectWithValue }) => {
         try {
             const accessToken = localStorage.getItem("accessToken");
-            const res = await del(`classmajor/${id}`, { baseURL: "http://localhost:3000/api", token: accessToken ?? undefined });
+            const res = await del(`classmajor/${id}`, {  token: accessToken ?? undefined });
             if (!res.ok) return rejectWithValue(res.error || "Xóa thất bại");
         } catch (error: any) {
             return rejectWithValue(error.message || "Xóa thất bại");

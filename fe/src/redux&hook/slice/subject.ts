@@ -127,7 +127,7 @@ export const getSubjectEqualMajor = createAsyncThunk<
                 'subject/major',
                 { majorId },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -164,7 +164,7 @@ export const getSubjectDetail = createAsyncThunk<
                 `subject/${id}`,
                 {},
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -185,7 +185,7 @@ export const postSubject = createAsyncThunk(
     async (newSubject: NewSubject, { rejectWithValue }) => {
         try {
             const accessToken = localStorage.getItem("accessToken");
-            const res = await post("subject", newSubject, { baseURL: "http://localhost:3000/api", token: accessToken ?? undefined });
+            const res = await post("subject", newSubject, {  token: accessToken ?? undefined });
             if (!res.ok) return rejectWithValue(res.error || "Thêm mới thất bại");
             return res.data;
         } catch (error: any) {
@@ -200,7 +200,7 @@ export const patchSubject = createAsyncThunk(
     async ({ id, editSubject }: { id: string; editSubject: EditSubject }, { rejectWithValue }) => {
         try {
             const accessToken = localStorage.getItem("accessToken");
-            const res = await patch(`subject/${id}`, editSubject, { baseURL: "http://localhost:3000/api", token: accessToken ?? undefined });
+            const res = await patch(`subject/${id}`, editSubject, {  token: accessToken ?? undefined });
             if (!res.ok) return rejectWithValue(res.error || "Cập nhật thất bại");
             return res.data;
         } catch (error: any) {
@@ -215,7 +215,7 @@ export const delSubject = createAsyncThunk(
     async ({ id }: { id: string }, { rejectWithValue }) => {
         try {
             const accessToken = localStorage.getItem("accessToken");
-            const res = await del(`subject/${id}`, { baseURL: "http://localhost:3000/api", token: accessToken ?? undefined });
+            const res = await del(`subject/${id}`, {  token: accessToken ?? undefined });
             if (!res.ok) return rejectWithValue(res.error || "Xóa thất bại");
             return res.data;
         } catch (error: any) {

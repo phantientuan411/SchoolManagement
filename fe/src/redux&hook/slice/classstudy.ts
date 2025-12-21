@@ -161,7 +161,7 @@ export const getClassStudy = createAsyncThunk<
                 `classstudy/teacher/${id}`,
                 {},
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -198,7 +198,7 @@ export const getClassStudyEqualSubject = createAsyncThunk<
                 "classstudy/subject",
                 { subjectId },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -235,7 +235,7 @@ export const getClassStudyDetail = createAsyncThunk<
                 `classstudy/${id}`,
                 {},
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -272,7 +272,7 @@ export const postClassStudy = createAsyncThunk<
                 `classstudy`,
                 newClassStudy,
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -308,7 +308,7 @@ export const delClassStudy = createAsyncThunk<
             const res = await del(
                 `classstudy/${id}`,
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )
@@ -345,7 +345,7 @@ export const patchClassStudy = createAsyncThunk<
                 `classstudy/${id}`,
                 editClassStudy,
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )

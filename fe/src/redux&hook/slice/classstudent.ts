@@ -64,7 +64,7 @@ export const getClassStudent = createAsyncThunk<
                 "classstudent/student",
                 { selected },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             )

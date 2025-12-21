@@ -71,7 +71,7 @@ export const getExpense = createAsyncThunk<
                 "expense",
                 { pageIdExpense, pageSizeExpense },
                 {
-                    baseURL: "http://localhost:3000/api",
+                    
                     token: accessToken ?? undefined
                 }
             );
