@@ -20,7 +20,9 @@ export type RequestOptions = {
 
 const defaultBaseURL = 'https://be-ck-ua3w.onrender.com/api';
 const defaultTimeout = 30_000; // 30s
-
+function buildCredentials(withCredentials?: boolean): RequestCredentials {
+  return withCredentials ? "include" : "same-origin";
+}
 function buildUrl(base: string, path: string, params?: Record<string, string | number | boolean>) {
   const cleanBase = base?.replace(/\/$/, "");
   const cleanPath = path?.replace(/^\//, "");
@@ -85,7 +87,7 @@ export async function get<T = any>(
   const url = buildUrl(base, path, params as Record<string, string | number | boolean>);
   const headers = buildHeaders(options?.token, options?.headers);
   try {
-    const res = await fetchWithTimeout(url, { method: "GET", headers, signal: options?.signal }, options?.timeoutMs ?? defaultTimeout);
+    const res = await fetchWithTimeout(url, { method: "GET", headers, signal: options?.signal, credentials: buildCredentials(options?.withCredentials)}, options?.timeoutMs ?? defaultTimeout);
     return await handleResponse<T>(res as Response);
   } catch (err: any) {
     return { ok: false, status: 0, error: err.name === 'AbortError' ? 'Request aborted' : String(err) };
@@ -117,7 +119,7 @@ export async function put<T = any, B = any>(
   const url = buildUrl(base, path);
   const headers = buildHeaders(options?.token, { "Content-Type": "application/json", ...(options?.headers || {}) });
   try {
-    const res = await fetchWithTimeout(url, { method: "PUT", headers, body: body ? JSON.stringify(body) : undefined, signal: options?.signal }, options?.timeoutMs ?? defaultTimeout);
+    const res = await fetchWithTimeout(url, { method: "PUT", headers, body: body ? JSON.stringify(body) : undefined, signal: options?.signal, credentials: buildCredentials(options?.withCredentials)}, options?.timeoutMs ?? defaultTimeout);
     return await handleResponse<T>(res as Response);
   } catch (err: any) {
     return { ok: false, status: 0, error: err.name === 'AbortError' ? 'Request aborted' : String(err) };
@@ -132,7 +134,7 @@ export async function del<T = any>(
   const url = buildUrl(base, path);
   const headers = buildHeaders(options?.token, options?.headers);
   try {
-    const res = await fetchWithTimeout(url, { method: "DELETE", headers, signal: options?.signal }, options?.timeoutMs ?? defaultTimeout);
+    const res = await fetchWithTimeout(url, { method: "DELETE", headers, signal: options?.signal, credentials: buildCredentials(options?.withCredentials)}, options?.timeoutMs ?? defaultTimeout);
     return await handleResponse<T>(res as Response);
   } catch (err: any) {
     return { ok: false, status: 0, error: err.name === 'AbortError' ? 'Request aborted' : String(err) };
@@ -151,7 +153,7 @@ export async function patch<T = any, B = any>(
   try {
     const res = await fetchWithTimeout(
       url,
-      { method: "PATCH", headers, body: body ? JSON.stringify(body) : undefined, signal: options?.signal },
+      { method: "PATCH", headers, body: body ? JSON.stringify(body) : undefined, signal: options?.signal, credentials: buildCredentials(options?.withCredentials) },
       options?.timeoutMs ?? defaultTimeout
     );
     return await handleResponse<T>(res as Response);
