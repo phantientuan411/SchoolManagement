@@ -21,6 +21,7 @@ import ClassRoom from "../features/classRoom/ClassRoom.tsx";
 import SubjectManagement from "../features/registerSubject/interface.tsx";
 import TeacherClass from "../features/teacherClass/teacherClass.tsx";
 import EditTimeTable from "../features/calendar/editTimeTable.tsx";
+import MyProfile from "../features/myProfile/MyProfile.tsx";
 const AppRouter = () => {
   return (
     <Router>
@@ -45,7 +46,8 @@ const AppRouter = () => {
         <Route path="/classRoom" element={<Interface><ClassRoom></ClassRoom></Interface>}></Route>
         <Route path="/registerSubject" element={<Interface><SubjectManagement></SubjectManagement></Interface>}></Route>
         <Route path="/classTeacher" element={<Interface><TeacherClass></TeacherClass></Interface>}></Route>
-        <Route path="/edit" element={<Interface><EditTimeTable/></Interface>} />
+        <Route path="/edit" element={<Interface><EditTimeTable /></Interface>} />
+        <Route path="/myProfile/:id" element={<Interface><MyProfile></MyProfile></Interface>}></Route>
       </Routes>
 
 

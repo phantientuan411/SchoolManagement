@@ -1,9 +1,14 @@
 /* stylelint-disable at-rule-no-unknown */
 @import "tailwindcss";
+
+
 /* stylelint-enable at-rule-no-unknown */
 @import '../@/styles/_variables.scss';
 @import '../@/styles/_keyframe-animations.scss';
-
+@theme {
+  --breakpoint-lg: 90rem;   /* 1440px */
+  --breakpoint-xl: 110rem;  /* 1760px */
+}
 /* Ví dụ custom styles cho editor */
 .ProseMirror h1 {
   font-size: 2.25rem;

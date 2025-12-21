@@ -29,6 +29,7 @@ interface UpdateStudent {
     parentName: string;
     status: boolean;
     dateOfBirth: string;
+    yearOfAdmission: string;
 }
 
 // Hàm parse SortQuery

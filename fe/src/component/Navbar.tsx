@@ -72,30 +72,36 @@ const Navbar = () => {
     const mobileSidebarClasses = `fixed top-0 left-0 h-full w-64 bg-gray-900 text-white transition-all duration-300 z-50 ${isOpen ? "translate-x-0" : "-translate-x-full"
         }`;
 
+    const user = JSON.parse(localStorage.getItem("user") ?? "{}");
+
+    const userInfo = user.acountInform
+
+    const id = userInfo.accountId
+
     const [navbarItems, setNavbarItems] = useState<NavItem[]>([])
     const navigationItems = {
         admin: [
             { path: '/home', label: 'Dashboard' },
             { path: '/student', label: 'Student' },
             { path: '/teacher', label: 'Teacher' },
-            { path: '/classroom', label: 'Classroom' },
+            // { path: '/classroom', label: 'Classroom' },
             { path: '/finance', label: 'Finance' },
             { path: '/calendar', label: 'Calendar' },
             { path: '/manageMajor', label: 'Manage Major' }
         ],
         teacher: [
             { path: '/home', label: 'Dashboard' },
-            { path: '/teacherProfile', label: 'Profile' },
+            { path: `/myProfile/${id}`, label: 'Profile' },
             { path: '/student', label: 'Student' },
-            { path: '/food', label: 'Food' },
+            // { path: '/food', label: 'Food' },
             { path: '/classTeacher', label: 'Class' },
         ],
         student: [
             { path: '/home', label: 'Dashboard' },
-            { path: '/profile', label: 'Profile' },
-            { path: '/food', label: 'Food' },
-            { path: '/class', label: 'Class' },
-            { path: '/mark', label: 'Your mark' },
+            { path: `/myProfile/${id}`, label: 'Profile' },
+            // { path: '/food', label: 'Food' },
+            // { path: '/class', label: 'Class' },
+            // { path: '/mark', label: 'Your mark' },
         ]
     };
     useEffect(() => {

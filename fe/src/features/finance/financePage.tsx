@@ -79,6 +79,10 @@ const FinancePage = () => {
             } else {
                 pagination.push(item - 1, item, item + 1)
             }
+            if (total === 2) {
+                pagination = []
+                pagination.push(1, 2)
+            }
             return dispatch(setPagination(pagination))
         }
         listPagination(pageId, totalPage)
@@ -126,6 +130,10 @@ const FinancePage = () => {
                 pagination.push(item - 2, item - 1, item)
             } else {
                 pagination.push(item - 1, item, item + 1)
+            }
+            if (total === 2) {
+                pagination = []
+                pagination.push(1, 2)
             }
             return dispatch(setPaginationExpense(pagination))
         }
@@ -274,19 +282,19 @@ const FinancePage = () => {
 
                         <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
                             <div className='w-[30%] pt-5 pb-5'>Teacher Name</div>
-                            <div className='w-[20%] pt-5 pb-5'>Amount</div>
-                            <div className='w-[20%] pt-5 pb-5'>Month</div>
-                            <div className='w-[15%] pt-5 pb-5'>Year</div>
-                            <div className='w-[15%] pt-5 pb-5'>Status</div>
+                            <div className='w-[25%] pt-5 pb-5 flex justify-center'>Amount</div>
+                            <div className='w-[15%] pt-5 pb-5 flex justify-center'>Month</div>
+                            <div className='w-[15%] pt-5 pb-5 flex justify-center'>Year</div>
+                            <div className='w-[15%] pt-5 pb-5 flex justify-center'>Status</div>
                         </div>
 
                         {teacherSalary.map((e) =>
                             <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
                                 <div className='w-[30%] pt-5 pb-5'>{e.teacherId.name}</div>
-                                <div className='w-[20%] pt-5 pb-5'>{(e.amount).toLocaleString("vi-VN")}</div>
-                                <div className='w-[20%] pt-5 pb-5'>{e.month}</div>
-                                <div className='w-[15%] pt-5 pb-5'>{e.year}</div>
-                                <div className={`w-[15%] pt-5 pb-5 ${e.paid === true ? "text-green-500" : "text-red-500"}`}>{e.paid === true ? "Completed" : "Pending"}</div>
+                                <div className='w-[25%] pt-5 pb-5 flex justify-center'>{(e.amount).toLocaleString("vi-VN")}</div>
+                                <div className='w-[15%] pt-5 pb-5 justify-center flex'>{e.month}</div>
+                                <div className='w-[15%] pt-5 pb-5 flex justify-center'>{e.year}</div>
+                                <div className={`w-[15%] pt-5 pb-5 flex justify-center ${e.paid === true ? "text-green-500" : "text-red-500"}`}>{e.paid === true ? "Completed" : "Pending"}</div>
                             </div>
                         )}
 
@@ -309,26 +317,27 @@ const FinancePage = () => {
                 </div>
             </div>
 
-            <div className='flex gap-5 items-center mt-5'>
+            <h1 className='text-[25px] font-bold mt-5'> Expense</h1>
+            <div className='flex gap-5  mt-5'>
                 <div className='w-[40%]'>
-                    <h1 className='text-[25px] font-bold mb-[22px]'> Expense</h1>
+
                     <div className='rounded-xl bg-white  '>
 
                         <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
                             <div className='w-[25%] pt-5 pb-5'>Type</div>
-                            <div className='w-[20%] pt-5 pb-5'>Amount</div>
-                            <div className='w-[20%] pt-5 pb-5'>Month</div>
-                            <div className='w-[15%] pt-5 pb-5'>Year</div>
-                            <div className='w-[20%] pt-5 pb-5'>Status</div>
+                            <div className='w-[20%] pt-5 pb-5 flex justify-center'>Amount</div>
+                            <div className='w-[20%] pt-5 pb-5 flex justify-center'>Month</div>
+                            <div className='w-[15%] pt-5 pb-5 flex justify-center'>Year</div>
+                            <div className='w-[20%] pt-5 pb-5 flex justify-center'>Status</div>
                         </div>
 
                         {expense.map((e) =>
                             <div className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
                                 <div className='w-[25%] pt-5 pb-5'>{e.type}</div>
-                                <div className='w-[20%] pt-5 pb-5'>{(e.amount).toLocaleString("vi-VN")}</div>
-                                <div className='w-[20%] pt-5 pb-5'>{e.month}</div>
-                                <div className='w-[15%] pt-5 pb-5'>{e.year}</div>
-                                <div className={`w-[20%] pt-5 pb-5 ${e.paid === true ? "text-green-500" : "text-red-500"}`}>{e.paid === true ? "Completed" : "Pending"}</div>
+                                <div className='w-[20%] pt-5 pb-5 flex justify-center'>{(e.amount).toLocaleString("vi-VN")}</div>
+                                <div className='w-[20%] pt-5 pb-5 flex justify-center'>{e.month}</div>
+                                <div className='w-[15%] pt-5 pb-5 flex justify-center'>{e.year}</div>
+                                <div className={`w-[20%] pt-5 pb-5 flex justify-center ${e.paid === true ? "text-green-500" : "text-red-500"}`}>{e.paid === true ? "Completed" : "Pending"}</div>
                             </div>
                         )}
 

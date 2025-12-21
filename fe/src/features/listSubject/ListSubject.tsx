@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook.ts'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getSubjectDetail } from '../../redux&hook/slice/subject.ts'
 import { MdOutlineModeEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
@@ -8,6 +8,8 @@ import { delClassStudy, editClassCode, editDateOfWeek, editEndDate, editEndTime,
 import { getTeacher } from '../listTeacher/ListTeacherData.tsx';
 
 const ListSubject = () => {
+    const boxNewClass = useRef<HTMLDivElement | null>(null)
+    const boxEditClass = useRef<HTMLDivElement | null>(null)
     const dispatch = useAppDispatch()
 
     const navigate = useNavigate()
@@ -22,13 +24,14 @@ const ListSubject = () => {
 
     const { subjectDetail } = useAppSelector((state) => state.getSubject)
 
-    const { newClassStudy, editClassStudy, edited } = useAppSelector((state) => state.getClassStudy)
+    const { newClassStudy, editClassStudy, edited, classStudy } = useAppSelector((state) => state.getClassStudy)
 
     const { teacher } = useAppSelector((state) => state.getTeacher)
+
     useEffect(() => {
         if (!id) return
         dispatch(getSubjectDetail({ id: id }))
-    }, [subjectDetail])
+    }, [id, classStudy])
 
     useEffect(() => {
         dispatch(getTeacher({
@@ -40,6 +43,7 @@ const ListSubject = () => {
     }, [])
 
     const date = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+
 
     const toExactISO = (dateStr: string) => {
         const [year, month, day] = dateStr.split("-");
@@ -56,6 +60,13 @@ const ListSubject = () => {
     const clickNew = () => {
         setIsNew(true)
         dispatch(newSubject(subjectDetail[0]._id))
+
+        setTimeout(() => {
+            boxNewClass.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }, 100)
     }
 
     const handleClickTrash = (e: React.MouseEvent, item: string) => {
@@ -69,12 +80,19 @@ const ListSubject = () => {
         e.preventDefault()
         dispatch(setEdited(item._id))
         dispatch(editClassCode(item.classCode))
-        dispatch(editStartDate(new Date(item.startDate).toLocaleDateString('vi-VN')))
-        dispatch(editEndDate(new Date(item.endDate).toLocaleDateString('vi-VN')))
+        dispatch(editStartDate(item.startDate))
+        dispatch(editEndDate(item.endDate))
         dispatch(editStartTime(item.startTime))
         dispatch(editEndTime(item.endTime))
         dispatch(editDateOfWeek(item.dateOfWeek))
         setIsEdit(true)
+
+        setTimeout(() => {
+            boxEditClass.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }, 100)
     }
 
     const clickConfirmEdit = (e: any) => {
@@ -82,6 +100,7 @@ const ListSubject = () => {
         dispatch(patchClassStudy({ editClassStudy: editClassStudy, id: edited }))
         setIsEdit(false)
         dispatch(resetEditClassStudy())
+
     }
 
     const toInputDate = (dateString?: string | null) => {
@@ -162,7 +181,7 @@ const ListSubject = () => {
             </div>
 
             {/* New Class Study */}
-            <div className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isNew ? "block" : "hidden"}`}>
+            <div ref={boxNewClass} className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isNew ? "block" : "hidden"}`}>
                 <h1 className='font-semibold text-[24px] pb-5 text-[#303972]'>New Class Study</h1>
                 <form className='grid grid-cols-2 gap-5' onSubmit={clickConfirmNew} action="">
                     <div className='flex gap-3 items-center'>
@@ -219,7 +238,7 @@ const ListSubject = () => {
             </div>
 
             {/* Edit Class Study */}
-            <div className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isEdit ? "block" : "hidden"}`}>
+            <div ref={boxEditClass} className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isEdit ? "block" : "hidden"}`}>
                 <h1 className='font-semibold text-[24px] pb-5 text-[#303972]'>Edit Class Study</h1>
                 <form className='grid grid-cols-2 gap-5' onSubmit={clickConfirmEdit} action="">
                     <div className='flex gap-3 items-center'>
@@ -261,7 +280,7 @@ const ListSubject = () => {
 
                     <div className=' flex gap-10 justify-center '>
                         <button className='text-white p-3 rounded-xl bg-[#4D44B5] hover:cursor-pointer ' type='submit'>Confirm</button>
-                        <button className='text-white p-3 rounded-xl bg-[#4D44B5] hover:cursor-pointer ' onClick={() => setIsNew(false)}>Cancel</button>
+                        <button className='text-white p-3 rounded-xl bg-[#4D44B5] hover:cursor-pointer ' onClick={() => setIsEdit(false)}>Cancel</button>
                     </div>
                 </form>
 

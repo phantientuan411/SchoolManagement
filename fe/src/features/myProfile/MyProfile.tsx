@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
-import { getUserInfo, setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate, updateStudentApi, setEdit, setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, setStatusTeacherUpdate, updateTeacherApi, setMajorTeacherUpdate, deleteUserInfoApi, setYearOfAdmissionStudentUpdate, setYearOfExperienceTeacherUpdate } from './UserInfoData'
 import { getClassStudent } from '../../redux&hook/slice/classstudent'
 import type { ClassStudent, Student, Teacher } from '../../type/user'
 import { getClassMajor } from '../../redux&hook/slice/classmajor'
@@ -16,10 +15,17 @@ import { MdOutlinePhoneIphone } from "react-icons/md";
 import { IoMailOpenOutline } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
 import { RxAvatar } from "react-icons/rx";
+import { getUserInfo, setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate, updateStudentApi, setEdit, setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, setStatusTeacherUpdate, updateTeacherApi, setMajorTeacherUpdate, deleteUserInfoApi, setYearOfAdmissionStudentUpdate, setYearOfExperienceTeacherUpdate } from '../userInfo/UserInfoData'
 
-const UserInfoPage = () => {
+const MyProfile = () => {
     const dispatch = useAppDispatch()
+    const userStr = localStorage.getItem("user")
+    const user = userStr ? JSON.parse(userStr) : null
+
     const { id } = useParams()
+    const role = user?.role
+
+
     const { major } = useAppSelector((state) => state.getMajor)
     const { data, updateStudent, updateTeacher, edit } = useAppSelector((state) => state.getUserInfo)
     const { pass, totalFail, totalPass, totalStudying, classStudent } = useAppSelector((state) => state.getClassStudent)
@@ -47,7 +53,7 @@ const UserInfoPage = () => {
         dispatch(getClassStudy({ id: id ?? "" }))
     }, [id])
 
-    const role = localStorage.getItem("role")
+
 
     // Convert điểm sang hệ 4
     const convertGPA = (e: number) => {
@@ -531,4 +537,4 @@ const UserInfoPage = () => {
     )
 }
 
-export default UserInfoPage
+export default MyProfile
