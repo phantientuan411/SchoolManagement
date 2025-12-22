@@ -215,12 +215,12 @@ const FinancePage = () => {
                         </div>
 
                         <div className='flex gap-2 justify-center items-center'>
-                            <IoMdArrowDropleft className='text-[30px]' onClick={() => dispatch(setPageId(pageId === 1 ? pageId : pageId - 1))} />
+                            <IoMdArrowDropleft className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageId(pageId === 1 ? pageId : pageId - 1))} />
                             {pagination.map(e =>
-                                <div className={`hover:cursor-pointer border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageId ? 'bg-[#4D44B5] text-white' : ""}`}
+                                <div className={`hover:cursor-pointer hover:cursor-pointer border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageId ? 'bg-[#4D44B5] text-white' : ""}`}
                                     onClick={() => e <= totalPage && dispatch(setPageId(e))}>{e}</div>
                             )}
-                            <IoMdArrowDropright className='text-[30px]' onClick={() => dispatch(setPageId(pageId === totalPage ? pageId : pageId + 1))} />
+                            <IoMdArrowDropright className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageId(pageId === totalPage ? pageId : pageId + 1))} />
 
                         </div>
 
@@ -265,12 +265,12 @@ const FinancePage = () => {
                             </div>
 
                             <div className='flex gap-2 justify-center items-center'>
-                                <IoMdArrowDropleft className='text-[30px]' onClick={() => dispatch(setPageIdStudent(pageIdStudent === 1 ? pageIdStudent : pageIdStudent - 1))} />
+                                <IoMdArrowDropleft className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageIdStudent(pageIdStudent === 1 ? pageIdStudent : pageIdStudent - 1))} />
                                 {paginationStudent.map(e =>
                                     <div className={`hover:cursor-pointer border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageIdStudent ? 'bg-[#4D44B5] text-white' : ""}`}
                                         onClick={() => e <= totalPageStudent && dispatch(setPageIdStudent(e))}>{e}</div>
                                 )}
-                                <IoMdArrowDropright className='text-[30px]' onClick={() => dispatch(setPageIdStudent(pageIdStudent === totalPageStudent ? pageIdStudent : pageIdStudent + 1))} />
+                                <IoMdArrowDropright className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageIdStudent(pageIdStudent === totalPageStudent ? pageIdStudent : pageIdStudent + 1))} />
                             </div>
                         </div>
                     </div>
@@ -305,12 +305,12 @@ const FinancePage = () => {
                             </div>
 
                             <div className='flex gap-2 justify-center items-center'>
-                                <IoMdArrowDropleft className='text-[30px]' onClick={() => dispatch(setPageIdTeacher(pageIdTeacher === 1 ? pageIdTeacher : pageIdTeacher - 1))} />
+                                <IoMdArrowDropleft className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageIdTeacher(pageIdTeacher === 1 ? pageIdTeacher : pageIdTeacher - 1))} />
                                 {paginationTeacher.map(e =>
                                     <div className={`hover:cursor-pointer border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageIdTeacher ? 'bg-[#4D44B5] text-white' : ""}`}
                                         onClick={() => e <= totalPageTeacher && dispatch(setPageIdTeacher(e))}>{e}</div>
                                 )}
-                                <IoMdArrowDropright className='text-[30px]' onClick={() => dispatch(setPageIdTeacher(pageIdTeacher === totalPageTeacher ? pageIdTeacher : pageIdTeacher + 1))} />
+                                <IoMdArrowDropright className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageIdTeacher(pageIdTeacher === totalPageTeacher ? pageIdTeacher : pageIdTeacher + 1))} />
                             </div>
                         </div>
                     </div>
@@ -348,12 +348,12 @@ const FinancePage = () => {
                             </div>
 
                             <div className='flex gap-2 justify-center items-center'>
-                                <IoMdArrowDropleft className='text-[30px]' onClick={() => dispatch(setPageIdExpense(pageIdExpense === 1 ? pageIdExpense : pageIdExpense - 1))} />
+                                <IoMdArrowDropleft className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageIdExpense(pageIdExpense === 1 ? pageIdExpense : pageIdExpense - 1))} />
                                 {paginationExpense.map(e =>
                                     <div className={`hover:cursor-pointer border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageIdExpense ? 'bg-[#4D44B5] text-white' : ""}`}
                                         onClick={() => e <= totalPageExpense && dispatch(setPageIdExpense(e))}>{e}</div>
                                 )}
-                                <IoMdArrowDropright className='text-[30px]' onClick={() => dispatch(setPageIdExpense(pageIdExpense === totalPageTeacher ? pageIdExpense : pageIdExpense + 1))} />
+                                <IoMdArrowDropright className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageIdExpense(pageIdExpense === totalPageTeacher ? pageIdExpense : pageIdExpense + 1))} />
                             </div>
                         </div>
                     </div>

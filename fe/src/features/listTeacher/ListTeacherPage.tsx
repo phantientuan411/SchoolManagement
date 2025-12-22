@@ -114,12 +114,12 @@ const ListTeacherPage = () => {
                     </div>
 
                     <div className='flex gap-2 justify-center items-center'>
-                        <IoMdArrowDropleft className='text-[30px]' onClick={() => dispatch(setPageId(pageId === 1 ? pageId : pageId - 1))} />
+                        <IoMdArrowDropleft className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageId(pageId === 1 ? pageId : pageId - 1))} />
                         {pagination.map(e =>
-                            <div className={`border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageId ? 'bg-[#4D44B5] text-white' : ""}`}
+                            <div className={`hover:cursor-pointer border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageId ? 'bg-[#4D44B5] text-white' : ""}`}
                                 onClick={() => e <= totalPage && dispatch(setPageId(e))}>{e}</div>
                         )}
-                        <IoMdArrowDropright className='text-[30px]' onClick={() => dispatch(setPageId(pageId === totalPage ? pageId : pageId + 1))} />
+                        <IoMdArrowDropright className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageId(pageId === totalPage ? pageId : pageId + 1))} />
 
                     </div>
 
