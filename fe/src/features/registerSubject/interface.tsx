@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Search, BookOpen, Calendar, GraduationCap, Users } from "lucide-react";
+import {  BookOpen, Calendar, GraduationCap, Users } from "lucide-react";
 import { get, post } from "../../axios/ultil.tsx";
 
 interface Subject {
@@ -27,7 +27,6 @@ interface FormData {
 type Role = "admin" | "student" | "";
 
 const SubjectManagement: React.FC = () => {
-  const [subjects, setSubjects] = useState<Subject[]>([]);
   const [filteredSubjects, setFilteredSubjects] = useState<Subject[]>([]);
   const [majors, setMajors] = useState<Major[]>([]);
   const [loading, setLoading] = useState(false);
@@ -108,12 +107,10 @@ const SubjectManagement: React.FC = () => {
         { token }
       );
 
-      setSubjects(response.data.data || []);
       setFilteredSubjects(response.data.data || []);
     } catch (error: any) {
       console.error("Error fetching subjects:", error);
       if (error.response?.status === 404) {
-        setSubjects([]);
         setFilteredSubjects([]);
       } else {
         alert("Có lỗi khi tải danh sách môn học!");

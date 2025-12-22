@@ -22,7 +22,6 @@ const EditMajor = () => {
 
     const { teacher } = useAppSelector((state) => state.getTeacher)
 
-    const isEdit = localStorage.getItem("isEdit")
 
     const classStudy = localStorage.getItem("classStudy")
 
@@ -30,7 +29,7 @@ const EditMajor = () => {
 
     const { subjectId, teacherId, ...newClassStudy } = parseClassStudy
 
-    const [editClassStudy, setEditClassStudy] = useState({ ...newClassStudy, teacherId: parseClassStudy.teacherId._id })
+    const [editClassStudy] = useState({ ...newClassStudy, teacherId: parseClassStudy.teacherId._id })
 
     const handleSubmit = () => {
         navigate("/major")

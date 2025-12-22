@@ -36,7 +36,6 @@ const PostPage = () => {
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     dispatch(
@@ -60,13 +59,11 @@ const PostPage = () => {
     }
     setForm({ _id: "", title: "", content: "", author: "", type: "thông báo" });
     setIsEditing(false);
-    setShowForm(false);
   };
 
   const handleEdit = (p: typeof form) => {
     setForm(p);
     setIsEditing(true);
-    setShowForm(true);
   };
 
   const handleDelete = (id: string) => {

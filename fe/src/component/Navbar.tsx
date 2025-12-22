@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { Label } from "@radix-ui/react-dropdown-menu";
 
 const Navbar = () => {
     interface User {

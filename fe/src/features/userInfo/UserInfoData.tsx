@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { Student, Teacher } from "../../type/user";
 import { del, get, patch } from "../../axios/ultil.tsx";
-import { setMajor } from "../listTeacher/ListTeacherData.tsx";
 
 //Định nghĩa kiểu dữ liệu gửi đi
 interface ApiUserRequest {
