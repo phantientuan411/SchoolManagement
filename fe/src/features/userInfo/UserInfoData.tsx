@@ -21,6 +21,7 @@ interface UpdateStudent {
     parentName: string;
     status: boolean;
     dateOfBirth: string;
+    yearOfAdmission: number
 }
 
 // Định nghĩa kiểu dữ liệu update Teacher
@@ -32,6 +33,8 @@ interface UpdateTeacher {
     dateOfBirth: string;
     degree: string;
     major: string;
+    yearExperience: string;
+
 }
 
 // Định nghĩa dữ liệu update Student gửi đi
@@ -69,7 +72,8 @@ const initialState: UserInfoState = {
         parentPhone: "",
         parentName: "",
         status: true,
-        dateOfBirth: ""
+        dateOfBirth: "",
+        yearOfAdmission: 0
     },
     updateTeacher: {
         name: "",
@@ -78,7 +82,8 @@ const initialState: UserInfoState = {
         status: true,
         dateOfBirth: "",
         degree: "",
-        major: ""
+        major: "",
+        yearExperience: ""
     },
     edit: false
 
@@ -266,6 +271,9 @@ const getUserInfoSlice = createSlice({
         setDoBStudentUpdate: (state, action) => {
             state.updateStudent.dateOfBirth = action.payload
         },
+        setYearOfAdmissionStudentUpdate: (state, action) => {
+            state.updateStudent.yearOfAdmission = action.payload
+        },
         // Update Teacher
         setNameTeacherUpdate: (state, action) => {
             state.updateTeacher.name = action.payload
@@ -288,6 +296,9 @@ const getUserInfoSlice = createSlice({
         setMajorTeacherUpdate: (state, action) => {
             state.updateTeacher.major = action.payload
         },
+        setYearOfExperienceTeacherUpdate: (state, action) => {
+            state.updateTeacher.yearExperience = action.payload
+        },
 
         setEdit: (state, action) => {
             state.edit = action.payload
@@ -309,13 +320,16 @@ const getUserInfoSlice = createSlice({
                 state.updateStudent.parentPhone = (action.payload.data[0] as Student).parentPhone
                 state.updateStudent.status = action.payload.data[0].status
                 state.updateStudent.dateOfBirth = action.payload.data[0].dateOfBirth
+                state.updateStudent.yearOfAdmission = (action.payload.data[0] as Student).yearOfAdmission
                 // Update Teacher
                 state.updateTeacher.name = action.payload.data[0].name
                 state.updateTeacher.address = action.payload.data[0].address
                 state.updateTeacher.gender = action.payload.data[0].gender
+                state.updateTeacher.major = action.payload.data[0].major
                 state.updateTeacher.degree = (action.payload.data[0] as Teacher).degree
                 state.updateTeacher.status = action.payload.data[0].status
                 state.updateTeacher.dateOfBirth = action.payload.data[0].dateOfBirth
+                state.updateTeacher.yearExperience = (action.payload.data[0] as Teacher).yearExperience
                 state.loading = false
                 state.error = null
             })
@@ -327,8 +341,8 @@ const getUserInfoSlice = createSlice({
 })
 
 export const { setEdit, setId,
-    setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate,
-    setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, setStatusTeacherUpdate, setMajorTeacherUpdate }
+    setAddressStudentUpdate, setDoBStudentUpdate, setGenderStudentUpdate, setNameStudentUpdate, setParentNameStudentUpdate, setParentPhoneStudentUpdate, setStatusStudentUpdate, setYearOfAdmissionStudentUpdate,
+    setAddressTeacherUpdate, setDoBTeacherUpdate, setGenderTeacherUpdate, setNameTeacherUpdate, setDegreeTeacherUpdate, setStatusTeacherUpdate, setMajorTeacherUpdate, setYearOfExperienceTeacherUpdate }
     = getUserInfoSlice.actions
 
 export default getUserInfoSlice.reducer

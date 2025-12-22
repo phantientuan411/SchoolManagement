@@ -17,6 +17,7 @@ interface UpdateTeacher {
     status: boolean;
     dateOfBirth: string;
     degree: string;
+    yearOfExperience: string;
 
 }
 

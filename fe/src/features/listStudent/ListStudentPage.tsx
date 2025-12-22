@@ -67,7 +67,7 @@ const ListStudentPage = () => {
     }
 
     return (
-        <div className='p-[50px] bg-[#F3F4FF]'>
+        <div className='pt-[50px] p-[50px] bg-[#F3F4FF]'>
             <h1 className='text-[#303972] text-[32px] font-bold mb-[25px]'>STUDENTS</h1>
             <div className='mb-[25px] flex justify-between'>
                 <div className='flex items-center relative' >
@@ -95,28 +95,28 @@ const ListStudentPage = () => {
 
                 {/* Tiêu đề bảng  */}
                 <div className='flex text-[18px] text-[#303972] font-semibold border-b pl-5 pr-5 border-gray-300 border-dotted' >
-                    <div onClick={() => setSort("name")} className='w-[20%] pt-5 pb-5 justify-center flex gap-5 items-center'>
+                    <div onClick={() => setSort("name")} className='hover:cursor-pointer w-[20%] pt-5 pb-5 justify-center flex gap-5 items-center'>
                         <p>Name</p>
                         {sort.name === "asc"
                             ? <IoMdArrowDropup className='text-[25px] text-red-700' />
                             : (sort.name === "desc" ? <IoMdArrowDropdown className='text-[25px] text-green-700' /> : null)}
                     </div>
-                    <div onClick={() => setSort("_id")} className='w-[20%] pt-5 pb-5 justify-center flex gap-5 items-center'>
+                    <div onClick={() => setSort("_id")} className='hover:cursor-pointer w-[15%] pt-5 pb-5 justify-center flex gap-5 items-center'>
                         <p>ID</p>
                         {sort._id === "asc"
                             ? <IoMdArrowDropup className='text-[25px] text-red-700' />
                             : (sort._id === "desc" ? <IoMdArrowDropdown className='text-[25px] text-green-700' /> : null)}
                     </div>
-                    <div onClick={() => setSort("dateOfBirth")} className='w-[15%] pt-5 pb-5 justify-center flex gap-5 items-center'>
+                    <div onClick={() => setSort("dateOfBirth")} className='hover:cursor-pointer w-[15%] pt-5 pb-5 justify-center flex gap-5 items-center'>
                         <p>Date</p>
                         {sort.dateOfBirth === "asc"
                             ? <IoMdArrowDropup className='text-[25px] text-red-700' />
                             : (sort.dateOfBirth === "desc" ? <IoMdArrowDropdown className='text-[25px] text-green-700' /> : null)}
                     </div>
-                    <div className='w-[15%] pt-5 pb-5 flex justify-center'>Paren Name</div>
+                    <div className='w-[20%] pt-5 pb-5 flex justify-center'>Paren Name</div>
                     <div className='w-[10%] pt-5 pb-5 flex justify-center'>City</div>
                     <div className='w-[10%] pt-5 pb-5 flex justify-center'>Contact</div>
-                    <div onClick={() => setSort("classId")} className='w-[10%] pt-5 pb-5 justify-center flex gap-5 items-center'>
+                    <div onClick={() => setSort("classId")} className='hover:cursor-pointer w-[10%] pt-5 pb-5 justify-center flex gap-5 items-center'>
                         <p>Grade</p>
                         {sort.classId === "asc"
                             ? <IoMdArrowDropup className='text-[25px] text-red-700' />
@@ -127,15 +127,15 @@ const ListStudentPage = () => {
                 {/* List danh sách học sinh */}
                 {student.map(e =>
                     <div onClick={() => selectStudent(e.accountId._id)} className='flex items-center font-semibold border-b pl-5 pr-5 border-gray-300 hover:cursor-pointer hover:bg-gray-200'>
-                        <div className='gap-5 items-center w-[20%] pt-5 pb-5 flex justify-center text-[20px] font-bold'>
+                        <div className='gap-5 items-center w-[20%] pt-5 pb-5 flex  text-[20px] font-bold'>
                             <img className='w-10 h-10 rounded-4xl' src={e.accountId.avatarUrl} alt="" />
-                            <h1>{e.name}</h1>
+                            <h1 title={e.name} className='truncate'>{e.name}</h1>
                         </div>
-                        <div className='w-[20%] pt-5 pb-5 flex justify-center text-[20px] font-semibold text-[#4D44B5]' >{"#" + e._id.slice(e._id.indexOf("ff"))}</div>
+                        <div className='w-[15%] pt-5 pb-5 flex justify-center text-[20px] font-semibold text-[#4D44B5]' >{"#" + e._id.slice(e._id.indexOf("ff"))}</div>
                         <div className='w-[15%] pt-5 pb-5 flex justify-center text-[16px] font-normal text-[#A098AE]'>{new Date(e.dateOfBirth).toLocaleDateString("vi-VN")}</div>
-                        <div className='w-[15%] pt-5 pb-5 flex justify-center text-[16px] font-normal text-[#A098AE]'>{e.parentName}</div>
+                        <div title={e.parentName} className='truncate w-[20%] pt-5 pb-5 flex justify-center text-[16px] font-normal text-[#A098AE]'>{e.parentName}</div>
                         <div className='w-[10%] pt-5 pb-5 flex justify-center text-[16px] font-normal text-[#A098AE]'>{e.address}</div>
-                        <div className='w-[10%] pt-5 pb-5 flex justify-center truncate'>{e.accountId.accountEmail}</div>
+                        <div title={e.accountId.accountEmail} className='w-[10%] pt-5 pb-5 flex justify-center truncate'>{e.accountId.accountEmail}</div>
                         <div className='w-[10%] pt-5 pb-5 flex justify-center overflow-hidden'>{e.classId.classCode}</div>
                     </div>
                 )}
@@ -147,12 +147,12 @@ const ListStudentPage = () => {
                     </div>
 
                     <div className='flex gap-2 justify-center items-center'>
-                        <IoMdArrowDropleft className='text-[30px]' onClick={() => dispatch(setPageId(pageId === 1 ? pageId : pageId - 1))} />
+                        <IoMdArrowDropleft className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageId(pageId === 1 ? pageId : pageId - 1))} />
                         {pagination.map(e =>
-                            <div className={`border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageId ? 'bg-[#4D44B5] text-white' : ""}`}
+                            <div className={`hover:cursor-pointer border-[#A098AE] rounded-full border w-[51px] h-[51px] text-[18px] text-[#A098AE] flex justify-center items-center select-none ${e === pageId ? 'bg-[#4D44B5] text-white' : ""}`}
                                 onClick={() => e <= totalPage && dispatch(setPageId(e))}>{e}</div>
                         )}
-                        <IoMdArrowDropright className='text-[30px]' onClick={() => dispatch(setPageId(pageId === totalPage ? pageId : pageId + 1))} />
+                        <IoMdArrowDropright className='hover:cursor-pointer text-[30px]' onClick={() => dispatch(setPageId(pageId === totalPage ? pageId : pageId + 1))} />
 
                     </div>
 

@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux&hook/hook'
 import { useNavigate, useParams } from 'react-router-dom';
 import { getMajorDetails } from '../../redux&hook/slice/major';
@@ -15,6 +15,11 @@ import { getTeacher } from '../listTeacher/ListTeacherData';
 
 const ListMajorPage = () => {
     const navigate = useNavigate()
+
+    const boxNewSub = useRef<HTMLDivElement | null>(null)
+    const boxEditSub = useRef<HTMLDivElement | null>(null)
+    const boxNewClass = useRef<HTMLDivElement | null>(null)
+    const boxEditClass = useRef<HTMLDivElement | null>(null)
 
     const [selected, setSelected] = useState("class")
 
@@ -80,6 +85,12 @@ const ListMajorPage = () => {
     const clickNewSubject = () => {
         setIsNew(true)
         dispatch(newMajorId(majorDetails[0]?._id))
+        setTimeout(() => {
+            boxNewSub.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }, 100)
     }
 
     const confirmNewSubject = (e: any) => {
@@ -107,13 +118,21 @@ const ListMajorPage = () => {
         dispatch(editSubjectCode(item.subjectCode))
         dispatch(editSubjectName(item.subjectName))
         dispatch(editNumberCredits(Number(item.numberCredits)))
+        dispatch(editTotalFee(Number(item.totalFee)))
 
         setIsEdit(true)
+
+        setTimeout(() => {
+            boxEditSub.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }, 100)
     }
 
-    const confirmEditSubject = (e: any) => {
+    const confirmEditSubject = async (e: any) => {
         e.preventDefault()
-        dispatch(patchSubject({ id: selectedSubject, editSubject: editSubject }))
+        await dispatch(patchSubject({ id: selectedSubject, editSubject: editSubject }))
         dispatch(resetEditSubject())
         setIsEdit(false)
         useEffect(() => {
@@ -125,6 +144,13 @@ const ListMajorPage = () => {
     const clickNewClass = () => {
         setIsNew(true)
         dispatch(setNewMajorId(majorDetails[0]?._id))
+
+        setTimeout(() => {
+            boxNewClass.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }, 100)
     }
 
     const confirmNewClass = (e: any) => {
@@ -155,6 +181,13 @@ const ListMajorPage = () => {
         dispatch(setEditTeacherId(item.teacherId))
 
         setIsEdit(true)
+
+        setTimeout(() => {
+            boxEditClass.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }, 100)
     }
 
     const confirmEditClass = (e: any) => {
@@ -318,7 +351,7 @@ const ListMajorPage = () => {
             </div>
 
             {/* New Subject */}
-            <div className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isNew && selected === "subject" ? "block" : "hidden"}`}>
+            <div ref={boxNewSub} className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isNew && selected === "subject" ? "block" : "hidden"}`}>
                 <h1 className='font-semibold text-[24px] pb-5 text-[#303972]'>New Subject</h1>
                 <form className='grid grid-cols-2 gap-5' onSubmit={confirmNewSubject} action="">
                     <div className='flex gap-3 items-center'>
@@ -348,7 +381,7 @@ const ListMajorPage = () => {
             </div>
 
             {/* Edit Subject */}
-            <div className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isEdit && selected === "subject" ? "block" : "hidden"}`}>
+            <div ref={boxEditSub} className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isEdit && selected === "subject" ? "block" : "hidden"}`}>
                 <h1 className='font-semibold text-[24px] pb-5 text-[#303972]'>Edit Subject</h1>
                 <form className='grid grid-cols-2 gap-5' onSubmit={confirmEditSubject} action="">
                     <div className='flex gap-3 items-center'>
@@ -378,7 +411,7 @@ const ListMajorPage = () => {
             </div>
 
             {/* New class */}
-            <div className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isNew && selected === "class" ? "block" : "hidden"}`}>
+            <div ref={boxNewClass} className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isNew && selected === "class" ? "block" : "hidden"}`}>
                 <h1 className='font-semibold text-[24px] pb-5 text-[#303972]'>New Class Major</h1>
                 <form className='grid grid-cols-2 gap-5 ' onSubmit={confirmNewClass} action="">
                     <div className='flex gap-3 items-center'>
@@ -417,7 +450,7 @@ const ListMajorPage = () => {
             </div>
 
             {/* Edit class */}
-            <div className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isEdit && selected === "class" ? "block" : "hidden"}`}>
+            <div ref={boxEditClass} className={`bg-white mb-10 rounded-2xl shadow-lg shadow-indigo-100 p-6 ${isEdit && selected === "class" ? "block" : "hidden"}`}>
                 <h1 className='font-semibold text-[24px] pb-5 text-[#303972]'>Edit Class Major</h1>
                 <form className='grid grid-cols-2 gap-5' onSubmit={confirmEditClass} action="">
                     <div className='flex gap-3 items-center'>
